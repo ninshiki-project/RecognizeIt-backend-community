@@ -32,7 +32,7 @@ class LoginController extends Controller
                 ->with([
                     'prompt' => 'consent',
                     'access_type' => 'offline',
-
+                    'provider' => $provider,
                 ])
                 ->stateless()->redirect()->getTargetUrl();
         }
