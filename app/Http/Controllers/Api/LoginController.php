@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Concern\CanValidateProvider;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginViaEmailRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
@@ -108,24 +111,24 @@ class LoginController extends Controller
 
     }
 
-    public function index()
+    public function loginViaEmail(LoginViaEmailRequest $request)
     {
+        $user = User::where('email', $request->email)->whereNotNull('password')->first();
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
 
-    }
+        // Create login in Sanctum
 
-    public function store(Request $request)
-    {
-    }
+        $token = $user->createToken($request->device_name ?? 'nanshiki')->plainTextToken;
 
-    public function show($id)
-    {
-    }
+        return response()->json([
+            'success' => true,
+            'token' => $token,
+            'user' => $user,
+        ]);
 
-    public function update(Request $request, $id)
-    {
-    }
-
-    public function destroy($id)
-    {
     }
 }
