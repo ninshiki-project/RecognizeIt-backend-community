@@ -97,7 +97,9 @@ class LoginController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'token' => $token,
+                    'token' => [
+                        'accessToken'  =>  $token
+                    ],
                     'user' => $userCreated,
                 ]);
 
@@ -126,7 +128,9 @@ class LoginController extends Controller
 
         return response()->json([
             'success' => true,
-            'token' => $token,
+            'token' => [
+                'accessToken'  =>  $token
+            ],
             'user' => $user,
         ]);
 
