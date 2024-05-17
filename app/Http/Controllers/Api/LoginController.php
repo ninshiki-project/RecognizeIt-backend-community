@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Concern\CanValidateProvider;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginViaEmailRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -19,7 +20,15 @@ class LoginController extends Controller
 
     public string $url;
 
-    public function loginViaProvider($provider)
+    /**
+     * Login via Provider
+     *
+     * @param  string  $provider  Possible options: zoho
+     * @return JsonResponse
+     *
+     * @unauthenticated
+     */
+    public function loginViaProvider(string $provider)
     {
         $validated = $this->validateProvider($provider);
         if (! is_null($validated)) {
@@ -44,6 +53,13 @@ class LoginController extends Controller
 
     }
 
+    /**
+     * Login Provider Callback
+     *
+     * @return JsonResponse|void
+     *
+     * @unauthenticated
+     */
     public function providerCallback($provider, Request $request)
     {
         $validated = $this->validateProvider($provider);
@@ -91,14 +107,15 @@ class LoginController extends Controller
                     ]
                 );
 
-                // Create login in Sanctum
 
                 $token = $userCreated->createToken($request->device_name ?? 'nanshiki')->plainTextToken;
 
                 return response()->json([
                     'success' => true,
                     'token' => [
-                        'accessToken'  =>  $token
+                        //@var string Token for authentication.
+                        //@example 31|b2da4411aa4e6d153d6725a17c672b8177c071e60a05158ff19af75a3b5829aa
+                        'accessToken' => $token,
                     ],
                     'user' => $userCreated,
                 ]);
@@ -113,6 +130,13 @@ class LoginController extends Controller
 
     }
 
+    /**
+     * Login using Credentials
+     *
+     * @return JsonResponse
+     *
+     * @unauthenticated
+     */
     public function loginViaEmail(LoginViaEmailRequest $request)
     {
         $user = User::where('email', $request->email)->whereNotNull('password')->first();
@@ -122,14 +146,12 @@ class LoginController extends Controller
             ]);
         }
 
-        // Create login in Sanctum
-
         $token = $user->createToken($request->device_name ?? 'nanshiki')->plainTextToken;
 
         return response()->json([
             'success' => true,
             'token' => [
-                'accessToken'  =>  $token
+                'accessToken' => $token,
             ],
             'user' => $user,
         ]);
