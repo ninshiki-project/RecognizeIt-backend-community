@@ -2,8 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use Closure;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class PermissionSeeder extends Seeder
 {
@@ -42,7 +47,56 @@ class PermissionSeeder extends Seeder
             return ['name' => $permission, 'guard_name' => 'web'];
         });
 
-        Permission::insert($permissions->toArray());
+        /**
+         * Create Permissions
+         */
+        $this->command->warn(PHP_EOL.'Creating permissions...');
+        $this->withProgressBar(1, fn () => Permission::insert($permissions->toArray()));
+        $this->command->info('Permissions has been created.');
 
+        /**
+         * Create Roles
+         */
+        $this->command->warn(PHP_EOL.'Creating roles...');
+        $this->withProgressBar(1, function () use ($allPermissionNames) {
+            $role = Role::create(['name' => 'administrator']);
+            $role->givePermissionTo($allPermissionNames->flatten()->toArray());
+        });
+        $this->command->info('Roles has been created.');
+
+        /**
+         *  Create User
+         */
+        $this->command->warn(PHP_EOL.'Creating user and assigning roles...');
+        $this->withProgressBar(1, function () {
+            User::factory()->create([
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ])->assignRole('administrator');
+        });
+        $this->command->info('Administrator user created.');
+
+    }
+
+    protected function withProgressBar(int $amount, Closure $createCollectionOfOne): Collection
+    {
+        $progressBar = new ProgressBar($this->command->getOutput(), $amount);
+
+        $progressBar->start();
+
+        $items = new Collection();
+
+        foreach (range(1, $amount) as $i) {
+            $items = $items->merge(
+                $createCollectionOfOne()
+            );
+            $progressBar->advance();
+        }
+
+        $progressBar->finish();
+
+        $this->command->getOutput()->writeln('');
+
+        return $items;
     }
 }
