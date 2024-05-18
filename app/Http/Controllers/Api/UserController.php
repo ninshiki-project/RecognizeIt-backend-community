@@ -28,8 +28,16 @@ class UserController extends Controller
     {
     }
 
+    /**
+     * Get User by ID
+     *
+     *
+     * @param $id
+     * @return JsonResponse
+     */
     public function show($id)
     {
+        return response()->json(User::findOrFail($id));
     }
 
     public function update(Request $request, $id)
