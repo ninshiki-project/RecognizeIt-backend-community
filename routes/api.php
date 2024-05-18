@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,5 +12,7 @@ Route::post('/login/{provider}', [LoginController::class, 'providerCallback']);
 
 Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('departments', DepartmentsController::class);
+    Route::get('users/{user}/points', [UserController::class, 'showPoints']);
     Route::apiResource('users', UserController::class);
+    Route::get('points', [PointsController::class, 'index']);
 });

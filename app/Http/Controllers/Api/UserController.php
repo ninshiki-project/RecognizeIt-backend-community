@@ -19,12 +19,9 @@ class UserController extends Controller
         return response()->json(User::all());
     }
 
-
     /**
-     *
      * Invite User
      *
-     * @param Request $request
      * @return void
      */
     public function store(Request $request)
@@ -41,5 +38,15 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+    }
+
+    /**
+     * Get all Points of User
+     *
+     * @return JsonResponse
+     */
+    public function showPoints(User $user)
+    {
+        return response()->json($user->points);
     }
 }

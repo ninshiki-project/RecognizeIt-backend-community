@@ -69,10 +69,13 @@ class PermissionSeeder extends Seeder
          */
         $this->command->warn(PHP_EOL.'Creating user and assigning roles...');
         $this->withProgressBar(1, function () {
-            User::factory()->create([
+            $user = User::factory()->create([
                 'name' => 'Test User',
                 'email' => 'test@example.com',
             ])->assignRole('administrator');
+            $this->command->warn(PHP_EOL.'Creating Points System for the User...');
+            $user->points()->create();
+            $this->command->info(PHP_EOL.'Points created and associated...');
         });
         $this->command->info('Administrator user created.');
 
