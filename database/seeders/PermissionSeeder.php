@@ -13,7 +13,8 @@ class PermissionSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        $arrayOfPermissionNames = collect([
+
+        $userModelPermission = [
             // User Model
             'invite user',
             'view user',
@@ -21,6 +22,9 @@ class PermissionSeeder extends Seeder
             'delete user',
             'restore user',
             'force delete user',
+        ];
+
+        $departmentModelPermission = [
             // Department Model
             'create department',
             'view department',
@@ -28,10 +32,13 @@ class PermissionSeeder extends Seeder
             'delete department',
             'restore department',
             'force delete department',
+        ];
 
-        ]);
+        $allPermissionNames = collect();
+        $allPermissionNames->push($userModelPermission);
+        $allPermissionNames->push($departmentModelPermission);
 
-        $permissions = collect($arrayOfPermissionNames)->map(function ($permission) {
+        $permissions = collect($allPermissionNames)->map(function ($permission) {
             return ['name' => $permission, 'guard_name' => 'web'];
         });
 
