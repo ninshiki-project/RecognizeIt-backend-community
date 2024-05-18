@@ -14,7 +14,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('departments', DepartmentsController::class);
     Route::get('users/{user}/points', [UserController::class, 'showPoints']);
     Route::post('users/invite', [UserController::class, 'inviteUser']);
-    Route::patch('users/{user}/invitation', [UserController::class, 'inviteUser']);
+    Route::patch('users/{user}/invitation', [UserController::class, 'invitation']);
     Route::apiResource('users', UserController::class)->except('store');
     Route::get('points', [PointsController::class, 'index']);
 });
