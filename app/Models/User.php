@@ -69,4 +69,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Points::class, 'user_id', 'id');
     }
+
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class, 'invited_by_user', 'id');
+    }
 }
