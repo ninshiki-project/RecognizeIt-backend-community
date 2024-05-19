@@ -9,10 +9,18 @@ use App\Models\User;
 use App\Notifications\User\Invitation\DeclinedNotification;
 use Carbon\Carbon;
 
-class UserInvitationController extends Controller
+class InvitationController extends Controller
 {
     /**
-     * Accept Invitation
+     * Get All Invitations
+     */
+    public function index()
+    {
+        return response()->json(Invitation::all());
+    }
+
+    /**
+     * Accept/Decline Invitation
      */
     public function invitation(UserInvitationPatchRequest $request)
     {

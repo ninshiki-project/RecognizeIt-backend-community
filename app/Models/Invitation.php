@@ -19,6 +19,10 @@ class Invitation extends Model
         'status',
     ];
 
+    protected $hidden = [
+        'token',
+    ];
+
     protected $casts = [
         'accepted_at' => 'datetime',
     ];
