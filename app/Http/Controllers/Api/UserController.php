@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInvitationRequest;
+use App\Models\Invitation;
 use App\Models\User;
+use App\Notifications\User\Invitation\InvitationNotification;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class UserController extends Controller
 {
@@ -31,12 +33,18 @@ class UserController extends Controller
             'email' => $request->email,
             'invitation_by_user' => $request->invited_by_user,
         ]);
-        User::findOrFail($request->invited_by_user)->invitations()->create([
+        $user = User::findOrFail($request->invited_by_user);
+        $invitation = Invitation::create([
+            'invited_by_user' => $user?->id,
             'department' => $request->department,
             'role' => $request->role,
             'email' => $request->email,
             'token' => $token,
         ]);
+
+        // Send an email invitation
+        Notification::route('mail', $request->email)
+            ->notify(new InvitationNotification($user, $invitation));
 
         return response()->json([
             'success' => true,
@@ -56,15 +64,6 @@ class UserController extends Controller
     public function show($id)
     {
         return response()->json(User::findOrFail($id));
-    }
-
-    /**
-     * Update User
-     *
-     * @return void
-     */
-    public function update(Request $request, $id)
-    {
     }
 
     /**

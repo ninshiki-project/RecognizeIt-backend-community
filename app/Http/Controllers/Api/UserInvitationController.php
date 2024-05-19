@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInvitationPatchRequest;
 use App\Models\Invitation;
 use App\Models\User;
@@ -24,6 +25,7 @@ class UserInvitationController extends Controller
             //that the invited person has declined accepting the invitation to join
             $user?->notify(new DeclinedNotification($user, $invitation));
             $invitation->delete();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Invitation declined',
