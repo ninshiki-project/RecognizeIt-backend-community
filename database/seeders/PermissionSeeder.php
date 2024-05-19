@@ -80,7 +80,6 @@ class PermissionSeeder extends Seeder
         });
         $this->command->info('Administrator user created.');
 
-
         $this->command->newLine(2);
     }
 
