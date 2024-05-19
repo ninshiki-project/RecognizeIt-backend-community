@@ -39,9 +39,10 @@ class PermissionSeeder extends Seeder
             'force delete department',
         ];
 
-        $allPermissionNames = collect();
-        $allPermissionNames->push($userModelPermission);
-        $allPermissionNames->push($departmentModelPermission);
+        $allPermissionNames = [
+            ...$userModelPermission,
+            ...$departmentModelPermission,
+        ];
 
         $permissions = collect($allPermissionNames)->map(function ($permission) {
             return ['name' => $permission, 'guard_name' => 'web'];
@@ -60,7 +61,7 @@ class PermissionSeeder extends Seeder
         $this->command->warn(PHP_EOL.'Creating roles...');
         $this->withProgressBar(1, function () use ($allPermissionNames) {
             $role = Role::create(['name' => 'administrator']);
-            $role->givePermissionTo($allPermissionNames->flatten()->toArray());
+            $role->givePermissionTo($allPermissionNames);
         });
         $this->command->info('Roles has been created.');
 
@@ -79,6 +80,8 @@ class PermissionSeeder extends Seeder
         });
         $this->command->info('Administrator user created.');
 
+
+        $this->command->newLine(2);
     }
 
     protected function withProgressBar(int $amount, Closure $createCollectionOfOne): Collection
