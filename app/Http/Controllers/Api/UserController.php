@@ -77,7 +77,7 @@ class UserController extends Controller
     }
 
     /**
-     * Get all Points of User
+     * Get Points of User
      *
      * @return JsonResponse
      */
