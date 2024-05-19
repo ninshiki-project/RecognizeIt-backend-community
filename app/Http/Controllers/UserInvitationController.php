@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserInvitationPatchRequest;
 use App\Models\Invitation;
 use App\Models\User;
+use App\Notifications\User\Invitation\DeclinedNotification;
 use Carbon\Carbon;
 
 class UserInvitationController extends Controller
@@ -18,9 +19,11 @@ class UserInvitationController extends Controller
         $invitation = Invitation::where('token', $request->token)->firstOrFail();
 
         if ($request->status === 'declined') {
+            $user = User::findOrFail($invitation->invited_by_user);
+            // Send email notification to the user who invited,
+            //that the invited person has declined accepting the invitation to join
+            $user?->notify(new DeclinedNotification($user, $invitation));
             $invitation->delete();
-            // Send email to the user who invite that the invitation has been declined by the recipient
-
             return response()->json([
                 'status' => 'success',
                 'message' => 'Invitation declined',
