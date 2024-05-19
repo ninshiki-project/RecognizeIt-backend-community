@@ -63,6 +63,7 @@ class DepartmentsController extends Controller
                 $user->save();
             });
         })->delete();
+
         return response()->json('', 202);
     }
 }

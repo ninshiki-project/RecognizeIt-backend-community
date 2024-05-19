@@ -12,36 +12,36 @@ class DepartmentPolicy
 
     public function viewAny(User $user): bool
     {
-        return  $user->can('view department');
+        return $user->can('view department');
     }
 
     public function view(User $user, Departments $departments): bool
     {
-        return  $user->can('view department');
+        return $user->can('view department');
     }
 
     public function create(User $user): bool
     {
-        return  $user->can('create department');
+        return $user->can('create department');
     }
 
     public function update(User $user, Departments $departments): bool
     {
-        return  $user->can('update department');
+        return $user->can('update department');
     }
 
     public function delete(User $user, Departments $departments): bool
     {
-        return  $user->can('delete department');
+        return $user->can('delete department');
     }
 
     public function restore(User $user, Departments $departments): bool
     {
-        return  $user->can('restore department');
+        return $user->can('restore department');
     }
 
     public function forceDelete(User $user, Departments $departments): bool
     {
-        return  $user->can('force delete department');
+        return $user->can('force delete department');
     }
 }

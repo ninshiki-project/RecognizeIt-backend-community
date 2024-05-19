@@ -107,7 +107,6 @@ class LoginController extends Controller
                     ]
                 );
 
-
                 $token = $userCreated->createToken($request->device_name ?? 'nanshiki')->plainTextToken;
 
                 return response()->json([

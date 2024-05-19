@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserInvitationPatchRequest;
 use App\Http\Requests\UserInvitationRequest;
-use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,7 +23,6 @@ class UserController extends Controller
     /**
      * Invite User
      *
-     * @param UserInvitationRequest $request
      * @return JsonResponse
      */
     public function inviteUser(UserInvitationRequest $request)
@@ -35,6 +32,8 @@ class UserController extends Controller
             'invitation_by_user' => $request->invited_by_user,
         ]);
         User::findOrFail($request->invited_by_user)->invitations()->create([
+            'department' => $request->department,
+            'role' => $request->role,
             'email' => $request->email,
             'token' => $token,
         ]);
@@ -46,14 +45,6 @@ class UserController extends Controller
             ],
             'message' => 'Invitation sent via email.',
         ]);
-    }
-
-    /**
-     * Accept Invitation
-     */
-    public function invitation(User $user, UserInvitationPatchRequest $request)
-    {
-
     }
 
     /**
@@ -70,8 +61,6 @@ class UserController extends Controller
     /**
      * Update User
      *
-     * @param Request $request
-     * @param $id
      * @return void
      */
     public function update(Request $request, $id)

@@ -11,6 +11,8 @@ return new class extends Migration
         Schema::create('invitations', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
+            $table->string('department');
+            $table->foreignId('role');
             $table->foreignId('invited_by_user');
             $table->string('token');
             $table->enum('status', ['accepted', 'pending'])->default('pending');
