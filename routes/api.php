@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\PointsController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,6 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
         Route::patch('/', [InvitationController::class, 'invitation']);
     });
     // Profile - Authenticated User
-    Route::get('me', [LoginController::class, 'me']);
+    Route::get('me', [ProfileController::class, 'me']);
 
 });
