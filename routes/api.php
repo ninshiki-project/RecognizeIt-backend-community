@@ -29,6 +29,6 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
         Route::patch('/', [InvitationController::class, 'invitation']);
     });
     // Profile - Authenticated User
-    Route::get('me', [UserController::class, 'me']);
+    Route::get('me', [LoginController::class, 'me']);
 
 });

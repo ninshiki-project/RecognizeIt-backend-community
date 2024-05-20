@@ -86,13 +86,4 @@ class UserController extends Controller
         return response()->json($user->points);
     }
 
-    /**
-     * My Authenticated Profile
-     *
-     * @return JsonResponse
-     */
-    public function me()
-    {
-        return response()->json(auth()->user()->load(['roles.permissions', 'notifications']));
-    }
 }

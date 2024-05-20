@@ -168,4 +168,14 @@ class LoginController extends Controller
 
         return response()->json('', 202);
     }
+
+    /**
+     * Session Profile
+     *
+     * @return JsonResponse
+     */
+    public function me()
+    {
+        return response()->json(auth()->user()->load(['roles.permissions', 'notifications']));
+    }
 }
