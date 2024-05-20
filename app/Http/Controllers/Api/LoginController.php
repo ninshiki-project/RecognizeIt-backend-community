@@ -156,4 +156,16 @@ class LoginController extends Controller
         ]);
 
     }
+
+    /**
+     * Logout Session
+     *
+     * @return JsonResponse
+     */
+    public function logout(Request $request)
+    {
+        auth()->user()->tokens()->delete();
+
+        return response()->json('', 202);
+    }
 }
