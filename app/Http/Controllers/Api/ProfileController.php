@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\ProfileResource;
 
 class ProfileController extends Controller
 {
     /**
      * Session Profile
      *
-     * @return JsonResponse
+     * @return ProfileResource
      */
     public function me()
     {
-        return response()->json(auth()->user()->load(['roles.permissions', 'notifications']));
+        return new ProfileResource(auth()->user());
     }
 }

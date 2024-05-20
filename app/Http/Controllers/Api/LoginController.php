@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\Concern\CanValidateProvider;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginViaEmailRequest;
+use App\Http\Resources\ProfileResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -116,7 +117,7 @@ class LoginController extends Controller
                         //@example 31|b2da4411aa4e6d153d6725a17c672b8177c071e60a05158ff19af75a3b5829aa
                         'accessToken' => $token,
                     ],
-                    'user' => $userCreated,
+                    'user' =>  new ProfileResource($userCreated),
                 ]);
 
             }
@@ -152,7 +153,7 @@ class LoginController extends Controller
             'token' => [
                 'accessToken' => $token,
             ],
-            'user' => $user,
+            'user' => new ProfileResource($user),
         ]);
 
     }
@@ -168,5 +169,4 @@ class LoginController extends Controller
 
         return response()->json('', 202);
     }
-
 }
