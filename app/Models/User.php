@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -72,5 +73,17 @@ class User extends Authenticatable
     public function invitations(): HasMany
     {
         return $this->hasMany(Invitation::class, 'invited_by_user', 'id');
+    }
+
+    /**
+     * Send a password reset notification to the user.
+     *
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $url = config('frontend.reset_password').'?token='.$token;
+
+        $this->notify(new ResetPasswordNotification($url));
     }
 }
