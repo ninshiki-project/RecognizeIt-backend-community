@@ -117,7 +117,7 @@ class LoginController extends Controller
                         //@example 31|b2da4411aa4e6d153d6725a17c672b8177c071e60a05158ff19af75a3b5829aa
                         'accessToken' => $token,
                     ],
-                    'user' =>  new ProfileResource($userCreated),
+                    'user' => new ProfileResource($userCreated),
                 ]);
 
             }
