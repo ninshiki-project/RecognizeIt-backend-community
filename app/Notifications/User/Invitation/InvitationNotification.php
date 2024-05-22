@@ -22,8 +22,8 @@ class InvitationNotification extends Notification
     {
         $this->user = $user;
         $this->invitation = $invitation;
-        $this->acceptInvitationUrl = env('FRONTEND_URL').'/invitation?token='.$invitation->token.'&accept=true';
-        $this->declineInvitationUrl = env('FRONTEND_URL').'/invitation?token='.$invitation->token.'&accept=false';
+        $this->acceptInvitationUrl = config('frontend.invitation.accept_url').'?token='.$invitation->token.'&accept=true';
+        $this->declineInvitationUrl = config('frontend.invitation.decline_url').'?token='.$invitation->token.'&accept=false';
     }
 
     public function via($notifiable): array
