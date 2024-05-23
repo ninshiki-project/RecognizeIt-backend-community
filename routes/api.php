@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Api\RolesController;
 use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\LoginController;
@@ -47,5 +48,8 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     // Permissions
     Route::get('profile/permissions/', [PermissionsController::class, 'permissions']);
     Route::apiResource('permissions', PermissionsController::class)->only(['index', 'show']);
+
+    // Role
+    Route::apiResource('roles', RolesController::class)->only(['index', 'show']);
 
 });

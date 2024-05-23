@@ -45,7 +45,7 @@ class PermissionSeeder extends Seeder
         ];
 
         $permissions = collect($allPermissionNames)->map(function ($permission) {
-            return ['name' => $permission, 'guard_name' => 'web'];
+            return ['name' => $permission, 'guard_name' => 'sanctum'];
         });
 
         /**
@@ -59,9 +59,9 @@ class PermissionSeeder extends Seeder
          * Create Roles
          */
         $this->command->warn(PHP_EOL.'Creating roles...');
-        $this->withProgressBar(1, function () use ($allPermissionNames) {
-            $role = Role::create(['name' => 'administrator']);
-            $role->givePermissionTo($allPermissionNames);
+        $this->withProgressBar(1, function () {
+            $role = Role::create(['name' => 'Administrator', 'guard_name' => 'sanctum']);
+            $role->givePermissionTo(Permission::all());
         });
         $this->command->info('Roles has been created.');
 
@@ -73,7 +73,8 @@ class PermissionSeeder extends Seeder
             $user = User::factory()->create([
                 'name' => 'Test User',
                 'email' => 'test@example.com',
-            ])->assignRole('administrator');
+            ])
+                ->assignRole('Administrator');
             $this->command->warn(PHP_EOL.'Creating Points System for the User...');
             $user->points()->create();
             $this->command->info(PHP_EOL.'Points created and associated...');
