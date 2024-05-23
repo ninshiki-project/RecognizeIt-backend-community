@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\PermissionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login/credentials', [LoginController::class, 'loginViaEmail']);
@@ -16,19 +17,23 @@ Route::post('/login/{provider}', [LoginController::class, 'providerCallback']);
 Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     // Department
     Route::apiResource('departments', DepartmentsController::class);
+
     // Users
     Route::group(['prefix' => '/users'], function () {
         Route::get('/{user}/points', [UserController::class, 'showPoints']);
         Route::post('/invite', [UserController::class, 'inviteUser']);
     });
     Route::apiResource('users', UserController::class)->except(['store', 'update']);
+
     // Points
     Route::get('points', [PointsController::class, 'index']);
+
     // Invitation
     Route::group(['prefix' => '/invitations'], function () {
         Route::get('/', [InvitationController::class, 'index']);
         Route::patch('/', [InvitationController::class, 'invitation']);
     });
+
     // Profile - Authenticated User
     Route::group(['prefix' => '/auth'], function () {
         Route::get('me', [ProfileController::class, 'me']);
@@ -38,5 +43,9 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
         Route::post('/reset-password', [ProfileController::class, 'resetPassword'])
             ->withoutMiddleware('auth:sanctum');
     });
+
+    // Permissions
+    Route::get('profile/permissions/', [PermissionsController::class, 'permissions']);
+    Route::apiResource('permissions', PermissionsController::class)->only(['index', 'show']);
 
 });
