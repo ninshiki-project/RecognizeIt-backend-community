@@ -5,9 +5,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -34,6 +36,34 @@ return Application::configure(basePath: dirname(__DIR__))
                     ],
                 ], Response::HTTP_NOT_FOUND);
             }
+
+            return $exception;
+        });
+        $exceptions->render(function (UnprocessableEntityHttpException $exception, Request $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'error' => [
+                        'code' => $exception->getStatusCode(),
+                        'message' => $exception->getMessage(),
+                    ],
+                ], $exception->getStatusCode());
+            }
+
+            return $exception;
+        });
+        $exceptions->render(function (ValidationException $exception, Request $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'error' => [
+                        'message' => $exception->getMessage(),
+                        'code' => $exception->status,
+                        'data' => [
+                            'errors' => $exception->errors(),
+                        ],
+                    ],
+                ], $exception->status);
+            }
+
             return $exception;
         });
         $exceptions->render(function (HttpException $exception, Request $request) {
@@ -45,6 +75,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     ],
                 ], $exception->getStatusCode());
             }
+
             return $exception;
         });
         //
