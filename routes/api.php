@@ -3,10 +3,10 @@
 use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\PermissionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login/credentials', [LoginController::class, 'loginViaEmail']);
