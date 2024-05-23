@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\User\Invitation\InvitationNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Notification;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -73,7 +74,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        return response()->json(User::findOrFail($id)->delete(), 202);
+        return response()->json(User::findOrFail($id)->delete(), Response::HTTP_ACCEPTED);
     }
 
     /**

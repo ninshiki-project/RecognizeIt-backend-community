@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
 {
@@ -38,7 +39,7 @@ class ProfileController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Password updated successfully',
-        ], 202);
+        ], Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -69,13 +70,13 @@ class ProfileController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => __($status),
-                ], 422);
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
             if ($status === Password::RESET_THROTTLED) {
                 return response()->json([
                     'success' => false,
                     'message' => __($status),
-                ], 422);
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
         // send email for notification that the user need to login via Zoho instead of credential
@@ -115,7 +116,7 @@ class ProfileController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => __($status),
-            ], 422);
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
     }

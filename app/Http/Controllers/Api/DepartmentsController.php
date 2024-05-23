@@ -7,6 +7,7 @@ use App\Http\Requests\DepartmentPostRequest;
 use App\Http\Requests\DepartmentPutRequest;
 use App\Models\Departments;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class DepartmentsController extends Controller
 {
@@ -64,6 +65,6 @@ class DepartmentsController extends Controller
             });
         })->delete();
 
-        return response()->json('', 202);
+        return response()->json('', Response::HTTP_ACCEPTED);
     }
 }

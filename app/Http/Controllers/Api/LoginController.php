@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
 {
@@ -72,7 +73,7 @@ class LoginController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Code is required',
-            ], 422);
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
@@ -167,6 +168,6 @@ class LoginController extends Controller
     {
         auth()->user()->tokens()->delete();
 
-        return response()->json('', 202);
+        return response()->json('', Response::HTTP_ACCEPTED);
     }
 }

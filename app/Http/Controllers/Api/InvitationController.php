@@ -8,6 +8,7 @@ use App\Models\Invitation;
 use App\Models\User;
 use App\Notifications\User\Invitation\DeclinedNotification;
 use Carbon\Carbon;
+use Symfony\Component\HttpFoundation\Response;
 
 class InvitationController extends Controller
 {
@@ -37,7 +38,7 @@ class InvitationController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Invitation declined',
-            ], 202);
+            ], Response::HTTP_ACCEPTED);
         }
 
         // create into user
@@ -59,7 +60,7 @@ class InvitationController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Invitation accepted',
-        ], 202);
+        ], Response::HTTP_ACCEPTED);
 
     }
 }
