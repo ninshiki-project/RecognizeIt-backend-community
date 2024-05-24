@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -27,12 +29,26 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->expectsJson() || $request->ajax());
         $exceptions->stopIgnoring(HttpException::class);
+        $exceptions->render(function (QueryException $exception, Request $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'error' => [
+                        'code' => 500,
+                        'message' => $exception->errorInfo[2],
+                        'type' => 'QueryException',
+                    ],
+                ], 500);
+            }
+
+            return $exception;
+        });
         $exceptions->render(function (NotFoundHttpException $exception, Request $request) {
             if ($request->expectsJson()) {
                 return response()->json([
                     'error' => [
-                        'message' => 'Record Not Found',
                         'code' => $exception->getStatusCode(),
+                        'message' => 'Record Not Found',
+                        'type' => 'NotFoundHttpException',
                     ],
                 ], Response::HTTP_NOT_FOUND);
             }
@@ -45,6 +61,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     'error' => [
                         'code' => $exception->getStatusCode(),
                         'message' => $exception->getMessage(),
+                        'type' => 'UnprocessableEntityHttpException',
                     ],
                 ], $exception->getStatusCode());
             }
@@ -55,13 +72,41 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->expectsJson()) {
                 return response()->json([
                     'error' => [
-                        'message' => $exception->getMessage(),
                         'code' => $exception->status,
+                        'message' => $exception->getMessage(),
                         'data' => [
                             'errors' => $exception->errors(),
                         ],
+                        'type' => 'ValidationException',
                     ],
                 ], $exception->status);
+            }
+
+            return $exception;
+        });
+        $exceptions->render(function (AuthenticationException $exception, Request $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'error' => [
+                        'code' => 401,
+                        'message' => $exception->getMessage(),
+                        'type' => 'AuthenticationException',
+                    ],
+                ], 401);
+            }
+
+            return $exception;
+        });
+        $exceptions->render(function (\Symfony\Component\ErrorHandler\Error\FatalError $exception, Request $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'error' => [
+                        'code' => 500,
+                        'message' => $exception->getMessage(),
+                        'error' => $exception->getError(),
+                        'type' => 'FatalError',
+                    ],
+                ], 500);
             }
 
             return $exception;
@@ -70,8 +115,9 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->expectsJson()) {
                 return response()->json([
                     'error' => [
-                        'message' => $exception->getMessage(),
                         'code' => $exception->getStatusCode(),
+                        'message' => $exception->getMessage(),
+                        'type' => 'HttpException',
                     ],
                 ], $exception->getStatusCode());
             }
