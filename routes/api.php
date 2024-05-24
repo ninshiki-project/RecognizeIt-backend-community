@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\PointsController;
+use App\Http\Controllers\Api\PostsController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\UserController;
@@ -51,5 +52,8 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
 
     // Role
     Route::apiResource('roles', RolesController::class)->only(['index', 'show']);
+
+    // Post
+    Route::apiResource('posts', PostsController::class);
 
 });
