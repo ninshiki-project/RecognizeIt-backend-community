@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 class PointsController extends Controller
 {
     /**
-     * Get all Points
+     * Get all Points of Authenticated User
      *
      * @return JsonResponse
      */
