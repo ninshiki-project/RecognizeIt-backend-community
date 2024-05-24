@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Throwable;
 
 class LoginController extends Controller
 {
@@ -32,10 +34,7 @@ class LoginController extends Controller
      */
     public function loginViaProvider(string $provider)
     {
-        $validated = $this->validateProvider($provider);
-        if (! is_null($validated)) {
-            return $validated;
-        }
+        $this->validateProvider($provider);
 
         if ($provider == 'zoho') {
             $this->url = Socialite::driver($provider)
@@ -59,21 +58,14 @@ class LoginController extends Controller
      * Login Provider Callback
      *
      * @return JsonResponse|void
-     *
-     * @unauthenticated
+     * @throws Throwable
      */
     public function providerCallback($provider, Request $request)
     {
-        $validated = $this->validateProvider($provider);
-        if (! is_null($validated)) {
-            return $validated;
-        }
+        $this->validateProvider($provider);
 
         if (is_null($request->code)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Code is required',
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            throw new UnprocessableEntityHttpException('Code is required');
         }
 
         try {
@@ -122,11 +114,8 @@ class LoginController extends Controller
                 ]);
 
             }
-        } catch (\Exception $exception) {
-            return response()->json([
-                'success' => false,
-                'message' => $exception->getMessage(),
-            ]);
+        } catch (Throwable $throwable) {
+            throw new $throwable;
         }
 
     }

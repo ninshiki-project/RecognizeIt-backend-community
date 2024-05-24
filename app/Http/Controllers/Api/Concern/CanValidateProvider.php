@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\Concern;
 
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+
 trait CanValidateProvider
 {
     protected function validateProvider($provider)
     {
         if ($provider != 'zoho') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Please login using credentials, or zoho'], 422);
+            throw new UnprocessableEntityHttpException('Please login using credentials, or zoho');
         }
     }
 }
