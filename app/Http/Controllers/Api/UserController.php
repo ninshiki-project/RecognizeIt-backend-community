@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Enum\InvitationCaseEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInvitationRequest;
 use App\Models\Invitation;
@@ -41,6 +42,7 @@ class UserController extends Controller
             'role' => $request->role,
             'email' => $request->email,
             'token' => $token,
+            'status' => InvitationCaseEnum::Pending,
         ]);
 
         // Send an email invitation

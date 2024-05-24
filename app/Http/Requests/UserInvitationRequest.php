@@ -14,7 +14,7 @@ class UserInvitationRequest extends FormRequest
             'department' => ['required', 'exists:departments,id'],
             'email' => ['required',  'email', 'max:254',
                 Rule::unique('users', 'email'),
-                Rule::unique('invitation', 'email'),
+                Rule::unique('invitations', 'email'),
             ],
             'invited_by_user' => ['required', 'exists:users'],
         ];
