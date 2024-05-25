@@ -31,7 +31,15 @@ class PostsController extends Controller
      */
     public function store(PostsPostRequest $request)
     {
-        return response()->json(Posts::create($request->validated()), Response::HTTP_CREATED);
+        $post = Posts::create($request->only(['posted_by', 'type', 'content']));
+        $recipients = collect($request->recipient_id)->map(function ($item) {
+            return [
+                'user_id' => $item,
+            ];
+        });
+        $post->recipients()->createMany($recipients);
+
+        return response()->json($post, Response::HTTP_CREATED);
 
     }
 

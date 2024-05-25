@@ -11,9 +11,10 @@ class PostsPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'recipient_id' => ['required', 'array', 'exists:users,id'],
+            'recipient_id' => ['required', 'array'],
+            'recipient_id.*' => ['required', 'exists:users,id'],
             'content' => ['required'],
-            'image' => ['required', 'sometimes'],
+            'image' => ['required', 'sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'type' => ['required', Rule::enum(PostTypeEnum::class)],
             'posted_by' => ['required', 'exists:users,id'],
         ];
