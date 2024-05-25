@@ -17,7 +17,6 @@ class ProfileResource extends JsonResource
             'email' => $this->email,
             'department' => $this->department,
             'email_verified_at' => $this->email_verified_at,
-            'roles_permission' => RolesResource::collection($this->roles),
             'notification' => $this->notifications,
         ];
     }
