@@ -39,7 +39,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     // Profile - Authenticated User
     Route::group(['prefix' => '/auth'], function () {
         Route::get('me', [ProfileController::class, 'me']);
-        Route::post('/change-password', [ProfileController::class, 'changePassword']);
+        Route::patch('/change-password', [ProfileController::class, 'changePassword']);
         Route::post('/forgot-password', [ProfileController::class, 'forgotPassword'])
             ->withoutMiddleware('auth:sanctum');
         Route::post('/reset-password', [ProfileController::class, 'resetPassword'])
