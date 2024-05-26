@@ -10,7 +10,7 @@ class ProfileUpdatePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'current_password' => ['required', 'current_password:web'],
+            'current_password' => ['required', 'current_password:sanctum'],
             'password' => ['required', 'confirmed',
                 Password::min(8)->mixedCase()->numbers()
                     ->symbols()->uncompromised(3),
