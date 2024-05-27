@@ -15,7 +15,7 @@ class ProfileUpdatePasswordRequest extends FormRequest
                 Password::min(8)->mixedCase()->numbers()
                     ->symbols()->uncompromised(3),
             ],
-            'password_confirmation' => ['required'],
+            'password_confirmation' => ['required', 'same:password'],
         ];
     }
 
