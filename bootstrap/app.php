@@ -74,9 +74,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     'error' => [
                         'code' => $exception->status,
                         'message' => $exception->getMessage(),
-                        'data' => [
-                            'errors' => $exception->errors(),
-                        ],
+                        'errors' => $exception->errors(),
                         'type' => 'ValidationException',
                     ],
                 ], $exception->status);
