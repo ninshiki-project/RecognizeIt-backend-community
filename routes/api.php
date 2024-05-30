@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\DepartmentsController;
+use App\Http\Controllers\Api\DesignationsController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\PermissionsController;
@@ -55,5 +56,8 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
 
     // Post
     Route::apiResource('posts', PostsController::class);
+
+    // Designation / Position / Job Title
+    Route::get('designation', [DesignationsController::class, 'index']);
 
 });
