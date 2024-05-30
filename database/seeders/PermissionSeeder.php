@@ -73,6 +73,7 @@ class PermissionSeeder extends Seeder
             $user = User::factory()->create([
                 'name' => 'Test User',
                 'email' => 'test@example.com',
+                'designation' => config('ninshiki.designation')[0]
             ])
                 ->assignRole('Administrator');
             $this->command->warn(PHP_EOL.'Creating Points System for the User...');
