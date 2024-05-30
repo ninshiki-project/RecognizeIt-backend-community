@@ -30,6 +30,7 @@ class User extends Authenticatable
         'email',
         'password',
         'department',
+        'designation',
         'email_verified_at',
         'remember_token',
     ];
