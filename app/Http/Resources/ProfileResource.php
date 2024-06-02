@@ -19,7 +19,7 @@ class ProfileResource extends JsonResource
             'job_title' => $this->designation,
             'role' => $this->roles,
             'email_verified_at' => $this->email_verified_at,
-            'notification' => $this->notifications,
+            'unread_notifications_count' => $this->notifications()->unread()->count(),
         ];
     }
 }
