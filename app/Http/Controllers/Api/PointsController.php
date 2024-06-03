@@ -9,12 +9,14 @@ use Illuminate\Http\JsonResponse;
 class PointsController extends Controller
 {
     /**
-     * Get all Points of Authenticated User
+     * Get Points of Authenticated User
      *
      * @return JsonResponse
      */
     public function index()
     {
-        return response()->json(Points::with('user')->get()->toArray());
+        return response()->json(
+            auth()->user()->points
+        );
     }
 }
