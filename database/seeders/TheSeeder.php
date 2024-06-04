@@ -6,11 +6,12 @@ use App\Models\User;
 use Closure;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Symfony\Component\Console\Helper\ProgressBar;
 
-class PermissionSeeder extends Seeder
+class TheSeeder extends Seeder
 {
     public function run(): void
     {
@@ -58,17 +59,34 @@ class PermissionSeeder extends Seeder
         /**
          * Create Roles
          */
-        $this->command->warn(PHP_EOL.'Creating roles...');
+        $this->command->warn(PHP_EOL.'Creating Admin roles...');
         $this->withProgressBar(1, function () {
             $role = Role::create(['name' => 'Administrator', 'guard_name' => 'sanctum']);
             $role->givePermissionTo(Permission::all());
         });
         $this->command->info('Roles has been created.');
 
+        $this->command->warn(PHP_EOL.'Creating member roles...');
+        $this->withProgressBar(1, function () use ($permissions) {
+            $role = Role::create(['name' => 'Member', 'guard_name' => 'sanctum']);
+            $roles = collect(Permission::all())->filter(function ($permission) {
+                return !Str::of($permission->name)->contains([
+                    'invite user',
+                    'delete user',
+                    'restore user',
+                    'force delete user',
+                    'department',
+                ]);
+            });
+            $role->givePermissionTo($roles);
+        });
+        $this->command->info('Roles has been created.');
+
+
         /**
-         *  Create User
+         *  Create Admin User
          */
-        $this->command->warn(PHP_EOL.'Creating user and assigning roles...');
+        $this->command->warn(PHP_EOL.'Creating Admin user and assigning roles...');
         $this->withProgressBar(1, function () {
             $user = User::factory()->create([
                 'name' => 'Test User',
@@ -82,7 +100,26 @@ class PermissionSeeder extends Seeder
         });
         $this->command->info('Administrator user created.');
 
+
+        /**
+         *  Create Normal User
+        */
+        $this->command->warn(PHP_EOL.'Creating Normal user and assigning roles...');
+        $this->withProgressBar(5, function () {
+            $user = User::factory()->create([
+                'designation' => config('ninshiki.designation')[0]
+            ])
+                ->assignRole('Member');
+            $this->command->warn(PHP_EOL.'Creating Points System for the User...');
+            $user->points()->create();
+            $this->command->info(PHP_EOL.'Points created and associated...');
+        });
+        $this->command->info('Administrator user created.');
+
         $this->command->newLine(2);
+
+
+
     }
 
     protected function withProgressBar(int $amount, Closure $createCollectionOfOne): Collection
