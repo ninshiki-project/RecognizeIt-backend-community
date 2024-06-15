@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
 use App\Models\Posts;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use LaravelIdea\Helper\App\Models\_IH_Posts_C;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostsController extends Controller
@@ -26,11 +26,21 @@ class PostsController extends Controller
     /**
      * Create New Post
      *
-     * @param PostsPostRequest $request
      * @return JsonResponse
      */
     public function store(PostsPostRequest $request)
     {
+        /**
+         *  Manual Validation if the remaining points sufficed to reward
+         */
+        $pointsToConsume = count($request->recipient_id) * $request->points;
+        $user = $request->user();
+
+        if ($request->type === PostTypeEnum::User && $pointsToConsume > $user->points->credits) {
+            throw ValidationException::withMessages([
+                'points' => 'insufficient credits left',
+            ]);
+        }
         $post = Posts::create($request->only(['posted_by', 'type', 'content']));
         $recipients = collect($request->recipient_id)->map(function ($item) {
             return [
@@ -47,7 +57,6 @@ class PostsController extends Controller
      * Display Post by ID
      *
      *
-     * @param Posts $posts
      * @return JsonResponse
      */
     public function show(Posts $posts)
@@ -59,8 +68,6 @@ class PostsController extends Controller
      * Update Post
      *
      *
-     * @param Request $request
-     * @param Posts $posts
      * @return JsonResponse
      */
     public function update(Request $request, Posts $posts)
@@ -74,7 +81,6 @@ class PostsController extends Controller
      * Delete Post
      *
      *
-     * @param Posts $posts
      * @return JsonResponse
      */
     public function destroy(Posts $posts)
