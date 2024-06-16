@@ -37,7 +37,7 @@ class PostsController extends Controller
         $pointsToConsume = count($request->recipient_id) * $request->points;
         $user = $request->user();
 
-        if ($request->type === PostTypeEnum::User && $pointsToConsume > $user->points->credits) {
+        if ($request->type === PostTypeEnum::User && $pointsToConsume > $user->points->credits || $user->points->credits <= 0) {
             throw ValidationException::withMessages([
                 'points' => 'insufficient credits left',
             ]);
