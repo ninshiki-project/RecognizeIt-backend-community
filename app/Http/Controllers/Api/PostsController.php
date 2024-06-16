@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Concern\HasSanity;
 use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
@@ -14,6 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostsController extends Controller
 {
+    use HasSanity;
+
+    private string $sanityAssit =''
+
     /**
      *  Get All Posts
      *
@@ -31,6 +36,7 @@ class PostsController extends Controller
      */
     public function store(PostsPostRequest $request)
     {
+
         /**
          *  Manual Validation if the remaining points sufficed to reward
          */
@@ -45,7 +51,9 @@ class PostsController extends Controller
         /**
          *  Create the Post
          */
-        $post = Posts::create($request->only(['posted_by', 'type', 'content']));
+        if ($request->has('image')) {
+            $post = Posts::create($request->only(['posted_by', 'type', 'content']));
+        }
         /**
          *  Link the User who will receive the points to the post via middle table
          */
