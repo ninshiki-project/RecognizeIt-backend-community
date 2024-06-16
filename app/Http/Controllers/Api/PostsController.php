@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Concern\HasSanity;
 use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
@@ -10,11 +9,15 @@ use App\Models\Posts;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostsController extends Controller
 {
+    private string $uploadedAsset;
+
+    private Posts $post;
 
     /**
      *  Get All Posts
@@ -49,7 +52,17 @@ class PostsController extends Controller
          *  Create the Post
          */
         if ($request->has('image')) {
-            $post = Posts::create($request->only(['posted_by', 'type', 'content']));
+            $uud = Str::uuid()->toString();
+            $fileName = "{$request->user()->id}-{$uud}.{$request->file('image')->getClientOriginalExtension()}";
+            $this->uploadedAsset = $request->file('image')->storeOnCloudinaryAs('posts', $fileName);
+            $this->post = Posts::create([
+                'content' => $request->content,
+                'image' => $this->uploadedAsset,
+                'type' => $request->type,
+                'posted_by' => $request->user()->id,
+            ]);
+        } else {
+            $this->post = Posts::create($request->only(['posted_by', 'type', 'content']));
         }
         /**
          *  Link the User who will receive the points to the post via middle table
@@ -59,7 +72,7 @@ class PostsController extends Controller
                 'user_id' => $item,
             ];
         });
-        $post->recipients()->createMany($recipients);
+        $this->post->recipients()->createMany($recipients);
         /**
          *  Distribute the points to each recipient
          */
