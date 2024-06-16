@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8434c1ba26c8a45b5869fdc863121796",
+    "content-hash": "6924c376cfc330da084913c67c7700e3",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4742,52 +4742,6 @@
                 "source": "https://github.com/resend/resend-php/tree/v0.12.0"
             },
             "time": "2024-03-04T03:16:28+00:00"
-        },
-        {
-            "name": "sanity/sanity-php",
-            "version": "v1.5.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sanity-io/sanity-php.git",
-                "reference": "e5a7b8e199acf3666cb7f42cafc0d18417ee2efd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sanity-io/sanity-php/zipball/e5a7b8e199acf3666cb7f42cafc0d18417ee2efd",
-                "reference": "e5a7b8e199acf3666cb7f42cafc0d18417ee2efd",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.2|^7.0",
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7",
-                "squizlabs/php_codesniffer": "^2.8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Sanity\\": "lib/",
-                    "SanityTest\\": "test/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sanity.io",
-                    "email": "hello@sanity.io"
-                }
-            ],
-            "description": "PHP library for the Sanity API",
-            "support": {
-                "issues": "https://github.com/sanity-io/sanity-php/issues",
-                "source": "https://github.com/sanity-io/sanity-php/tree/v1.5.2"
-            },
-            "time": "2024-01-27T19:49:08+00:00"
         },
         {
             "name": "socialiteproviders/manager",

@@ -15,9 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostsController extends Controller
 {
-    use HasSanity;
-
-    private string $sanityAssit =''
 
     /**
      *  Get All Posts
