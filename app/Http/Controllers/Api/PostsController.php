@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
 use App\Models\Posts;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -41,13 +42,29 @@ class PostsController extends Controller
                 'points' => 'insufficient credits left',
             ]);
         }
+        /**
+         *  Create the Post
+         */
         $post = Posts::create($request->only(['posted_by', 'type', 'content']));
+        /**
+         *  Link the User who will receive the points to the post via middle table
+         */
         $recipients = collect($request->recipient_id)->map(function ($item) {
             return [
                 'user_id' => $item,
             ];
         });
         $post->recipients()->createMany($recipients);
+        /**
+         *  Distribute the points to each recipient
+         */
+        $recipients->each(function ($item) {
+            User::findOrFail($item['user_id'])->points->points_earned++;
+        });
+        /**
+         *  Deduct all the points to the user who posted a post
+         */
+        $user->points->decrement('credits', $pointsToConsume);
 
         return response()->json($post, Response::HTTP_CREATED);
 
