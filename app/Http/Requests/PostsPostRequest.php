@@ -13,7 +13,7 @@ class PostsPostRequest extends FormRequest
         return [
             'recipient_id' => ['required', 'array'],
             'recipient_id.*' => ['required', 'exists:users,id'],
-            'content' => ['required'],
+            'content' => ['required', 'string'],
             'points' => ['required_if:type,user', 'integer'],
             'attachment_type' => ['required_if:type,user', Rule::in(['gif', 'image'])],
             'gif' => ['required_if:attachment_type,gif', 'url'],
