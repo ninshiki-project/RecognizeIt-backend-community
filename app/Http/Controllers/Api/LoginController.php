@@ -58,6 +58,7 @@ class LoginController extends Controller
      * Login Provider Callback
      *
      * @return JsonResponse|void
+     *
      * @throws Throwable
      */
     public function providerCallback($provider, Request $request)

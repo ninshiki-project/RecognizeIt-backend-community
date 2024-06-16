@@ -67,10 +67,10 @@ class TheSeeder extends Seeder
         $this->command->info('Roles has been created.');
 
         $this->command->warn(PHP_EOL.'Creating member roles...');
-        $this->withProgressBar(1, function () use ($permissions) {
+        $this->withProgressBar(1, function () {
             $role = Role::create(['name' => 'Member', 'guard_name' => 'sanctum']);
             $roles = collect(Permission::all())->filter(function ($permission) {
-                return !Str::of($permission->name)->contains([
+                return ! Str::of($permission->name)->contains([
                     'invite user',
                     'delete user',
                     'restore user',
@@ -82,7 +82,6 @@ class TheSeeder extends Seeder
         });
         $this->command->info('Roles has been created.');
 
-
         /**
          *  Create Admin User
          */
@@ -91,7 +90,7 @@ class TheSeeder extends Seeder
             $user = User::factory()->create([
                 'name' => 'Test User',
                 'email' => 'test@example.com',
-                'designation' => config('ninshiki.designation')[0]
+                'designation' => config('ninshiki.designation')[0],
             ])
                 ->assignRole('Administrator');
             $this->command->warn(PHP_EOL.'Creating Points System for the User...');
@@ -100,14 +99,13 @@ class TheSeeder extends Seeder
         });
         $this->command->info('Administrator user created.');
 
-
         /**
          *  Create Normal User
-        */
+         */
         $this->command->warn(PHP_EOL.'Creating Normal user and assigning roles...');
         $this->withProgressBar(5, function () {
             $user = User::factory()->create([
-                'designation' => config('ninshiki.designation')[0]
+                'designation' => config('ninshiki.designation')[0],
             ])
                 ->assignRole('Member');
             $this->command->warn(PHP_EOL.'Creating Points System for the User...');
@@ -117,8 +115,6 @@ class TheSeeder extends Seeder
         $this->command->info('Administrator user created.');
 
         $this->command->newLine(2);
-
-
 
     }
 

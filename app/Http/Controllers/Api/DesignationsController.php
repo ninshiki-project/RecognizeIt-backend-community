@@ -7,7 +7,6 @@ use Illuminate\Http\JsonResponse;
 
 class DesignationsController extends Controller
 {
-
     /**
      * Get all Job Tittle
      *
