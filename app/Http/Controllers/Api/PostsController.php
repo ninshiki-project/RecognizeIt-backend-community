@@ -34,6 +34,7 @@ class PostsController extends Controller
     /**
      * Create New Post
      *
+     * @param PostsPostRequest $request
      * @return JsonResponse
      */
     public function store(PostsPostRequest $request)
