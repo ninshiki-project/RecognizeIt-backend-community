@@ -16,10 +16,9 @@ class PostsPostRequest extends FormRequest
             'post_content' => ['required', 'string'],
             'points' => ['required_if:type,user', 'integer'],
             'attachment_type' => ['required_if:type,user', Rule::in(['gif', 'image'])],
-            'gif' => ['required_if:attachment_type,gif', 'url'],
+            'gif_url' => ['required_if:attachment_type,gif', 'url'],
             'image' => ['required_if:attachment_type,image', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'type' => ['required', Rule::enum(PostTypeEnum::class)],
-            'posted_by' => ['required', 'exists:users,id'],
         ];
     }
 

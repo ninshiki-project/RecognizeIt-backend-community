@@ -7,15 +7,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
 use App\Models\Posts;
 use App\Models\User;
+use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostsController extends Controller
 {
-    private string $uploadedAsset;
+    private CloudinaryEngine $uploadedAsset;
 
     private Posts $post;
 
@@ -53,18 +55,23 @@ class PostsController extends Controller
          */
         if ($request->has('image')) {
             $uud = Str::uuid()->toString();
-            $fileName = "{$request->user()->id}-{$uud}.{$request->file('image')->getClientOriginalExtension()}";
+            $fileName = "{$request->user()->id}-{$uud}";
             $this->uploadedAsset = $request->image->storeOnCloudinaryAs('posts', $fileName);
             $this->post = Posts::create([
                 'content' => $request->post_content,
-                'image' => $this->uploadedAsset,
                 'attachment_type' => $request->attachment_type,
                 'attachment_url' => $this->uploadedAsset->getSecurePath(),
                 'type' => $request->type,
                 'posted_by' => $request->user()->id,
             ]);
         } else {
-            $this->post = Posts::create($request->only(['posted_by', 'type', 'content']));
+            $this->post = Posts::create([
+                'content' => $request->post_content,
+                'attachment_type' => $request->attachment_type,
+                'attachment_url' => $request->gif_url,
+                'type' => $request->type,
+                'posted_by' => $request->user()->id,
+            ]);
         }
         /**
          *  Link the User who will receive the points to the post via middle table
@@ -78,15 +85,15 @@ class PostsController extends Controller
         /**
          *  Distribute the points to each recipient
          */
-        $recipients->each(function ($item) {
-            User::findOrFail($item['user_id'])->points->points_earned++;
+        $recipients->each(function ($item) use ($request) {
+            User::findOrFail($item['user_id'])->points->increment('points_earned', $request->points);
         });
         /**
          *  Deduct all the points to the user who posted a post
          */
         $user->points->decrement('credits', $pointsToConsume);
 
-        return response()->json($post, Response::HTTP_CREATED);
+        return response()->json($this->post, Response::HTTP_CREATED);
 
     }
 
