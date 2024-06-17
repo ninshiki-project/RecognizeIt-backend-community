@@ -14,6 +14,8 @@ class Posts extends Model
         'content',
         'image',
         'type',
+        'attachment_type',
+        'attachment_url',
         'posted_by',
     ];
 
