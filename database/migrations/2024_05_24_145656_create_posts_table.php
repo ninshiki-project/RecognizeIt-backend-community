@@ -11,7 +11,8 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->longText('content');
-            $table->string('image')->nullable();
+            $table->enum('attachment_type', ['image', 'gif']);
+            $table->string('attachment_url');
             $table->enum('type', ['system', 'user']);
             $table->foreignId('posted_by');
             $table->timestamps();
