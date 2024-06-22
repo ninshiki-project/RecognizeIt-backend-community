@@ -10,7 +10,6 @@ use App\Models\User;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +33,7 @@ class PostsController extends Controller
     /**
      * Create New Post
      *
-     * @param PostsPostRequest $request
+     * @param  PostsPostRequest  $request
      * @return JsonResponse
      */
     public function store(PostsPostRequest $request)
