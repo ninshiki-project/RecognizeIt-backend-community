@@ -3,7 +3,6 @@
 use App\Console\Commands\ResetCreditsCommand;
 use Illuminate\Support\Facades\Schedule;
 
-
 /**
  * Scheduled Command
  */
