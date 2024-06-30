@@ -61,7 +61,7 @@ class PostsController extends Controller
         $this->post = Posts::create([
             'content' => $request->post_content,
             'attachment_type' => $request->attachment_type,
-            'attachment_url' => $request->has('image') ? $this->uploadedAsset->getSecurePath() :  $request->gif_url,
+            'attachment_url' => $request->has('image') ? $this->uploadedAsset->getSecurePath() : $request->gif_url,
             'type' => $request->type,
             'posted_by' => $request->user()->id,
         ]);
