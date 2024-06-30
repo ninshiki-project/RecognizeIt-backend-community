@@ -57,22 +57,14 @@ class PostsController extends Controller
             $uud = Str::uuid()->toString();
             $fileName = "{$request->user()->id}-{$uud}";
             $this->uploadedAsset = $request->image->storeOnCloudinaryAs('posts', $fileName);
-            $this->post = Posts::create([
-                'content' => $request->post_content,
-                'attachment_type' => $request->attachment_type,
-                'attachment_url' => $this->uploadedAsset->getSecurePath(),
-                'type' => $request->type,
-                'posted_by' => $request->user()->id,
-            ]);
-        } else {
-            $this->post = Posts::create([
-                'content' => $request->post_content,
-                'attachment_type' => $request->attachment_type,
-                'attachment_url' => $request->gif_url,
-                'type' => $request->type,
-                'posted_by' => $request->user()->id,
-            ]);
         }
+        $this->post = Posts::create([
+            'content' => $request->post_content,
+            'attachment_type' => $request->attachment_type,
+            'attachment_url' => $request->has('image') ? $this->uploadedAsset->getSecurePath() :  $request->gif_url,
+            'type' => $request->type,
+            'posted_by' => $request->user()->id,
+        ]);
         /**
          *  Link the User who will receive the points to the post via middle table
          */
