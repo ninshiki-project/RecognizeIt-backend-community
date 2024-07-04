@@ -85,7 +85,11 @@ class PostsController extends Controller
          */
         $user->points->decrement('credits', $pointsToConsume);
 
-        return response()->json($this->post, Response::HTTP_CREATED);
+        return response()->json([
+            'success' => true,
+            'message' => 'post created',
+            'post' => $this->post,
+        ], Response::HTTP_CREATED);
 
     }
 
