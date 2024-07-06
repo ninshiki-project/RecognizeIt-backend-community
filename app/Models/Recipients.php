@@ -17,7 +17,7 @@ class Recipients extends Model
         'receivable_type',
     ];
 
-    public function receivable(): MorphTo
+    public function recipientable(): MorphTo
     {
         return $this->morphTo();
     }

@@ -27,7 +27,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        return response()->json(Posts::all());
+        return response()->json(Posts::with('recipients')->get());
     }
 
     /**

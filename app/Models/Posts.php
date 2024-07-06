@@ -21,6 +21,6 @@ class Posts extends Model
 
     public function recipients(): MorphMany
     {
-        return $this->morphMany(Recipients::class, 'receivable');
+        return $this->morphMany(Recipients::class, 'recipientable');
     }
 }

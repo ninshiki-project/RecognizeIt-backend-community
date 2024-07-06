@@ -11,8 +11,7 @@ return new class extends Migration
         Schema::create('recipients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->integer('receivable_id');
-            $table->string('receivable_type');
+            $table->morphs('recipientable');
             $table->timestamps();
         });
     }
