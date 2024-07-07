@@ -130,7 +130,7 @@ class PostsController extends Controller
      * Delete Post
      *
      *
-     * @param Posts $posts
+     * @param  Posts  $posts
      * @return JsonResponse
      */
     public function destroy(Posts $posts): JsonResponse
@@ -141,6 +141,9 @@ class PostsController extends Controller
     }
 
     /**
+     * Like A Post
+     *
+     *
      * @param  Posts  $posts
      * @return JsonResponse
      */

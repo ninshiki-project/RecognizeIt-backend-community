@@ -55,6 +55,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('roles', RolesController::class)->only(['index', 'show']);
 
     // Post
+    Route::post('posts/{posts}/like', [PostsController::class, 'like']);
     Route::apiResource('posts', PostsController::class);
 
     // Designation / Position / Job Title
