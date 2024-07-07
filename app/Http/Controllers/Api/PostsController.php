@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Posts;
 use App\Models\User;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +25,18 @@ class PostsController extends Controller
     /**
      *  Get All Posts
      *
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(Request $request): AnonymousResourceCollection
     {
-        return response()->json(Posts::with('recipients')->get());
+        return PostResource::collection(
+            Posts::with('recipients')
+                ->orderByDesc('created_at')
+                ->fastPaginate(
+                    perPage: $request->perPage ?? 15,
+                    page: $request->page ?? 1,
+                )
+        );
     }
 
     /**
