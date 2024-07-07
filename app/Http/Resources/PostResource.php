@@ -20,6 +20,8 @@ class PostResource extends JsonResource
             'created_at_formatted' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at,
             'updated_at_formatted' => $this->updated_at->diffForHumans(),
+            'likes_count' => $this->whenCounted('likes'),
+            'likes' => PostLikeResource::collection($this->whenLoaded('likes')),
             'recipients_count' => $this->whenCounted('recipients'),
             'recipients' => PostUserRecipientsResource::collection($this->whenLoaded('recipients')),
             'posted_by' => new UserPostedByResource($this->postedBy),

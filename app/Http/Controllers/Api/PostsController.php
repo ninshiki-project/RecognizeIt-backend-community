@@ -30,7 +30,7 @@ class PostsController extends Controller
     public function index(Request $request): AnonymousResourceCollection
     {
         return PostResource::collection(
-            Posts::with('recipients')
+            Posts::with(['recipients', 'likes'])
                 ->orderByDesc('created_at')
                 ->fastPaginate(
                     perPage: $request->perPage ?? 15,
@@ -130,12 +130,33 @@ class PostsController extends Controller
      * Delete Post
      *
      *
+     * @param Posts $posts
      * @return JsonResponse
      */
-    public function destroy(Posts $posts)
+    public function destroy(Posts $posts): JsonResponse
     {
         $posts->delete();
 
         return response()->json('', Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @param  Posts  $posts
+     * @return JsonResponse
+     */
+    public function like(Posts $posts): JsonResponse
+    {
+        $existing = $posts->likes()->where('user_id', auth()->id())->first();
+        if ($existing) {
+            $existing->delete();
+        } else {
+            $posts->likes()->create([
+                'user_id' => auth()->id(),
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ], Response::HTTP_ACCEPTED);
     }
 }
