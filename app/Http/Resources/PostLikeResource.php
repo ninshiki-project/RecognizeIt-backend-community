@@ -17,5 +17,4 @@ class PostLikeResource extends JsonResource
             'user' => new PostLikeUserResource($this->user),
         ];
     }
-
 }

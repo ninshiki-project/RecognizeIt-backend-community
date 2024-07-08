@@ -25,6 +25,7 @@ class PostsController extends Controller
     /**
      *  Get All Posts
      *
+     * @param Request $request
      * @return AnonymousResourceCollection
      */
     public function index(Request $request): AnonymousResourceCollection
