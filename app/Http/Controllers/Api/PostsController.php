@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
 use App\Http\Resources\PostResource;
+use App\Jobs\PostRecognizeJob;
 use App\Models\Posts;
 use App\Models\User;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
@@ -25,7 +26,7 @@ class PostsController extends Controller
     /**
      *  Get All Posts
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return AnonymousResourceCollection
      */
     public function index(Request $request): AnonymousResourceCollection
@@ -53,9 +54,9 @@ class PostsController extends Controller
          *  Manual Validation if the remaining points sufficed to reward
          */
         $pointsToConsume = count($request->recipient_id) * $request->points;
-        $user = $request->user();
+        $authenticated_user = $request->user();
 
-        if ($request->type === PostTypeEnum::User && $pointsToConsume > $user->points->credits || $user->points->credits <= 0) {
+        if ($request->type === PostTypeEnum::User && $pointsToConsume > $authenticated_user->points->credits || $authenticated_user->points->credits <= 0) {
             throw ValidationException::withMessages([
                 'points' => 'insufficient credits left',
             ]);
@@ -87,13 +88,17 @@ class PostsController extends Controller
         /**
          *  Distribute the points to each recipient
          */
-        $recipients->each(function ($item) use ($request) {
-            User::findOrFail($item['user_id'])->points->increment('points_earned', $request->points);
+        $recipients->each(function ($item) use ($authenticated_user, $request) {
+            $_user = User::findOrFail($item['user_id'])->first();
+            $_user->points->increment('points_earned', $request->points);
+            // send email notification and application notification
+            PostRecognizeJob::dispatchAfterResponse($authenticated_user, $_user);
+
         });
         /**
          *  Deduct all the points to the user who posted a post
          */
-        $user->points->decrement('credits', $pointsToConsume);
+        $authenticated_user->points->decrement('credits', $pointsToConsume);
 
         return response()->json([
             'success' => true,
