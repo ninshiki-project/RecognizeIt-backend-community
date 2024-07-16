@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Concern\AllowedDomain;
 use App\Http\Controllers\Api\Concern\CanValidateProvider;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginViaEmailRequest;
@@ -20,6 +21,7 @@ use Throwable;
 
 class LoginController extends Controller
 {
+    use AllowedDomain;
     use CanValidateProvider;
 
     public string $url;
@@ -57,6 +59,8 @@ class LoginController extends Controller
     /**
      * Login Provider Callback
      *
+     * @param $provider
+     * @param Request $request
      * @return JsonResponse|void
      *
      * @throws Throwable
@@ -82,6 +86,13 @@ class LoginController extends Controller
                 $accessToken = Arr::get($tokenRequest, 'access_token');
 
                 $userProvider = Socialite::driver($provider)->stateless()->userFromToken($accessToken);
+
+                if (! $this->isWhitelistedDomain($userProvider->email)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Unauthorized email domain, please try again later.',
+                    ]);
+                }
                 $userCreated = User::firstOrCreate(
                     [
                         'email' => $userProvider->email,
