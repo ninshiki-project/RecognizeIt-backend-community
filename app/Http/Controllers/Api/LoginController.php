@@ -38,7 +38,7 @@ class LoginController extends Controller
     {
         $this->validateProvider($provider);
 
-        if ($provider == 'zoho') {
+        if ($provider === 'zoho') {
             $this->url = Socialite::driver($provider)
                 ->setScopes(['AaaServer.profile.Read'])
                 ->with([
@@ -81,7 +81,7 @@ class LoginController extends Controller
                     return response()->json([
                         'success' => false,
                         'message' => $tokenRequest['error'],
-                    ]);
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
                 $accessToken = Arr::get($tokenRequest, 'access_token');
 
@@ -91,7 +91,7 @@ class LoginController extends Controller
                     return response()->json([
                         'success' => false,
                         'message' => 'Unauthorized email domain, please try again later.',
-                    ]);
+                    ], Response::HTTP_FORBIDDEN);
                 }
                 $userCreated = User::firstOrCreate(
                     [
@@ -123,7 +123,7 @@ class LoginController extends Controller
                         'accessToken' => $token,
                     ],
                     'user' => new ProfileResource($userCreated),
-                ]);
+                ], Response::HTTP_OK);
 
             }
         } catch (Throwable $throwable) {
