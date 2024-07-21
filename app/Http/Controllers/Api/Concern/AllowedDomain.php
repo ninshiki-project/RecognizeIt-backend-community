@@ -19,6 +19,12 @@ trait AllowedDomain
         }
 
         if (! is_array($tldDomain)) {
+            if (Str::of($tldDomain)->contains(',')) {
+                $domains = Str::of($tldDomain)->explode(',');
+
+                return in_array($email, $domains);
+            }
+
             return Str::of($email)->endsWith($tldDomain);
         }
 
