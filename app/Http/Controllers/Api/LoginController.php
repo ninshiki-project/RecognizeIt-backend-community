@@ -59,8 +59,8 @@ class LoginController extends Controller
     /**
      * Login Provider Callback
      *
-     * @param $provider
-     * @param Request $request
+     * @param  $provider
+     * @param  Request  $request
      * @return JsonResponse|void
      *
      * @throws Throwable
