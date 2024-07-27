@@ -11,6 +11,7 @@ class LoginViaEmailRequest extends FormRequest
         return [
             'email' => 'required|email',
             'password' => 'required',
+            'device_name' => 'required|sometimes|string',
         ];
     }
 
