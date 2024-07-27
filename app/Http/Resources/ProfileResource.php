@@ -17,8 +17,9 @@ class ProfileResource extends JsonResource
             'email' => $this->email,
             'department' => $this->department,
             'job_title' => $this->designation,
-            'role' => $this->roles,
+            'role' => $this->roles->flatten()->pluck('name')->toArray(),
             'email_verified_at' => $this->email_verified_at,
+            'providers' => $this->mergeWhen($this->count($this->provider), $this->providers),
         ];
     }
 }
