@@ -1,11 +1,11 @@
 {
-    "name": "laravel/laravel",
+    "name": "ninshiki/backend",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Inspiring Recognition: Celebrate Success",
+    "keywords": ["laravel", "framework", "ninshiki", "recognition"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "cloudinary-labs/cloudinary-laravel": "^2.1",
         "dedoc/scramble": "^0.10.4",
         "doctrine/dbal": "^4.0",
