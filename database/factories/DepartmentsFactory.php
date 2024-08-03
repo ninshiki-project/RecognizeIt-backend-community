@@ -13,11 +13,17 @@ class DepartmentsFactory extends Factory
 
     public function definition(): array
     {
+        $coll = collect([
+            ['name' => 'Tech'],
+            ['name' => 'PM'],
+            ['name' => 'Admin'],
+        ])->random(1);
+
         return [
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'name' => $this->faker->word(),
-            'department_head' => User::all()->random(1)->id,
+            'name' => $coll->all()[0]['name'],
+            'department_head' => User::all()->random(1)->first()->id,
         ];
     }
 }
