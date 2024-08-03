@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInvitationPatchRequest;
 use App\Models\Invitation;
+use App\Models\Points;
 use App\Models\User;
 use App\Notifications\User\Invitation\DeclinedNotification;
 use Carbon\Carbon;
@@ -49,13 +50,15 @@ class InvitationController extends Controller
             'role' => $invitation?->role,
         ])->save();
 
-        $user->points()->create();
+        User::findOrFail($user)->points->create([
+            'user_id' => $user,
+        ]);
 
         // update the invitation
         $invitation->status = 'accepted';
         $invitation->accepted_at = Carbon::now();
         $invitation->token = null;
-        $invitation->save();
+        $invitation->update();
 
         return response()->json([
             'status' => 'success',
