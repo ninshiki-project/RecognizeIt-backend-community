@@ -15,6 +15,7 @@ class Invitation extends Model
         'department',
         'invited_by_user',
         'token',
+        'role',
         'accepted_at',
         'status',
     ];
