@@ -12,7 +12,7 @@ class UserInvitationPatchRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required',  'email', 'max:254'],
-            'token' => ['required', Rule::exists('invitation', 'token')],
+            'token' => ['required', 'exists:invitations,token'],
             'status' => ['required', Rule::in(['accepted', 'declined'])],
         ];
     }
