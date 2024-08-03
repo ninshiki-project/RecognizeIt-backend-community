@@ -21,8 +21,13 @@ trait CreatesApplication
         $this->artisan('migrate');
         $this->artisan('db:seed');
 
+        $user = User::factory()
+            ->create();
+        $user->points()->create([
+            'user_id' => $user->id,
+        ]);
         Sanctum::actingAs(
-            User::factory()->create(),
+            $user,
             ['*']
         );
 
