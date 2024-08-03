@@ -4,6 +4,19 @@ it('can get all the user', function () {
     \Pest\Laravel\getJson('/api/v1/users')->assertStatus(200);
 });
 
+it('can invite new user', function () {
+    \Pest\Laravel\postJson('/api/v1/users/invite', [
+        'role' => \App\Models\Role::all()->random()->first()->id,
+        'department' => \App\Models\Departments::first()->id,
+        'email' => fake()->safeEmail,
+        'invited_by_user' => \App\Models\User::all()->random()->first()->id,
+    ])
+        ->assertStatus(200)
+        ->assertJson([
+            'success' => true,
+        ]);
+});
+
 it('show points of specific user', function () {
     $content = \Pest\Laravel\getJson('api/v1/users/1/points')->content();
     expect(json_decode($content))->toMatchObject([
@@ -15,7 +28,7 @@ it('show points of specific user', function () {
 });
 
 it('destroy', function () {
- expect(true)->toBe(true);
+    expect(true)->toBe(true);
 });
 
 it('show', function () {
