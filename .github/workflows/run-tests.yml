@@ -56,19 +56,5 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
 
-      - name: Fresh Database Migration
-        run: php artisan migrate:fresh --seed
-
-      - name: Run Artisan Serve
-        run: |
-          php artisan serve > /dev/null 2>&1 &
-
-      - name: Rebuild npm packagist
-        run: |
-          npm run build
-
       - name: Execute tests
-        env:
-          APP_URL: "http://127.0.0.1:8000"
-          DB_CONNECTION: sqlite
         run: ./vendor/bin/pest --ci
