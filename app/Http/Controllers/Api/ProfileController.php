@@ -36,6 +36,9 @@ class ProfileController extends Controller
     {
         auth()->user()->update(['password' => Hash::make($request->password)]);
 
+        /**
+         * @status 202
+         */
         return response()->json([
             'success' => true,
             'message' => 'Password updated successfully',
@@ -57,7 +60,7 @@ class ProfileController extends Controller
         ]);
         // Check if the user who used the email doesn't use the Zoho login
         $user = User::where('email', $request->email)->firstOrFail();
-        if (! $user->password) {
+        if ($user->password) {
             // send email for password reset
             $status = Password::sendResetLink($request->only('email'));
             if ($status === Password::RESET_LINK_SENT) {
