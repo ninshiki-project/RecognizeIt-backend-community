@@ -165,8 +165,11 @@ class PostsController extends Controller
             ]);
         }
 
+        /**
+         * @status 200
+         */
         return response()->json([
             'success' => true,
-        ], Response::HTTP_ACCEPTED);
+        ], Response::HTTP_OK);
     }
 }
