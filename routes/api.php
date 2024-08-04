@@ -56,7 +56,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
 
     // Post
     Route::patch('posts/{posts}/like', [PostsController::class, 'like']);
-    Route::apiResource('posts', PostsController::class);
+    Route::apiResource('posts', PostsController::class)->except(['show','update','destroy']);
 
     // Designation / Position / Job Title
     Route::get('designation', [DesignationsController::class, 'index']);

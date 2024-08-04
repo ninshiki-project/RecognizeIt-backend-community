@@ -108,43 +108,6 @@ class PostsController extends Controller
 
     }
 
-    /**
-     * Display Post by ID
-     *
-     *
-     * @return JsonResponse
-     */
-    public function show(Posts $posts)
-    {
-        return response()->json($posts);
-    }
-
-    /**
-     * Update Post
-     *
-     *
-     * @return JsonResponse
-     */
-    public function update(Request $request, Posts $posts)
-    {
-        $posts->update($request->all());
-
-        return response()->json($posts);
-    }
-
-    /**
-     * Delete Post
-     *
-     *
-     * @param  Posts  $posts
-     * @return JsonResponse
-     */
-    public function destroy(Posts $posts): JsonResponse
-    {
-        $posts->delete();
-
-        return response()->json('', Response::HTTP_NO_CONTENT);
-    }
 
     /**
      * Like A Post
