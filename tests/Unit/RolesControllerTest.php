@@ -1,4 +1,5 @@
 <?php
+
 it('can get all the roles', function () {
     \Pest\Laravel\getJson('/api/v1/roles')
         ->assertStatus(200);

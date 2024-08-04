@@ -102,7 +102,7 @@ class PostsController extends Controller
 
         /**
          * @status 201
-        */
+         */
         return response()->json([
             'success' => true,
             'message' => 'post created',
@@ -110,7 +110,6 @@ class PostsController extends Controller
         ], Response::HTTP_CREATED);
 
     }
-
 
     /**
      * Like A Post
