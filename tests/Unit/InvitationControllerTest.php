@@ -1,5 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
+
+beforeEach(function () {
+    Artisan::call('migrate:refresh --seed');
+});
+
 it('can accept invite by user', function () {
     $email = fake()->safeEmail;
     $data = \Pest\Laravel\postJson('/api/v1/users/invite', [
@@ -55,5 +61,8 @@ it('can decline invite by user', function () {
 });
 
 it('can get all the invitation', function () {
+    $count = 10;
+    \App\Models\Invitation::factory()->accepted()->count($count)->create();
     \Pest\Laravel\getJson('/api/v1/invitations')->assertStatus(200);
+    $this->assertDatabaseCount('invitations', $count);
 });
