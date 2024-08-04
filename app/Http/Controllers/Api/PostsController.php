@@ -100,6 +100,9 @@ class PostsController extends Controller
          */
         $authenticated_user->points->decrement('credits', $pointsToConsume);
 
+        /**
+         * @status 201
+        */
         return response()->json([
             'success' => true,
             'message' => 'post created',
