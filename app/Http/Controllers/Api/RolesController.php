@@ -19,8 +19,6 @@ class RolesController extends Controller
         return response()->json(Role::all());
     }
 
-    public function store(Request $request) {}
-
     /**
      * Get Role by ID
      *
@@ -32,7 +30,4 @@ class RolesController extends Controller
         return response()->json(Role::findById($id));
     }
 
-    public function update(Request $request, $id) {}
-
-    public function destroy($id) {}
 }
