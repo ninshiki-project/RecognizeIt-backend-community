@@ -100,50 +100,15 @@ class PostsController extends Controller
          */
         $authenticated_user->points->decrement('credits', $pointsToConsume);
 
+        /**
+         * @status 201
+         */
         return response()->json([
             'success' => true,
             'message' => 'post created',
             'post' => $this->post,
         ], Response::HTTP_CREATED);
 
-    }
-
-    /**
-     * Display Post by ID
-     *
-     *
-     * @return JsonResponse
-     */
-    public function show(Posts $posts)
-    {
-        return response()->json($posts);
-    }
-
-    /**
-     * Update Post
-     *
-     *
-     * @return JsonResponse
-     */
-    public function update(Request $request, Posts $posts)
-    {
-        $posts->update($request->all());
-
-        return response()->json($posts);
-    }
-
-    /**
-     * Delete Post
-     *
-     *
-     * @param  Posts  $posts
-     * @return JsonResponse
-     */
-    public function destroy(Posts $posts): JsonResponse
-    {
-        $posts->delete();
-
-        return response()->json('', Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -165,8 +130,11 @@ class PostsController extends Controller
             ]);
         }
 
+        /**
+         * @status 200
+         */
         return response()->json([
             'success' => true,
-        ], Response::HTTP_ACCEPTED);
+        ], Response::HTTP_OK);
     }
 }

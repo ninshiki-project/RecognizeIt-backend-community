@@ -31,10 +31,10 @@ class UserController extends Controller
      */
     public function inviteUser(UserInvitationRequest $request)
     {
-        $token = base64_encode((object) [
+        $token = base64_encode(json_encode([
             'email' => $request->email,
             'invitation_by_user' => $request->invited_by_user,
-        ]);
+        ]));
         $user = User::findOrFail($request->invited_by_user);
         $invitation = Invitation::create([
             'invited_by_user' => $user?->id,

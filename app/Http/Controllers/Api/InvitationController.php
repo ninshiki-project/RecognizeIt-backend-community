@@ -49,13 +49,15 @@ class InvitationController extends Controller
             'role' => $invitation?->role,
         ])->save();
 
-        $user->points()->create();
+        User::findOrFail($user)->points->create([
+            'user_id' => $user,
+        ]);
 
         // update the invitation
         $invitation->status = 'accepted';
         $invitation->accepted_at = Carbon::now();
         $invitation->token = null;
-        $invitation->save();
+        $invitation->update();
 
         return response()->json([
             'status' => 'success',

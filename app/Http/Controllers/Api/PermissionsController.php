@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class PermissionsController extends Controller
 {
@@ -19,8 +18,6 @@ class PermissionsController extends Controller
         return response()->json(Permission::all());
     }
 
-    public function store(Request $request) {}
-
     /**
      * Get Permission by ID
      *
@@ -30,10 +27,6 @@ class PermissionsController extends Controller
     {
         return response()->json(Permission::findById($id));
     }
-
-    public function update(Request $request, $id) {}
-
-    public function destroy($id) {}
 
     /**
      * Get all permission of the Authenticate User

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class RolesController extends Controller
 {
@@ -19,8 +18,6 @@ class RolesController extends Controller
         return response()->json(Role::all());
     }
 
-    public function store(Request $request) {}
-
     /**
      * Get Role by ID
      *
@@ -31,8 +28,4 @@ class RolesController extends Controller
     {
         return response()->json(Role::findById($id));
     }
-
-    public function update(Request $request, $id) {}
-
-    public function destroy($id) {}
 }
