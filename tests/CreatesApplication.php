@@ -3,17 +3,14 @@
 namespace Tests;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Laravel\Sanctum\Sanctum;
 
 trait CreatesApplication
 {
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->artisan('migrate');
-        $this->artisan('db:seed');
+        $this->artisan('migrate:refresh --seed');
 
         $user = User::factory()
             ->create();

@@ -13,8 +13,9 @@
 
 uses(
     \Tests\TestCase::class,
-
-)->in('Unit', 'Feature');
+    \Illuminate\Foundation\Testing\RefreshDatabase::class
+)
+    ->in('Unit', 'Feature');
 
 /*
 |--------------------------------------------------------------------------
