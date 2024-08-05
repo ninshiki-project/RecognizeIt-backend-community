@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NewPostEvent;
 use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
@@ -99,6 +100,11 @@ class PostsController extends Controller
          *  Deduct all the points to the user who posted a post
          */
         $authenticated_user->points->decrement('credits', $pointsToConsume);
+
+        /**
+         * Send Broadcast Event for the new post
+        */
+        NewPostEvent::dispatch($this->post);
 
         /**
          * @status 201

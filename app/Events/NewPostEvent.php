@@ -3,14 +3,13 @@
 namespace App\Events;
 
 use App\Models\Posts;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NewPostNotificationBroadcastEvent implements ShouldBroadcast
+class NewPostEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -36,7 +35,15 @@ class NewPostNotificationBroadcastEvent implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'message' => 'Test Broadcast Message Recieved!',
+            'message' => 'New Post Received!',
+            'meta' => [
+                'post_id' => $this->post->id,
+                'post_by' => [
+                    'id' => $this->post->postedBy->id,
+                    'name' => $this->post->postedBy->name,
+                    'avatar' => $this->post->postedBy->avatar,
+                ],
+            ],
         ];
     }
 }

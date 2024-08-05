@@ -13,5 +13,5 @@ Route::get('/', function () {
 
 Route::get('/test', function () {
     $post = \App\Models\Posts::first();
-    \App\Events\NewPostNotificationBroadcastEvent::dispatch($post);
+    \App\Events\NewPostEvent::dispatch($post);
 });
