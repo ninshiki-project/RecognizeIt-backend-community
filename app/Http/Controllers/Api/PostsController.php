@@ -103,7 +103,7 @@ class PostsController extends Controller
 
         /**
          * Send Broadcast Event for the new post
-        */
+         */
         NewPostEvent::dispatch($this->post);
 
         /**
