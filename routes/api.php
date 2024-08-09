@@ -12,7 +12,8 @@ use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login/credentials', [LoginController::class, 'loginViaEmail']);
+Route::post('/login/credentials', [LoginController::class, 'loginViaEmail'])
+    ->middleware('throttle:login');
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/login/{provider}', [LoginController::class, 'loginViaProvider']);
 Route::post('/login/{provider}', [LoginController::class, 'providerCallback']);
