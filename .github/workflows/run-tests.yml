@@ -53,9 +53,6 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
-      - name: Run Reverb
-        run: php artisan reverb:start --host=0.0.0.0
-
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
 
