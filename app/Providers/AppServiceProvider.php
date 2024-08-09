@@ -43,8 +43,13 @@ class AppServiceProvider extends ServiceProvider
          * |              Request Throttle                           |
          * ===========================================================
          */
+        // Throttle for login
         RateLimiter::for('login', function (Request $request) {
             return Limit::perMinute(5, decayMinutes: 5)->by($request->input('email').'|'.$request->ip());
+        });
+        // Throttle for request forgot password
+        RateLimiter::for('forgotPassword', function (Request $request) {
+            return Limit::perMinute(1, decayMinutes: 5)->by($request->input('email').'|'.$request->ip());
         });
 
     }
