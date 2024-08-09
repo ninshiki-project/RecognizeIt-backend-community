@@ -17,7 +17,7 @@ it('can invite new user', function () {
         ]);
 });
 
-it('show points of specific user', function () {
+it('can show points of specific user', function () {
     $content = \Pest\Laravel\getJson('api/v1/users/1/points')->content();
     expect(json_decode($content))->toMatchObject([
         'id' => 1,
@@ -27,10 +27,6 @@ it('show points of specific user', function () {
     ]);
 });
 
-it('destroy', function () {
-    expect(true)->toBe(true);
-});
-
-it('show', function () {
+it('can show all user', function () {
     \Pest\Laravel\getJson('/api/v1/users')->assertStatus(200);
 });
