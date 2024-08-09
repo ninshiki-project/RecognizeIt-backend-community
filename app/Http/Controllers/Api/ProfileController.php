@@ -82,6 +82,7 @@ class ProfileController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
+
         // send email for notification that the user need to login via Zoho instead of credential
         return response()->json([
             'success' => false,
