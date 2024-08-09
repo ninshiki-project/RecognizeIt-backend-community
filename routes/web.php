@@ -10,3 +10,8 @@ Route::get('/', function () {
         'php_version' => PHP_VERSION,
     ]);
 });
+
+Route::get('/test', function () {
+    $post = \App\Models\Posts::first();
+    \App\Events\NewPostEvent::dispatch($post);
+});
