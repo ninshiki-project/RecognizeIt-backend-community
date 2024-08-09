@@ -56,11 +56,10 @@ jobs:
       - name: Run Migrate
         env:
           DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
         run: php artisan migrate
 
       - name: Run Reverb
-        run: php artisan reverb:start --host=0.0.0.0
+        run: php artisan reverb:start  &
 
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
