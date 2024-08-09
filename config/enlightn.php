@@ -18,12 +18,14 @@ return [
     'exclude_analyzers' => [
         \Enlightn\Enlightn\Analyzers\Security\FilePermissionsAnalyzer::class,
         \Enlightn\Enlightn\Analyzers\Reliability\CustomErrorPageAnalyzer::class,
+        \Enlightn\Enlightn\Analyzers\Reliability\CachePrefixAnalyzer::class
     ],
 
     // If you wish to skip running some analyzers in CI mode, list the classes below.
     'ci_mode_exclude_analyzers' => [
         \Enlightn\Enlightn\Analyzers\Security\FilePermissionsAnalyzer::class,
         \Enlightn\Enlightn\Analyzers\Reliability\CustomErrorPageAnalyzer::class,
+        \Enlightn\Enlightn\Analyzers\Reliability\CachePrefixAnalyzer::class
     ],
 
     /*
