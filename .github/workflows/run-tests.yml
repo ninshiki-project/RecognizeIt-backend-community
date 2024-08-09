@@ -53,14 +53,6 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
-      - name: Run Migrate
-        env:
-          DB_CONNECTION: sqlite
-        run: php artisan migrate
-
-      - name: Run Reverb
-        run: php artisan reverb:start  &
-
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
 
