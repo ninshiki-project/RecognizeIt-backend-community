@@ -83,6 +83,10 @@ class ProfileController extends Controller
             }
         }
         // send email for notification that the user need to login via Zoho instead of credential
+        return response()->json([
+            'success' => false,
+            'message' => 'Your email address was not found.',
+        ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**
