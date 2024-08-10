@@ -13,7 +13,7 @@ permissions:
   pages: write
 
 env:
-  INSTANCE: 'Writerside/N'
+  INSTANCE: 'Writerside/n'
   ARTIFACT: 'webHelpN2-all.zip'
   DOCKER_VERSION: '241.18775'
 
