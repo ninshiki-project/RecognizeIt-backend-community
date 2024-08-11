@@ -44,6 +44,16 @@ composer install
 ```Bash
 php artisan generate:key
 ```
-7. Now your backend is ready for integration.
+7. Run Database Migration and Seeder
+```Bash
+php artisan migrate --seed
+```
+8. Now your backend is ready for integration with your frontend.
+
+
+### Default Account
+| **Email**        | **Password** | **Role** |
+|------------------|--------------|----------|
+| test@example.com | password     | Owner    |
 
 
