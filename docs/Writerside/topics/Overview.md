@@ -11,3 +11,7 @@ Ninshiki is a Backend App Server that use Laravel Technology.
 ## Purpose
 
 The purpose of the Ninshiki app is to foster a positive and collaborative work environment by enabling employees to recognize and celebrate their colleagues' achievements and contributions. By providing a platform for employees to acknowledge and appreciate each other's efforts, Ninshiki aims to enhance morale, build stronger team relationships, and reinforce a culture of mutual respect and support within the company. Through simple, intuitive features, Ninshiki allows users to give and receive recognition in real-time, ensuring that accomplishments are celebrated and valued, ultimately driving a more engaged and motivated workforce.
+
+## Mobile App
+
+_Coming Soon_
