@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\DesignationsController;
 use App\Http\Controllers\Api\InvitationController;
-use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\PostsController;
@@ -12,11 +12,11 @@ use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login/credentials', [LoginController::class, 'loginViaEmail'])
+Route::post('/login/credentials', [AuthenticationController::class, 'loginViaEmail'])
     ->middleware('throttle:login');
-Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
-Route::get('/login/{provider}', [LoginController::class, 'loginViaProvider']);
-Route::post('/login/{provider}', [LoginController::class, 'providerCallback']);
+Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('/login/{provider}', [AuthenticationController::class, 'loginViaProvider']);
+Route::post('/login/{provider}', [AuthenticationController::class, 'providerCallback']);
 
 Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     // Department
@@ -47,7 +47,12 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
             ->withoutMiddleware('auth:sanctum');
         Route::post('/reset-password', [ProfileController::class, 'resetPassword'])
             ->withoutMiddleware('auth:sanctum');
+        // Browser Session
+        Route::get('/sessions', [ProfileController::class, 'getSessionsProperty']);
     });
+
+
+
 
     // Permissions
     Route::get('profile/permissions/', [PermissionsController::class, 'permissions']);
