@@ -11,4 +11,7 @@
     <toc-element topic="Feature-Status.md"/>
     <toc-element topic="Installation.md"/>
     <toc-element topic="Deployment.md"/>
+    <toc-element topic="Websockets.md">
+        <toc-element topic="Peer-Recognition.md"/>
+    </toc-element>
 </instance-profile>
