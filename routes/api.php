@@ -49,6 +49,8 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
             ->withoutMiddleware('auth:sanctum');
         // Browser Session
         Route::get('/sessions', [ProfileController::class, 'getSessionsProperty']);
+        // logout other Device session
+        Route::post('/logout/devices', [AuthenticationController::class, 'logoutOtherDevices']);
     });
 
 

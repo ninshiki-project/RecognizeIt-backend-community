@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\LogoutOtherBrowser;
 use App\Http\Controllers\Api\Concern\AllowedDomain;
+use App\Http\Controllers\Api\Concern\CanLogoutOtherDevices;
 use App\Http\Controllers\Api\Concern\CanValidateProvider;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginViaEmailRequest;
+use App\Http\Requests\LogOutOtherBrowserRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
@@ -19,9 +23,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Throwable;
 
-class LoginController extends Controller
+class AuthenticationController extends Controller
 {
     use AllowedDomain;
+    use CanLogoutOtherDevices;
     use CanValidateProvider;
 
     public string $url;
@@ -148,7 +153,7 @@ class LoginController extends Controller
             ]);
         }
 
-        $token = $user->createToken($request->device_name ?? 'nanshiki')->plainTextToken;
+        $token = $user->createToken($request->header('User-Agent') ?? 'unknown')->plainTextToken;
 
         return response()->json([
             'success' => true,
@@ -167,8 +172,19 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        auth()->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json('', Response::HTTP_ACCEPTED);
+    }
+
+    /**
+     *  Logout Other Browser Session
+     */
+    public function logoutOtherDevices(LogOutOtherBrowserRequest $request)
+    {
+
+        $this->logoutOtherDevices($request);
+
+        LogoutOtherBrowser::dispatch($request->user());
     }
 }
