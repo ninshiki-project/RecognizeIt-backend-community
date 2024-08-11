@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="n"
+                 name="Ninshiki Backend Documentation"
+                 start-page="Overview.md">
+
+    <toc-element topic="Overview.md"/>
+    <toc-element topic="Features.md"/>
+    <toc-element topic="Feature-Status.md"/>
+    <toc-element topic="Installation.md"/>
+    <toc-element topic="Deployment.md"/>
+    <toc-element topic="Websockets.md">
+        <toc-element topic="Peer-Recognition.md"/>
+    </toc-element>
+</instance-profile>
