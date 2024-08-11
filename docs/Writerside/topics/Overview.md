@@ -15,3 +15,7 @@ The purpose of the Ninshiki app is to foster a positive and collaborative work e
 ## Mobile App
 
 _Coming Soon_
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
