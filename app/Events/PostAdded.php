@@ -24,5 +24,4 @@ class PostAdded
     {
         $this->post = $post;
     }
-
 }
