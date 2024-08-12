@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\Concern;
 use Closure;
 use Detection\MobileDetect;
 
-
 /**
  * @copyright Originally created by Jens Segers: https://github.com/jenssegers/agent
  * @copyright Originally created by Laravel Jetstream Team: https://github.com/laravel/jetstream/blob/5.x/src/Agent.php
@@ -171,5 +170,4 @@ class Agent extends MobileDetect
 
         return $merged;
     }
-
 }

@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\DesignationsController;
 use App\Http\Controllers\Api\InvitationController;
-use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\PostsController;
@@ -52,9 +52,6 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
         // logout other Device session
         Route::post('/logout/devices', [AuthenticationController::class, 'logoutOtherDevices']);
     });
-
-
-
 
     // Permissions
     Route::get('profile/permissions/', [PermissionsController::class, 'permissions']);
