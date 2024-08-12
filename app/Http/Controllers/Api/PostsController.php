@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\NewPostEvent;
+use App\Events\Broadcast\NewPostEvent;
 use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
@@ -57,7 +57,7 @@ class PostsController extends Controller
         $pointsToConsume = count($request->recipient_id) * $request->points;
         $authenticated_user = $request->user();
 
-        if ($request->type === PostTypeEnum::User && $pointsToConsume > $authenticated_user->points->credits || $authenticated_user->points->credits <= 0) {
+        if ($request->type === PostTypeEnum::User && $pointsToConsume > $authenticated_user->points->credits) {
             throw ValidationException::withMessages([
                 'points' => 'insufficient credits left',
             ]);
@@ -100,11 +100,6 @@ class PostsController extends Controller
          *  Deduct all the points to the user who posted a post
          */
         $authenticated_user->points->decrement('credits', $pointsToConsume);
-
-        /**
-         * Send Broadcast Event for the new post
-         */
-        NewPostEvent::dispatch($this->post);
 
         /**
          * @status 201

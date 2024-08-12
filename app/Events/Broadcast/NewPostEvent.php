@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace App\Events\Broadcast;
 
 use App\Models\Posts;
 use Illuminate\Broadcasting\InteractsWithSockets;
