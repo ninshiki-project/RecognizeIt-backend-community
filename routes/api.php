@@ -56,7 +56,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
         // logout other Device session
         Route::post('/logout/devices', [SessionController::class, 'logoutOtherDevices']);
         // session health
-        Route::get('/health', [SessionController::class, 'health']);
+        Route::get('/health', [SessionController::class, 'health'])->name('session.health');
     });
 
     // Permissions

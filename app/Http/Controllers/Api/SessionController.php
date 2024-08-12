@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\Broadcast\LogoutSessionEvent;
 use App\Events\LogoutOtherBrowser;
 use App\Http\Controllers\Api\Concern\Agent;
 use App\Http\Controllers\Api\Concern\CanLogoutOtherDevices;
@@ -47,13 +48,16 @@ class SessionController extends Controller
     }
 
     /**
-     *  Logout Other Browser Session
+     *  Logout Other Device Session
      */
     public function logoutOtherDevices(LogOutOtherBrowserRequest $request)
     {
 
         $this->logoutOtherDevicesSession($request);
 
+        // Send Broadcast Event
+        LogoutSessionEvent::dispatch(auth()->user());
+        // Send Event
         LogoutOtherBrowser::dispatch($request->user());
     }
 
