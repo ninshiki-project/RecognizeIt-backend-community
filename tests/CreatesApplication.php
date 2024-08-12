@@ -22,5 +22,7 @@ trait CreatesApplication
             ['*']
         );
 
+        \Event::fake();
+
     }
 }

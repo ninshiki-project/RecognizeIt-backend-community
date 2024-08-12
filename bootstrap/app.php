@@ -24,9 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         __DIR__.'/../routes/channels.php',
         ['prefix' => 'api', 'middleware' => ['api', 'auth:sanctum']],
     )
-    ->withSchedule(function (Schedule $schedule) {
-        $schedule->command('auth:clear-resets')->everyFifteenMinutes();
-    })
+    ->withSchedule(function (Schedule $schedule) {})
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->use([
             \Illuminate\Http\Middleware\HandleCors::class,

@@ -3,7 +3,7 @@
 Once there is a new post for recognition, a websocket event will trigger.
 
 ## Channel
-The event payload will be sent to this private channel `server.post.new` with a broadcast name of `new.post`
+The event payload will be sent to this private channel `server.post.new` with a broadcast name of `.new.post`
 
 ## Authorization
 This channel is public and all authenticated listener can receive the event payload.
