@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\PostsController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RolesController;
+use App\Http\Controllers\Api\SessionController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,10 +48,15 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
             ->withoutMiddleware('auth:sanctum');
         Route::post('/reset-password', [ProfileController::class, 'resetPassword'])
             ->withoutMiddleware('auth:sanctum');
+    });
+
+    Route::prefix('/sessions')->group(function () {
         // Browser Session
-        Route::get('/sessions', [ProfileController::class, 'getSessionsProperty']);
+        Route::get('/', [SessionController::class, 'loginSessions']);
         // logout other Device session
-        Route::post('/logout/devices', [AuthenticationController::class, 'logoutOtherDevices']);
+        Route::post('/logout/devices', [SessionController::class, 'logoutOtherDevices']);
+        // session health
+        Route::get('/health', [SessionController::class, 'health']);
     });
 
     // Permissions
