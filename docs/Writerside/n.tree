@@ -13,5 +13,6 @@
     <toc-element topic="Deployment.md"/>
     <toc-element topic="Websockets.md">
         <toc-element topic="Peer-Recognition.md"/>
+        <toc-element topic="Logout-Other-Devices.md"/>
     </toc-element>
 </instance-profile>
