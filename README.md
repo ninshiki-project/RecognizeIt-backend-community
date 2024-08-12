@@ -16,6 +16,10 @@ The purpose of the Ninshiki app is to foster a positive and collaborative work e
 
 _Coming Soon_
 
+## Documentation
+
+[:book: Visit Documentation](https://marjose123.github.io/Ninshiki-backend/)
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
