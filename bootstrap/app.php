@@ -25,7 +25,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ['prefix' => 'api', 'middleware' => ['api', 'auth:sanctum']],
     )
     ->withSchedule(function (Schedule $schedule) {
-        $schedule->command('auth:clear-resets')->everyFifteenMinutes();
     })
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->use([
