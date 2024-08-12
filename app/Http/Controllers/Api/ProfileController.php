@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Concern\Agent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileResetPasswordRequest;
 use App\Http\Requests\ProfileUpdatePasswordRequest;
@@ -10,6 +11,9 @@ use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -127,5 +131,44 @@ class ProfileController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+    }
+
+    /**
+     * Device Sessions
+     *
+     * Get the all user device sessions.
+     *
+     * @return JsonResponse
+     */
+    public function getSessionsProperty()
+    {
+        $data = collect(
+            DB::connection(config('database.default'))->table('personal_access_tokens')
+                ->where('tokenable_id', Auth::user()->id)
+                ->orderBy('last_used_at', 'desc')
+                ->get()
+        )->map(function ($session) {
+            return (object) [
+                'platform' => $this->createAgent($session)->platform(),
+                'browser' => $this->createAgent($session)->browser(),
+                'is_desktop' => $this->createAgent($session)->isDesktop(),
+                'is_current_device' => $session->id == \Str::of(auth()->user()->currentAccessToken()->id)->explode('|')[0],
+                'last_active' => $session->last_used_at ? Carbon::createFromDate($session->last_used_at)->diffForHumans() : 'Unknown',
+            ];
+        });
+
+        return response()->json($data->toArray(), Response::HTTP_OK);
+
+    }
+
+    /**
+     * Create a new agent instance from the given session.
+     *
+     * @param  mixed  $session
+     * @return Agent
+     */
+    protected function createAgent(mixed $session)
+    {
+        return tap(new Agent, fn ($agent) => $agent->setUserAgent($session->name));
     }
 }
