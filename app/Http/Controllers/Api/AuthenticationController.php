@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\LogoutOtherBrowser;
 use App\Http\Controllers\Api\Concern\AllowedDomain;
-use App\Http\Controllers\Api\Concern\CanLogoutOtherDevices;
 use App\Http\Controllers\Api\Concern\CanValidateProvider;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginViaEmailRequest;
-use App\Http\Requests\LogOutOtherBrowserRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +22,6 @@ use Throwable;
 class AuthenticationController extends Controller
 {
     use AllowedDomain;
-    use CanLogoutOtherDevices;
     use CanValidateProvider;
 
     public string $url;
@@ -174,16 +170,5 @@ class AuthenticationController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json('', Response::HTTP_ACCEPTED);
-    }
-
-    /**
-     *  Logout Other Browser Session
-     */
-    public function logoutOtherDevices(LogOutOtherBrowserRequest $request)
-    {
-
-        $this->logoutOtherDevicesSession($request);
-
-        LogoutOtherBrowser::dispatch($request->user());
     }
 }
