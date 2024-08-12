@@ -183,7 +183,7 @@ class AuthenticationController extends Controller
     public function logoutOtherDevices(LogOutOtherBrowserRequest $request)
     {
 
-        $this->logoutOtherDevices($request);
+        $this->logoutOtherDevicesSession($request);
 
         LogoutOtherBrowser::dispatch($request->user());
     }
