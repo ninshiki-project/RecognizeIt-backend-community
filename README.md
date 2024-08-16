@@ -1,6 +1,6 @@
 # Overview
 
-Ninshiki is a Backend App Server that use Laravel Technology.
+Ninshiki is a Backend Skeleton App Server that use Laravel Technology.
 
 > Ninshiki (認識; Nin-shiki) literally means "recognition" in Japanese. Inspiring Recognition: Celebrate Success.
 
@@ -18,7 +18,7 @@ _Coming Soon_
 
 ## Documentation
 
-[:book: Visit Documentation](https://marjose123.github.io/Ninshiki-backend/)
+### :book: [Visit Documentation](https://marjose123.github.io/Ninshiki-backend/)
 
 ## License
 
