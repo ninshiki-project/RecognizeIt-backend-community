@@ -95,7 +95,7 @@ class MakeUserCommand extends Command
     {
         $loginUrl = config('app.frontend_url');
 
-        $this->components->info('Success! '.($user->getAttribute('email') ?? $user->getAttribute('username') ?? 'You')." may now log in at {$loginUrl}");
+        $this->components->info('Success! '.($user->getAttribute('email') ?? $user->getAttribute('name') ?? 'You')." may now log in at {$loginUrl}");
     }
 
     protected function prerequisiteDBColumn(): void
