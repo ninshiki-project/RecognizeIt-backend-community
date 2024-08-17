@@ -37,10 +37,10 @@ class AboutInfoServiceProvider extends ServiceProvider
         ]);
         AboutCommand::add('Ninshiki Configuration', static fn () => [
             'Cloudinary' => Str::length(config('cloudinary.cloud_url')) > 0 ? self::$checked : self::$times,
-            'Reverb' => Str::length(env('REVERB_APP_KEY')) > 0 ? self::$checked : self::$times,
-            'Resend' => Str::length(env('RESEND_KEY')) > 0 ? self::$checked : self::$maybe,
-            'Domain Whitelist' => Str::length(env('ALLOWED_EMAIL_DOMAIN')) > 0 ? self::$checked : self::$times,
-            'Frontend' => Str::of(env('FRONTEND_URL'))->contains('localhost:3000') ? self::$maybe : self::$checked,
+            'Reverb' => Str::length(config('reverb.apps.apps[0].key')) > 0 ? self::$checked : self::$times,
+            'Resend' => Str::length(config('services.resend.key')) > 0 ? self::$checked : self::$maybe,
+            'Domain Whitelist' => Str::length(config('ninshiki.allowed_email_domain')) > 0 ? self::$checked : self::$times,
+            'Frontend' => Str::of(config('app.frontend_url'))->contains('localhost:3000') ? self::$maybe : self::$checked,
         ]);
     }
 }
