@@ -76,6 +76,8 @@ class TheSeeder extends Seeder
                     'restore user',
                     'force delete user',
                     'department',
+                    'delete',
+                    'edit',
                 ]);
             });
             $role->givePermissionTo($roles);
@@ -85,36 +87,40 @@ class TheSeeder extends Seeder
         /**
          *  Create Admin User
          */
-        $this->command->warn(PHP_EOL.'Creating Admin user and assigning roles...');
-        $this->withProgressBar(1, function () {
-            $user = User::factory()->create([
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-                'designation' => config('ninshiki.designation')[0],
-            ])
-                ->assignRole('Administrator');
-            $this->command->warn(PHP_EOL.'Creating Points System for the User...');
-            $user->points()->create();
-            $this->command->info(PHP_EOL.'Points created and associated...');
-        });
-        $this->command->info('Administrator user created.');
+        if (app()->environment() !== 'production') {
+            $this->command->warn(PHP_EOL.'Creating Admin user and assigning roles...');
+            $this->withProgressBar(1, function () {
+                $user = User::factory()->create([
+                    'name' => 'Test User',
+                    'email' => 'test@example.com',
+                    'designation' => config('ninshiki.designation')[0],
+                ])
+                    ->assignRole('Administrator');
+                $this->command->warn(PHP_EOL.'Creating Points System for the User...');
+                $user->points()->create();
+                $this->command->info(PHP_EOL.'Points created and associated...');
+            });
+            $this->command->info('Administrator user created.');
+        }
 
         /**
          *  Create Normal User
          */
-        $this->command->warn(PHP_EOL.'Creating Normal user and assigning roles...');
-        $this->withProgressBar(5, function () {
-            $user = User::factory()->create([
-                'designation' => config('ninshiki.designation')[0],
-            ])
-                ->assignRole('Member');
-            $this->command->warn(PHP_EOL.'Creating Points System for the User...');
-            $user->points()->create();
-            $this->command->info(PHP_EOL.'Points created and associated...');
-        });
-        $this->command->info('Administrator user created.');
+        if (app()->environment() !== 'production') {
+            $this->command->warn(PHP_EOL.'Creating Normal user and assigning roles...');
+            $this->withProgressBar(5, function () {
+                $user = User::factory()->create([
+                    'designation' => config('ninshiki.designation')[0],
+                ])
+                    ->assignRole('Member');
+                $this->command->warn(PHP_EOL.'Creating Points System for the User...');
+                $user->points()->create();
+                $this->command->info(PHP_EOL.'Points created and associated...');
+            });
+            $this->command->info('Administrator user created.');
 
-        $this->command->newLine(2);
+            $this->command->newLine(2);
+        }
 
     }
 
