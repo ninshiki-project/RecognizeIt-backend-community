@@ -10,3 +10,6 @@ parameters:
     level: 3
     ignoreErrors:
         - '#PHPDoc tag @var#'
+
+    universalObjectCratesClasses:
+        - Illuminate\Http\Resources\Json\JsonResource
