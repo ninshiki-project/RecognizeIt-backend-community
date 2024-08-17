@@ -14,11 +14,11 @@ use Spatie\Emoji\Emoji;
 class AboutInfoServiceProvider extends ServiceProvider
 {
     //https://unicode.org/Public/emoji/13.1/emoji-test.txt
-    public static string $checked = "<fg=green;options=bold>\u{2714} Completed</>";
+    public static string $checked = "<fg=green;options=bold>\u{2714} COMPLETED</>";
 
-    public static string $times = '<fg=red;options=bold>Not Setup</>';
+    public static string $times = '<fg=red;options=bold>NOT SETUP</>';
 
-    public static string $maybe = '<fg=yellow;options=bold>Maybe</>';
+    public static string $maybe = '<fg=yellow;options=bold>MAYBE</>';
 
     public function boot(): void
     {
@@ -31,6 +31,9 @@ class AboutInfoServiceProvider extends ServiceProvider
             'User Administrator' => fn () => User::with('roles')->get()->filter(
                 fn ($user) => $user->roles->where('name', 'Administrator')->toArray()
             )->count() > 0 ? self::$checked : self::$times,
+            'Owner' => fn () => User::with('roles')->get()->filter(
+                fn ($user) => $user->roles->where('name', 'Administrator')->toArray()
+            )->count(),
         ]);
         AboutCommand::add('Ninshiki Configuration', static fn () => [
             'Cloudinary' => Str::length(config('cloudinary.cloud_url')) > 0 ? self::$checked : self::$times,
