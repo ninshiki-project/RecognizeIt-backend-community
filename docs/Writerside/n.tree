@@ -9,7 +9,10 @@
     <toc-element topic="Overview.md"/>
     <toc-element topic="Features.md"/>
     <toc-element topic="Feature-Status.md"/>
-    <toc-element topic="Installation.md"/>
+    <toc-element topic="Installation.md">
+        <toc-element topic="Installation-for-Development-Local.md"/>
+        <toc-element topic="Production.md"/>
+    </toc-element>
     <toc-element topic="Deployment.md"/>
     <toc-element topic="Websockets.md">
         <toc-element topic="Session-Health-Check.md"/>
