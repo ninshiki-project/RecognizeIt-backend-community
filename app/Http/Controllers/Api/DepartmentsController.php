@@ -65,6 +65,7 @@ class DepartmentsController extends Controller
                 $user->save();
             });
         })->delete();
+
         // @phpstan-ignore-next-line
         return response()->json(status: Response::HTTP_ACCEPTED);
     }
