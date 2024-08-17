@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\Concern\AllowedDomain;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Attribute\AsCommand;
 
@@ -71,17 +70,19 @@ class MakeUserCommand extends Command
         ];
     }
 
-    /**
-     * @throws \Throwable
-     */
-    protected function createUser()
+    protected function createUser(): ?User
     {
+        $this->options = [
+            ...$this->options,
+            ...$this->getUserData(),
+        ];
+        $this->info('logging for creating user');
         try {
             $user = User::factory()->create([
-                'name' => $this->getUserData()['name'],
-                'email' => $this->getUserData()['email'],
+                'name' => $this->options['name'],
+                'email' => $this->options['email'],
                 'designation' => config('ninshiki.designation')[0],
-            ])->assignRole($this->getUserData()['role']);
+            ])->assignRole($this->options['role']);
             $user->points()->create();
 
             return $user;
@@ -89,18 +90,19 @@ class MakeUserCommand extends Command
             info($th->getMessage());
         }
 
+        return null;
     }
 
-    protected function sendSuccessMessage(Authenticatable $user): void
+    protected function sendSuccessMessage(User $user): void
     {
-        $loginUrl = config('app.frontend_url');
+        $loginUrl = config('app.frontend_url', 'http://localhost:3000');
 
         $this->components->info('Success! '.($user->getAttribute('email') ?? $user->getAttribute('name') ?? 'You')." may now log in at {$loginUrl}");
     }
 
     protected function prerequisiteDBColumn(): void
     {
-        if (Role::count() === 0) {
+        if (Role::all()->count() < 1) {
             $this->call('db:seed --class=TheSeeder --force');
         }
     }
@@ -114,6 +116,11 @@ class MakeUserCommand extends Command
         $this->prerequisiteDBColumn();
 
         $user = $this->createUser();
+        if (! $user) {
+            $this->components->error('Error! Unable to create user.');
+
+            return static::FAILURE;
+        }
         $this->sendSuccessMessage($user);
 
         return static::SUCCESS;
