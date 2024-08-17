@@ -39,6 +39,7 @@ class SessionController extends Controller
                 'platform' => $this->createAgent($session)->platform(),
                 'browser' => $this->createAgent($session)->browser(),
                 'is_desktop' => $this->createAgent($session)->isDesktop(),
+                // @phpstan-ignore-next-line
                 'is_current_device' => $session->id == \Str::of(auth()->user()->currentAccessToken()->id)->explode('|')[0],
                 'last_active' => $session->last_used_at ? Carbon::createFromDate($session->last_used_at)->diffForHumans() : 'Unknown',
             ];

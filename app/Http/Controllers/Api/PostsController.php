@@ -88,11 +88,11 @@ class PostsController extends Controller
         /**
          *  Distribute the points to each recipient
          */
-        $recipients->each(function ($item) use ($authenticated_user, $request) {
+        $recipients->each(function ($item) use ($request) {
             $_user = User::findOrFail($item['user_id'])->first();
             $_user->points->increment('points_earned', $request->points);
             // send email notification and application notification
-            PostRecognizeJob::dispatchAfterResponse($authenticated_user, $_user);
+            PostRecognizeJob::dispatchAfterResponse($_user);
 
         });
         /**

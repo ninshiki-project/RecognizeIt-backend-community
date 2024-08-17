@@ -9,6 +9,10 @@ trait CanLogoutOtherDevices
 {
     public function logoutOtherDevicesSession(Request $request)
     {
-        $request->user()->tokens()->where('id', '!=', Str::of(auth()->user()->currentAccessToken()->id)->explode('|')[0])->delete();
+        $token = $request->user()->tokens();
+        /** @var \Laravel\Sanctum\PersonalAccessToken $token */
+        $currentUserToken = auth()->user()->currentAccessToken();
+        $tokenId = optional($currentUserToken)->id;
+        $token->where('id', '!=', Str::of($tokenId)->explode('|')[0])->delete();
     }
 }
