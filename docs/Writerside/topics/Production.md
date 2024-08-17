@@ -52,7 +52,11 @@ php artisan migrate
 ```Bash
 php artisan make:ninshiki-user
 ```
-9. Now your backend is ready for integration with your frontend.
+9. Generate Reverb Key
+```Bash
+php artisan reverb:key
+```
+10. Now your backend is ready for integration with your frontend.
 
 
 

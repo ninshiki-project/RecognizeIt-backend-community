@@ -48,7 +48,11 @@ php artisan generate:key
 ```Bash
 php artisan migrate --seed
 ```
-8. Now your backend is ready for integration with your frontend.
+8. Generate Reverb Key
+```Bash
+php artisan reverb:key
+```
+9. Now your backend is ready for integration with your frontend.
 
 
 ### Default Account
