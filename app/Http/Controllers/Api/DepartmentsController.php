@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DepartmentPostRequest;
 use App\Http\Requests\DepartmentPutRequest;
 use App\Models\Departments;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -59,12 +60,13 @@ class DepartmentsController extends Controller
     public function destroy($id)
     {
         Departments::findOrFail($id)->each(function ($department) {
-            $department->users()->each(function ($user) {
+            $department->users()->each(function (User $user) {
                 $user->department = null;
                 $user->save();
             });
         })->delete();
 
-        return response()->json('', Response::HTTP_ACCEPTED);
+        // @phpstan-ignore-next-line
+        return response()->json(status: Response::HTTP_ACCEPTED);
     }
 }

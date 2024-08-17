@@ -102,7 +102,7 @@ class MakeUserCommand extends Command
 
     protected function prerequisiteDBColumn(): void
     {
-        if (Role::all()->count() < 1) {
+        if (Role::count() < 1) {
             $this->call('db:seed --class=TheSeeder --force');
         }
     }

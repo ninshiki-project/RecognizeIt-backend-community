@@ -39,6 +39,7 @@ class AuthenticationController extends Controller
         $this->validateProvider($provider);
 
         if ($provider === 'zoho') {
+            // @phpstan-ignore-next-line
             $this->url = Socialite::driver($provider)
                 ->setScopes(['AaaServer.profile.Read'])
                 ->with([
@@ -76,6 +77,7 @@ class AuthenticationController extends Controller
         try {
             if ($provider === 'zoho') {
                 // Get Access token from the code generated
+                // @phpstan-ignore-next-line
                 $tokenRequest = Socialite::driver($provider)->stateless()->getAccessTokenResponse($request->code);
                 if (Arr::has($tokenRequest, 'error')) {
                     return response()->json([
@@ -84,7 +86,7 @@ class AuthenticationController extends Controller
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
                 $accessToken = Arr::get($tokenRequest, 'access_token');
-
+                // @phpstan-ignore-next-line
                 $userProvider = Socialite::driver($provider)->stateless()->userFromToken($accessToken);
 
                 if (! $this->isWhitelistedDomain($userProvider->email)) {
@@ -167,7 +169,9 @@ class AuthenticationController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        /** @var \Laravel\Sanctum\PersonalAccessToken $token */
+        $token = $request->user()->currentAccessToken();
+        $token->delete();
 
         return response()->json('', Response::HTTP_ACCEPTED);
     }

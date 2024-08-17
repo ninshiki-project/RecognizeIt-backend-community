@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.3",
         "cloudinary-labs/cloudinary-laravel": "^2.1",
-        "dedoc/scramble": "^0.10.4",
+        "dedoc/scramble": "^0.11.11",
         "doctrine/dbal": "^4.0",
         "hammerstone/fast-paginate": "^1.1",
         "laravel/framework": "^11.0",
@@ -24,6 +24,7 @@
     "require-dev": {
         "enlightn/enlightn": "^2.10",
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^2.9",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
@@ -60,7 +61,12 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
-        ]
+        ],
+        "analyse": "./vendor/bin/phpstan analyse --memory-limit=2G",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint",
+        "scan": "@php artisan enlightn"
     },
     "extra": {
         "laravel": {
@@ -73,9 +79,10 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

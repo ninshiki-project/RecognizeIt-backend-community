@@ -1,0 +1,10 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/
+        - database/
+    level: 3
+    universalObjectCratesClasses:
+        - Illuminate\Http\Resources\Json\JsonResource

@@ -19,6 +19,7 @@ return [
         \Enlightn\Enlightn\Analyzers\Security\FilePermissionsAnalyzer::class,
         \Enlightn\Enlightn\Analyzers\Reliability\CustomErrorPageAnalyzer::class,
         \Enlightn\Enlightn\Analyzers\Reliability\CachePrefixAnalyzer::class,
+        \Enlightn\Enlightn\Analyzers\Security\StableDependencyAnalyzer::class,
     ],
 
     // If you wish to skip running some analyzers in CI mode, list the classes below.
@@ -26,6 +27,7 @@ return [
         \Enlightn\Enlightn\Analyzers\Security\FilePermissionsAnalyzer::class,
         \Enlightn\Enlightn\Analyzers\Reliability\CustomErrorPageAnalyzer::class,
         \Enlightn\Enlightn\Analyzers\Reliability\CachePrefixAnalyzer::class,
+        \Enlightn\Enlightn\Analyzers\Security\StableDependencyAnalyzer::class,
     ],
 
     /*

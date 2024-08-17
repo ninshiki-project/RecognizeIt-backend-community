@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "66cf9f47e8fabd51cb63f76afaa7e4aa",
+    "content-hash": "5797daa312806af6d3ec1bcb110dcf83",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -598,16 +598,16 @@
         },
         {
             "name": "dedoc/scramble",
-            "version": "v0.10.13",
+            "version": "v0.11.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dedoc/scramble.git",
-                "reference": "d8c3ed9c69fe6c0900f22ec0c7520b9b579d9ec3"
+                "reference": "031786322b8ce335e1e0c8c5b7fc07705090616c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dedoc/scramble/zipball/d8c3ed9c69fe6c0900f22ec0c7520b9b579d9ec3",
-                "reference": "d8c3ed9c69fe6c0900f22ec0c7520b9b579d9ec3",
+                "url": "https://api.github.com/repos/dedoc/scramble/zipball/031786322b8ce335e1e0c8c5b7fc07705090616c",
+                "reference": "031786322b8ce335e1e0c8c5b7fc07705090616c",
                 "shasum": ""
             },
             "require": {
@@ -660,7 +660,7 @@
             ],
             "support": {
                 "issues": "https://github.com/dedoc/scramble/issues",
-                "source": "https://github.com/dedoc/scramble/tree/v0.10.13"
+                "source": "https://github.com/dedoc/scramble/tree/v0.11.11"
             },
             "funding": [
                 {
@@ -668,7 +668,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-05T17:01:46+00:00"
+            "time": "2024-08-16T07:09:24+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -12728,7 +12728,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
