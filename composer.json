@@ -8,6 +8,7 @@
         "php": "^8.3",
         "cloudinary-labs/cloudinary-laravel": "^2.1",
         "dedoc/scramble": "^0.11.11",
+        "dive-be/laravel-wishlist": "^1.4",
         "doctrine/dbal": "^4.0",
         "hammerstone/fast-paginate": "^1.1",
         "laravel/framework": "^11.0",
