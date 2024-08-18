@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use App\Models\Scopes\ProductAvailableScope;
+use Dive\Wishlist\Contracts\Wishable;
+use Dive\Wishlist\Models\Concerns\CanBeWished;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Wildside\Userstamps\Userstamps;
 
-class Products extends Model
+class Products extends Model implements Wishable
 {
-    use HasFactory, HasUuids, SoftDeletes, Userstamps;
+    use CanBeWished, HasFactory, HasUuids, SoftDeletes, Userstamps;
 
     protected $fillable = [
         'name',
@@ -36,5 +38,10 @@ class Products extends Model
     public function scopeAvailable($query)
     {
         return $query->where('status', 'available');
+    }
+
+    public function scopeUnavailable($query)
+    {
+        return $query->where('status', 'unavailable');
     }
 }
