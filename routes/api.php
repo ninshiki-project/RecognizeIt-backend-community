@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\PostsController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\SessionController;
@@ -72,5 +73,9 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
 
     // Designation / Position / Job Title
     Route::get('designation', [DesignationsController::class, 'index']);
+
+    // Products
+    Route::patch('products/{id}', [ProductController::class, 'patch']);
+    Route::apiResource('products', ProductController::class);
 
 });
