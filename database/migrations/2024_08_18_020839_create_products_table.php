@@ -15,6 +15,8 @@ return new class extends Migration
             $table->integer('price');
             $table->integer('stock')->default(1);
             $table->enum('status', ['available', 'unavailable'])->default('available');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
