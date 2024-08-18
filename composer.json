@@ -17,6 +17,7 @@
         "laravel/socialite": "^5.14",
         "laravel/tinker": "^2.9",
         "mailersend/laravel-driver": "^2.5",
+        "mbezhanov/faker-provider-collection": "^2.0",
         "mobiledetect/mobiledetectlib": "^4.8",
         "resend/resend-php": "^0.12.0",
         "socialiteproviders/zoho": "^4.1",
@@ -28,6 +29,7 @@
         "larastan/larastan": "^2.9",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
+        "mbezhanov/laravel-faker-provider-collection": "^3.1",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
         "pestphp/pest": "^2.35",
@@ -63,11 +65,26 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
-        "analyse": "./vendor/bin/phpstan analyse --memory-limit=2G",
-        "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint",
-        "scan": "@php artisan enlightn"
+        "analyse": [
+            "./vendor/bin/phpstan analyse --memory-limit=2G"
+        ],
+        "test": [
+            "./vendor/bin/pest"
+        ],
+        "test-coverage": [
+            "./vendor/bin/pest --coverage"
+        ],
+        "format": [
+            "./vendor/bin/pint"
+        ],
+        "scan": [
+            "@php artisan enlightn"
+        ]
+    },
+    "scripts-descriptions": {
+        "analyse": "Run PHPStan static analysis against your application.",
+        "test": "Run Pestphp testing tool",
+        "format": "Run Laravel Pint for fixing code style"
     },
     "extra": {
         "laravel": {
