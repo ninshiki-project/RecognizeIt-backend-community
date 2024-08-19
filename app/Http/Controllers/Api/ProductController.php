@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GetProductRequest;
 use App\Http\Resources\ProductsResource;
 use App\Models\Products;
+use App\Models\Scopes\ProductAvailableScope;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Wishlist;
@@ -21,10 +22,13 @@ class ProductController extends Controller
     public function index(GetProductRequest $request)
     {
         $products = Products::query();
-        if ($request->status === ProductStatusEnum::AVAILABLE) {
-            $products->available();
-        } else {
-            $products->unavailable();
+        \Log::info($request->has('status'));
+        if ($request->has('status')) {
+            if ($request->status === ProductStatusEnum::AVAILABLE->value) {
+                $products->available();
+            } else {
+                $products->withoutGlobalScope(new ProductAvailableScope)->unavailable();
+            }
         }
 
         return ProductsResource::collection($products->fastPaginate());

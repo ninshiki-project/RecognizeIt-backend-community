@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Api\Enum\ProductStatusEnum;
 use App\Models\Scopes\ProductAvailableScope;
 use Dive\Wishlist\Contracts\Wishable;
 use Dive\Wishlist\Models\Concerns\CanBeWished;
@@ -21,6 +22,11 @@ class Products extends Model implements Wishable
         'price',
         'stock',
         'status',
+    ];
+
+    protected $casts = [
+        'stock' => 'integer',
+        'status' => ProductStatusEnum::class,
     ];
 
     protected static function booted(): void
