@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('image');
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('price');
