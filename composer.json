@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "calebporzio/sushi": "^2.5",
         "cloudinary-labs/cloudinary-laravel": "^2.1",
         "dedoc/scramble": "^0.11.11",
         "dive-be/laravel-wishlist": "^1.4",
