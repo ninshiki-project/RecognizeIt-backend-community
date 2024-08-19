@@ -21,7 +21,9 @@ class ProductsFactory extends Factory
     {
         return [
             /** @phpstan-ignore-next-line  */
-            'name' => $this->faker->productName(),
+            'name' => fake()->productName(),
+            /** @phpstan-ignore-next-line  */
+            'image' => fake()->placeholder(),
             'description' => $this->faker->text(),
             'price' => random_int(1000, 40000),
             'stock' => random_int(1, 50),
