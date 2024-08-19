@@ -20,15 +20,19 @@ class ProductsResource extends JsonResource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'created_by' => [
-                'id' => $this->creator->id,
-                'name' => $this->creator->name,
-            ],
-            'updated_by' => [
-                'id' => $this->editor->id,
-                'name' => $this->editor->name,
-            ],
-            'wishlist' => $this->mergeWhen(\Wishlist::has($this->getModel()), $this->wish),
+            'created_by' => $this->mergeWhen($this->created_by, function () {
+                return [
+                    'id' => $this->creator->id,
+                    'name' => $this->creator->name,
+                ];
+            }),
+            'updated_by' => $this->mergeWhen($this->updated_by, function () {
+                return [
+                    'id' => $this->editor,
+                    'name' => $this->editor,
+                ];
+            }),
+//            'wishlist' => $this->mergeWhen(\Wishlist::has($this->getModel()), $this->wish),
         ];
     }
 }
