@@ -41,9 +41,9 @@ class ProductController extends Controller
     }
 
     /**
-     * Create New Product
+     * Create Product
      *
-     * @param ProductRequest $request
+     * @param  ProductRequest  $request
      * @return ProductsResource|JsonResponse
      */
     public function store(ProductRequest $request)
@@ -61,7 +61,7 @@ class ProductController extends Controller
         ]);
         if ($result) {
             return ProductsResource::make($result);
-        }else{
+        } else {
             return response()->json([
                 'message' => 'Product not created',
                 'success' => false,
