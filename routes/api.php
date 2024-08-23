@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\SessionController;
+use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,7 +76,9 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     Route::get('designation', [DesignationsController::class, 'index']);
 
     // Products
-    Route::patch('products/{id}', [ProductController::class, 'patch']);
     Route::apiResource('products', ProductController::class);
+
+    // Shop
+    Route::apiResource('shop', ShopController::class)->only(['index', 'store', 'destroy']);
 
 });

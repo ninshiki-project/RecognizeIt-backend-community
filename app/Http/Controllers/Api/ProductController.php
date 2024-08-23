@@ -130,21 +130,31 @@ class ProductController extends Controller
      * Delete Product
      *
      * @param  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse|\Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $productInUsed = false;
 
         $product = Products::findOrFail($id);
-        // NOTE: Check and make sure that the product will not be deleted if it in use by other module
+
         if (Wishlist::has($product)) {
             $productInUsed = true;
         }
-        // TODO: Add checking if the product is in used in the Shop/Store
+
+        if ($product->shop()->count() > 0) {
+            $productInUsed = true;
+        }
+
+        if ($productInUsed) {
+            return response()->json([
+                'message' => 'Unable to delete product as it is still in use',
+                'success' => false,
+            ], Response::HTTP_FORBIDDEN);
+        }
 
         $product->delete();
 
-        return response()->json(status: Response::HTTP_NO_CONTENT);
+        return response()->noContent();
     }
 }
