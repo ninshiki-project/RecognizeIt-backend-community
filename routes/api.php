@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\PostsController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\RedeemController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\SessionController;
 use App\Http\Controllers\Api\ShopController;
@@ -80,5 +81,11 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
 
     // Shop
     Route::apiResource('shop', ShopController::class)->only(['index', 'store', 'destroy']);
+
+    // Redeem
+    Route::prefix('redeems')->group(function () {
+        Route::get('/', [RedeemController::class, 'index']);
+        Route::post('/shop', [RedeemController::class, 'store']);
+    });
 
 });
