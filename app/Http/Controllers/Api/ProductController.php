@@ -27,7 +27,6 @@ class ProductController extends Controller
     public function index(GetProductRequest $request)
     {
         $products = Products::query();
-        \Log::info($request->has('status'));
         if ($request->has('status')) {
             if ($request->status === ProductStatusEnum::AVAILABLE->value) {
                 $products->available();
