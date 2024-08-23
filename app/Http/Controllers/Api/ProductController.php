@@ -91,7 +91,7 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, $id)
     {
-        if ($request->hasFile('image')) {
+        if ($request->has('image')) {
             $fileName = Str::orderedUuid();
             $this->uploadedAsset = $request->image->storeOnCloudinaryAs('posts', $fileName);
         }
@@ -113,7 +113,7 @@ class ProductController extends Controller
                 'stock' => $request->stock,
             ] : []),
             ...($request->status ? [
-                'status' => ProductStatusEnum::AVAILABLE->value,
+                'status' => $request->status,
             ] : []),
         ]);
         if (! $result) {

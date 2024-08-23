@@ -41,7 +41,7 @@ class ProductRequest extends FormRequest
             'description' => ['sometimes', 'string', 'max:255'],
             'image' => ['sometimes', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'stock' => ['sometimes', 'integer', 'min:1'],
-            'status' => ['sometimes', 'integer', Rule::in(ProductStatusEnum::class)],
+            'status' => ['sometimes', Rule::enum(ProductStatusEnum::class)],
         ];
     }
 }
