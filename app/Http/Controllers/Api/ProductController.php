@@ -11,7 +11,6 @@ use App\Models\Products;
 use App\Models\Scopes\ProductAvailableScope;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Wishlist;
@@ -82,9 +81,51 @@ class ProductController extends Controller
         return new ProductsResource($product);
     }
 
-    public function update(Request $request, $id) {}
+    /**
+     *  Update Product
+     *
+     *  Update product its information by bulk column or single column
+     *
+     * @param  ProductRequest  $request
+     * @param  $id
+     * @return ProductsResource|JsonResponse
+     */
+    public function update(ProductRequest $request, $id)
+    {
+        if ($request->hasFile('image')) {
+            $fileName = Str::orderedUuid();
+            $this->uploadedAsset = $request->image->storeOnCloudinaryAs('posts', $fileName);
+        }
+        $product = Products::findOrFail($id);
+        $result = $product->update([
+            ...($request->name ? [
+                'name' => $request->name,
+            ] : []),
+            ...($request->description ? [
+                'description' => $request->description,
+            ] : []),
+            ...($request->price ? [
+                'price' => $request->price,
+            ] : []),
+            ...($request->hasFile('image') ? [
+                'image' => $this->uploadedAsset->getSecurePath(),
+            ] : []),
+            ...($request->stock ? [
+                'stock' => $request->stock,
+            ] : []),
+            ...($request->status ? [
+                'status' => ProductStatusEnum::AVAILABLE->value,
+            ] : []),
+        ]);
+        if (! $result) {
+            return response()->json([
+                'message' => 'Product not updated',
+                'success' => false,
+            ], Response::HTTP_NOT_MODIFIED);
+        }
 
-    public function patch(Request $request, $id) {}
+        return ProductsResource::make($product->refresh());
+    }
 
     /**
      * Delete Product
