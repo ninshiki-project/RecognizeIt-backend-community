@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\ShopAdded;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ShopResource;
 use App\Models\Shop;
@@ -53,6 +54,11 @@ class ShopController extends Controller
         $shop = Shop::create([
             'product_id' => $request->product,
         ]);
+
+        /**
+         * Dispatch an event
+         */
+        ShopAdded::dispatch($shop);
 
         /**
          * The product added to shop
