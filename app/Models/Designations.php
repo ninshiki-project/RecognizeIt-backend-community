@@ -4,17 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 /**
  * App\Models\Designations
  *
  * @property mixed $id
  * @property string $name
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Designations newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Designations newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Designations query()
  * @method static \Illuminate\Database\Eloquent\Builder|Designations whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Designations whereName($value)
+ *
  * @mixin \Eloquent
  */
 class Designations extends Model
@@ -28,7 +29,6 @@ class Designations extends Model
         'id' => 'integer',
         'name' => 'string',
     ];
-
 
     /**
      * @return array[]
@@ -44,6 +44,4 @@ class Designations extends Model
             ['id' => 6, 'name' => 'Junior Zoho Developer'],
         ];
     }
-
-
 }

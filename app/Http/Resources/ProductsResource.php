@@ -32,7 +32,7 @@ class ProductsResource extends JsonResource
                     'name' => $this->editor,
                 ];
             }),
-//            'wishlist' => $this->mergeWhen(\Wishlist::has($this->getModel()), $this->wish),
+            //            'wishlist' => $this->mergeWhen(\Wishlist::has($this->getModel()), $this->wish),
         ];
     }
 }
