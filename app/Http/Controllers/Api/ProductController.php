@@ -138,10 +138,6 @@ class ProductController extends Controller
 
         $product = Products::findOrFail($id);
 
-        if (Wishlist::has($product)) {
-            $productInUsed = true;
-        }
-
         if ($product->shop()->count() > 0) {
             $productInUsed = true;
         }
