@@ -13,7 +13,6 @@ use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
-use Wishlist;
 
 class ProductController extends Controller
 {
