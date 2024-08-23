@@ -56,6 +56,8 @@ class ShopController extends Controller
 
         /**
          * The product added to shop
+         *
+         * @status 201
          */
         return ShopResource::make($shop);
 
