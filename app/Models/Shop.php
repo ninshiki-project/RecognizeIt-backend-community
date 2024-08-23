@@ -11,7 +11,6 @@ class Shop extends Model
 {
     use HasFactory, HasUuids;
 
-
     protected $fillable = [
         'product_id',
     ];
