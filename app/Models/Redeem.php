@@ -55,6 +55,7 @@ class Redeem extends Model
         if (! $status) {
             return $query;
         }
+
         return $query->where('status', $status);
     }
 }

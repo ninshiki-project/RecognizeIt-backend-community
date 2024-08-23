@@ -23,7 +23,7 @@ class RedeemResource extends JsonResource
                         'name' => $this->user->name,
                         'email' => $this->user->email,
                         'avatar' => $this->user->avatar,
-                    ]
+                    ],
                 ];
             }),
             'product' => ProductsResource::make($this->product),

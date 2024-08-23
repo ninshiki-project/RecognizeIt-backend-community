@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Products;
 use App\Models\Redeem;
 use App\Models\Shop;
 use App\Models\User;
@@ -21,6 +20,7 @@ class RedeemFactory extends Factory
     public function definition(): array
     {
         $shop = Shop::inRandomOrder()->first();
+
         return [
             'product_id' => $shop->product->id,
             'status' => collect(['Redeemed', 'Approved', 'Declined', 'Processing'])->random()[0],
