@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Designations;
 use App\Models\User;
 use Closure;
 use Illuminate\Database\Seeder;
@@ -87,13 +88,13 @@ class TheSeeder extends Seeder
         /**
          *  Create Admin User
          */
-        if (app()->environment() !== 'production') {
+        if (app()->isLocal() || app()->runningUnitTests()) {
             $this->command->warn(PHP_EOL.'Creating Admin user and assigning roles...');
             $this->withProgressBar(1, function () {
                 $user = User::factory()->create([
                     'name' => 'Test User',
                     'email' => 'test@example.com',
-                    'designation' => config('ninshiki.designation')[0],
+                    'designation' => Designations::inRandomOrder()->first()->name,
                 ])
                     ->assignRole('Administrator');
                 $this->command->warn(PHP_EOL.'Creating Points System for the User...');
@@ -106,11 +107,11 @@ class TheSeeder extends Seeder
         /**
          *  Create Normal User
          */
-        if (app()->environment() !== 'production') {
+        if (app()->isLocal() || app()->runningUnitTests()) {
             $this->command->warn(PHP_EOL.'Creating Normal user and assigning roles...');
             $this->withProgressBar(5, function () {
                 $user = User::factory()->create([
-                    'designation' => config('ninshiki.designation')[0],
+                    'designation' => Designations::inRandomOrder()->first()?->name,
                 ])
                     ->assignRole('Member');
                 $this->command->warn(PHP_EOL.'Creating Points System for the User...');

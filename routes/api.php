@@ -7,9 +7,12 @@ use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\PostsController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\RedeemController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\SessionController;
+use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -72,5 +75,20 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
 
     // Designation / Position / Job Title
     Route::get('designation', [DesignationsController::class, 'index']);
+
+    // Products
+    Route::apiResource('products', ProductController::class);
+
+    // Shop
+    Route::apiResource('shop', ShopController::class)->only(['index', 'store', 'destroy']);
+
+    // Redeem
+    Route::prefix('redeems')->group(function () {
+        Route::get('/', [RedeemController::class, 'index']);
+        Route::post('/shop', [RedeemController::class, 'store']);
+        Route::delete('/{id}', [RedeemController::class, 'cancel']);
+        Route::patch('/{id}', [RedeemController::class, 'status']);
+        Route::get('/{id}', [RedeemController::class, 'show']);
+    });
 
 });
