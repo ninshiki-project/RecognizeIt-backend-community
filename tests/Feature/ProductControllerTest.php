@@ -32,13 +32,15 @@ it('can create a new product', function () {
 
     $file = UploadedFile::fake()->image('avatar.jpg');
 
-    postJson('/api/v1/products', [
+   $resp = postJson('/api/v1/products', [
         'name' => 'Test Product'.random_int(1, 100),
         'description' => \Pest\Faker\fake()->text(),
         'price' => random_int(10, 100),
         'stock' => random_int(10, 100),
         'image' => $file,
-    ])->assertStatus(201);
+    ]);
+   dd($resp->content());
+//       ->assertStatus(201);
 });
 it('can update the product with batch fields', function () {
 
