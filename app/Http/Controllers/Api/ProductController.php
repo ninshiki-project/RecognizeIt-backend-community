@@ -59,7 +59,7 @@ class ProductController extends Controller
         if ($result) {
             /**
              * @status 201
-            */
+             */
             return ProductsResource::make($result);
         } else {
             return response()->json([
