@@ -4,10 +4,12 @@ namespace Tests\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
 use App\Models\Redeem;
+use App\Models\Shop;
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\patchJson;
+use function Pest\Laravel\postJson;
 
 it('can display specific redeem record', function () {
     getJson('/api/v1/redeems/'.Redeem::inRandomOrder()->first()->id)
@@ -21,7 +23,20 @@ it('can display specific redeem record', function () {
             ],
         ]);
 });
-it('store', function () {});
+it('can redeem from the shop', function () {
+    postJson('/api/v1/redeems/shop', [
+        'shop' => Shop::inRandomOrder()->first()->id,
+    ])
+        ->assertStatus(201)
+        ->assertJsonStructure([
+            'data' => [
+                'id',
+                'user',
+                'product',
+                'status',
+            ],
+        ]);
+});
 it('can display all the redeem item', function () {
     getJson('/api/v1/redeems')
         ->assertStatus(200)

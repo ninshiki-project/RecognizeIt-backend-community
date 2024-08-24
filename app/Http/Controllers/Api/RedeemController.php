@@ -45,6 +45,7 @@ class RedeemController extends Controller
             'shop' => [
                 'required',
                 'exists:shops,id',
+                'string',
             ],
         ]);
         $shop = Shop::query()->findOrFail($request->shop);
@@ -57,6 +58,9 @@ class RedeemController extends Controller
 
         UserRedeem::dispatch($redeem, $request->user(), $shop);
 
+        /**
+         * @status 201
+         */
         return RedeemResource::make($redeem);
     }
 
