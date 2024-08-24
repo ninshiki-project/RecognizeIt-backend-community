@@ -57,6 +57,9 @@ class ProductController extends Controller
             'stock' => $request->stock,
         ]);
         if ($result) {
+            /**
+             * @status 201
+            */
             return ProductsResource::make($result);
         } else {
             return response()->json([
