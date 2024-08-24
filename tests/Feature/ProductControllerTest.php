@@ -175,7 +175,7 @@ it('it get the specific information of the product', function () {
 });
 it('can delete the product', function () {
     $resp = deleteJson('/api/v1/products/'.Products::inRandomOrder()->first()->id)
-        ->assertStatus(200)
+        ->assertStatus(204)
         ->assertNoContent();
 
 });
