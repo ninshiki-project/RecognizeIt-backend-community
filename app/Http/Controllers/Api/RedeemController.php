@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\UserRedeem;
 use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetRedeemRequest;
 use App\Http\Resources\RedeemResource;
 use App\Models\Redeem;
 use App\Models\Shop;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class RedeemController extends Controller
 {
@@ -51,6 +55,8 @@ class RedeemController extends Controller
             'product_id' => $shop?->product?->id,
         ]);
 
+        UserRedeem::dispatch($redeem, $request->user(), $shop);
+
         return RedeemResource::make($redeem);
     }
 
@@ -58,24 +64,63 @@ class RedeemController extends Controller
      * Display the specified resource.
      *
      * @param  $id
-     * @return Response
+     * @return RedeemResource
      */
-    public function show($id) {}
+    public function show($id)
+    {
+        $redeem = Redeem::findOrFail($id);
+
+        return RedeemResource::make($redeem);
+    }
 
     /**
-     * Update the specified resource in storage.
+     * Cancel the redeem item
+     *
+     * @param  $id
+     * @return JsonResponse|Response
+     */
+    public function cancel($id)
+    {
+        $redeem = Redeem::findOrFail($id);
+        if ($redeem->status != RedeemStatusEnum::WAITING_APPROVAL) {
+            return response()->json([
+                'message' => 'Unable to canceled redeem due to it is already in process.',
+                'status' => false,
+            ], HttpResponse::HTTP_FORBIDDEN);
+        }
+
+        $redeem->status = RedeemStatusEnum::CANCELED->value;
+        $redeem->save();
+
+        return response()->noContent();
+    }
+
+    /**
+     * Update Redeemed Status
      *
      * @param  Request  $request
      * @param  $id
-     * @return Response
+     * @return RedeemResource|JsonResponse
      */
-    public function update(Request $request, $id) {}
+    public function status(Request $request, $id)
+    {
+        $request->validate([
+            'status' => [
+                'required',
+                'string',
+                Rule::enum(RedeemStatusEnum::class),
+            ],
+        ]);
+        $redeem = Redeem::findOrFail($id);
+        if ($redeem->status == RedeemStatusEnum::REDEEMED->value) {
+            return response()->json([
+                'message' => 'Unable to change the status due to it was already completed',
+                'status' => false,
+            ], HttpResponse::HTTP_FORBIDDEN);
+        }
+        $redeem->status = $request->status;
+        $redeem->save();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  $id
-     * @return Response
-     */
-    public function destroy($id) {}
+        return RedeemResource::make($redeem->refresh());
+    }
 }

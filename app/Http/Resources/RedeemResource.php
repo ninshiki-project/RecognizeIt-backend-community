@@ -16,16 +16,12 @@ class RedeemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->mergeWhen($this->user->exists(), function () {
-                return [
-                    'user' => [
-                        'id' => $this->user->id,
-                        'name' => $this->user->name,
-                        'email' => $this->user->email,
-                        'avatar' => $this->user->avatar,
-                    ]
-                ];
-            }),
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+                'avatar' => $this->user->avatar,
+            ],
             'product' => ProductsResource::make($this->product),
             'status' => $this->status,
             'created_at' => $this->created_at,

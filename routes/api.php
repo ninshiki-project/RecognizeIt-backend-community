@@ -86,6 +86,9 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     Route::prefix('redeems')->group(function () {
         Route::get('/', [RedeemController::class, 'index']);
         Route::post('/shop', [RedeemController::class, 'store']);
+        Route::delete('/{id}', [RedeemController::class, 'cancel']);
+        Route::patch('/{id}', [RedeemController::class, 'status']);
+        Route::get('/{id}', [RedeemController::class, 'show']);
     });
 
 });
