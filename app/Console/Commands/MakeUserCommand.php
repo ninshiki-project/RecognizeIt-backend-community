@@ -78,14 +78,11 @@ class MakeUserCommand extends Command
         ];
         $this->info('logging for creating user');
         try {
-            $user = User::factory()->create([
+            return User::factory()->create([
                 'name' => $this->options['name'],
                 'email' => $this->options['email'],
                 'designation' => config('ninshiki.designation')[0],
             ])->assignRole($this->options['role']);
-            $user->points()->create();
-
-            return $user;
         } catch (\Throwable $th) {
             info($th->getMessage());
         }

@@ -97,8 +97,6 @@ class TheSeeder extends Seeder
                     'designation' => Designations::inRandomOrder()->first()->name,
                 ])
                     ->assignRole('Administrator');
-                $this->command->warn(PHP_EOL.'Creating Points System for the User...');
-                $user->points()->create();
                 $this->command->info(PHP_EOL.'Points created and associated...');
             });
             $this->command->info('Administrator user created.');
@@ -114,8 +112,6 @@ class TheSeeder extends Seeder
                     'designation' => Designations::inRandomOrder()->first()?->name,
                 ])
                     ->assignRole('Member');
-                $this->command->warn(PHP_EOL.'Creating Points System for the User...');
-                $user->points()->create();
                 $this->command->info(PHP_EOL.'Points created and associated...');
             });
             $this->command->info('Administrator user created.');

@@ -33,9 +33,6 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     });
     Route::apiResource('users', UserController::class)->except(['store', 'update']);
 
-    // Points
-    Route::get('points', [PointsController::class, 'index']);
-
     // Invitation
     Route::group(['prefix' => '/invitations'], function () {
         Route::get('/', [InvitationController::class, 'index']);

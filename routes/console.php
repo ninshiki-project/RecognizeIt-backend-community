@@ -1,12 +1,12 @@
 <?php
 
-use App\Console\Commands\ResetCreditsCommand;
+use App\Console\Commands\ResetSpendWalletCommand;
 use Illuminate\Support\Facades\Schedule;
 
 /**
  * Scheduled Command
  */
-Schedule::command(ResetCreditsCommand::class)
+Schedule::command(ResetSpendWalletCommand::class)
     ->lastDayOfMonth('23:50')
     ->runInBackground();
 Schedule::command('auth:clear-resets')
