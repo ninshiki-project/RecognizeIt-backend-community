@@ -71,7 +71,7 @@
             "./vendor/bin/phpstan analyse --memory-limit=2G"
         ],
         "test": [
-            "./vendor/bin/pest"
+            "@php artisan test"
         ],
         "test-coverage": [
             "./vendor/bin/pest --coverage"

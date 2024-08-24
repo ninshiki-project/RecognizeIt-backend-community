@@ -16,8 +16,10 @@ it('can get all the product that are in the shop', function () {
         ]);
 });
 it('can add a product to the shop', function () {
+    // get the product that doesn't exist in the shop
+    $product = Products::has('shop', '<', 1)->first();
     postJson('/api/v1/shop', [
-        'product' => Products::inRandomOrder()->first()?->id,
+        'product' => $product->id,
     ])
         ->assertStatus(201)
         ->assertJson(fn (AssertableJson $json) => [

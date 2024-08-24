@@ -173,8 +173,9 @@ it('it get the specific information of the product', function () {
             ],
         ]);
 });
-it('can delete the product', function () {
-    $resp = deleteJson('/api/v1/products/'.Products::inRandomOrder()->first()->id)
+it('can delete the product that is not in use', function () {
+    $product = Products::has('shop', '<', 1)->first();
+    $resp = deleteJson('/api/v1/products/'.$product->id)
         ->assertStatus(204)
         ->assertNoContent();
 
