@@ -9,7 +9,7 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        if (app()->environment() !== 'production') {
+        if (app()->isLocal() || app()->runningUnitTests()) {
             Products::factory()->count(200)->create();
         }
     }

@@ -88,7 +88,7 @@ class TheSeeder extends Seeder
         /**
          *  Create Admin User
          */
-        if (app()->environment() !== 'production') {
+        if (app()->isLocal() || app()->runningUnitTests()) {
             $this->command->warn(PHP_EOL.'Creating Admin user and assigning roles...');
             $this->withProgressBar(1, function () {
                 $user = User::factory()->create([
@@ -107,7 +107,7 @@ class TheSeeder extends Seeder
         /**
          *  Create Normal User
          */
-        if (app()->environment() !== 'production') {
+        if (app()->isLocal() || app()->runningUnitTests()) {
             $this->command->warn(PHP_EOL.'Creating Normal user and assigning roles...');
             $this->withProgressBar(5, function () {
                 $user = User::factory()->create([
