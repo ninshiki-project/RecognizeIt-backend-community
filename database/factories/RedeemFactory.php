@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Products;
 use App\Models\Redeem;
 use App\Models\Shop;
 use App\Models\User;
