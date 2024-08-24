@@ -22,6 +22,11 @@ class UserObserver
          *  2. Spend Wallet - Will be used when recognizing other colleague, and the fund amount will be reset every end day of the month
          *  3. Currency Wallet - Will be used once the user exchange his earned coins into a real currency
          */
+        $defaultWallet = $user->createWallet([
+            'name' => 'Ninshiki Wallet',
+            'slug' => 'ninshiki-wallet',
+        ]);
+
         $spendWallet = $user->createWallet([
             'name' => 'Spend Wallet',
             'slug' => 'spend-wallet',
