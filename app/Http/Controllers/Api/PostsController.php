@@ -66,7 +66,7 @@ class PostsController extends Controller
          */
         if ($request->has('image')) {
             $uud = Str::uuid()->toString();
-            $fileName = "{$request->user()->id}-{$uud}.{$request->file('image')->getClientOriginalExtension()}')}";
+            $fileName = "{$request->user()->id}-{$uud}";
             $this->uploadedAsset = $request->image->storeOnCloudinaryAs('posts', $fileName);
         }
         $this->post = Posts::create([

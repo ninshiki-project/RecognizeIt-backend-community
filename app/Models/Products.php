@@ -23,6 +23,9 @@ class Products extends Model implements Wishable
         'price',
         'stock',
         'status',
+        'image',
+        'created_by',
+        'updated_by',
     ];
 
     protected $casts = [
