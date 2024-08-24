@@ -38,9 +38,7 @@ it('can create a new product', function () {
         'price' => random_int(10, 100),
         'stock' => random_int(10, 100),
         'image' => $file,
-    ]);
-   dd($resp->content());
-//       ->assertStatus(201);
+    ])->assertStatus(201);
 });
 it('can update the product with batch fields', function () {
 
