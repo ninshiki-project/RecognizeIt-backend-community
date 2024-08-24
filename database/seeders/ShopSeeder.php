@@ -2,15 +2,20 @@
 
 namespace Database\Seeders;
 
-use App\Models\Products;
+use App\Models\Shop;
 use Illuminate\Database\Seeder;
 
-class ProductSeeder extends Seeder
+class ShopSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run(): void
     {
         if (app()->isLocal() || app()->runningUnitTests()) {
-            Products::factory()->count(250)->create();
+            Shop::factory(100)->create();
         }
     }
 }

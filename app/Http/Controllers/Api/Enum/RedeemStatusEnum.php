@@ -8,5 +8,6 @@ enum RedeemStatusEnum: string
     case APPROVED = 'Approved';
     case DECLINED = 'Declined';
     case PROCESSING = 'Processing';
-    case WAITING_APPROVAL = 'Waiting Approval';
+    case WAITING_APPROVAL = 'Waiting-Approval';
+    case CANCELED = 'Canceled';
 }
