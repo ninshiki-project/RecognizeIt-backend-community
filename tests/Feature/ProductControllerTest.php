@@ -33,12 +33,12 @@ it('can create a new product', function () {
     $file = UploadedFile::fake()->image('avatar.jpg');
 
     postJson('/api/v1/products', [
-        'name' => 'Test Product',
-        'description' => 'Test Product',
-        'price' => rand(10, 100),
-        'stock' => rand(10, 100),
+        'name' => 'Test Product'.random_int(1, 100),
+        'description' => \Pest\Faker\fake()->text(),
+        'price' => random_int(10, 100),
+        'stock' => random_int(10, 100),
         'image' => $file,
-    ]);
+    ])->assertStatus(201);
 });
 it('can update the product with batch fields', function () {
 
@@ -47,8 +47,8 @@ it('can update the product with batch fields', function () {
     putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
         'name' => 'Fake Product'.random_int(1, 100),
         'description' => \Pest\Faker\fake()->text(),
-        'price' => random_int(1, 100),
-        'stock' => random_int(1, 100),
+        'price' => random_int(10, 100),
+        'stock' => random_int(10, 100),
         'image' => $file,
         'status' => collect(['unavailable', 'available'])->random(1)[0],
     ])
