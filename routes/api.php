@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\DesignationsController;
 use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\PermissionsController;
-use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\PostsController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;

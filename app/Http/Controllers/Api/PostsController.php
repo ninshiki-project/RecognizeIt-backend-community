@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Enum\PostTypeEnum;
+use App\Http\Controllers\Api\Enum\WalletsEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
 use App\Http\Resources\PostResource;
 use App\Jobs\PostRecognizeJob;
 use App\Models\Posts;
 use App\Models\User;
+use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,6 +49,8 @@ class PostsController extends Controller
      *
      * @param  PostsPostRequest  $request
      * @return JsonResponse
+     *
+     * @throws ExceptionInterface
      */
     public function store(PostsPostRequest $request): JsonResponse
     {
@@ -53,12 +58,13 @@ class PostsController extends Controller
         /**
          *  Manual Validation if the remaining points sufficed to reward
          */
-        $pointsToConsume = count($request->recipient_id) * $request->points;
+        $totalFundsToDeduct = count($request->recipient_id) * $request->amount;
         $authenticated_user = $request->user();
+        $wallet = $authenticated_user->getWallet(WalletsEnum::SPEND->value);
 
-        if ($request->type === PostTypeEnum::User && $pointsToConsume > $authenticated_user->points->credits) {
+        if ($request->type === PostTypeEnum::User && $totalFundsToDeduct > $wallet->balanceInt) {
             throw ValidationException::withMessages([
-                'points' => 'insufficient credits left',
+                'points' => 'insufficient fund left',
             ]);
         }
         /**
@@ -90,7 +96,12 @@ class PostsController extends Controller
          */
         $recipients->each(function ($item) use ($request) {
             $_user = User::findOrFail($item['user_id'])->first();
-            $_user->points->increment('points_earned', $request->points);
+            $defaultWallet = $_user->getWallet(WalletsEnum::DEFAULT->value);
+            $defaultWallet->deposit($request->amount, [
+                'title' => 'Ninshiki Wallet',
+                'description' => 'Added funds for being recognize by your colleague',
+                'date_at' => Carbon::now(),
+            ]);
             // send email notification and application notification
             PostRecognizeJob::dispatchAfterResponse($_user);
 
@@ -98,7 +109,11 @@ class PostsController extends Controller
         /**
          *  Deduct all the points to the user who posted a post
          */
-        $authenticated_user->points->decrement('credits', $pointsToConsume);
+        $wallet->withdraw($totalFundsToDeduct, [
+            'title' => 'Spend Wallet',
+            'description' => 'Deduction from posting recognition',
+            'date_at' => Carbon::now(),
+        ]);
 
         /**
          * @status 201
