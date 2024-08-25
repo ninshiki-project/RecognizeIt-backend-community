@@ -12,7 +12,6 @@ use App\Models\Shop;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
@@ -37,7 +36,7 @@ class RedeemController extends Controller
      * Redeem Item from Shop
      *
      * @param  Request  $request
-     * @return RedeemResource
+     * @return RedeemResource|JsonResponse
      */
     public function store(Request $request)
     {
@@ -48,7 +47,31 @@ class RedeemController extends Controller
                 'string',
             ],
         ]);
-        $shop = Shop::query()->findOrFail($request->shop);
+        $shop = Shop::findOrFail($request->shop);
+        $product = $shop->product;
+
+        // check if the product still available
+        if (! $product->isAvailable()) {
+            return response()->json([
+                'message' => 'Product is not available due to unavailable of the stock',
+                'success' => false,
+            ], HttpResponse::HTTP_BAD_REQUEST);
+        }
+
+        $product->decrement('stock', 1);
+        $product->save();
+
+        //pay the item using the ninshiki-wallet
+        /**
+         * @status 402
+         */
+        if (! $request->user()->safePay($product)) {
+            return response()->json([
+                'message' => 'Payment processing failed. Please check your wallet balance and try again.',
+                'success' => false,
+            ], HttpResponse::HTTP_PAYMENT_REQUIRED);
+        }
+
         $redeem = Redeem::create([
             'shop_id' => $shop?->id,
             'user_id' => $request->user()->id,
@@ -81,7 +104,7 @@ class RedeemController extends Controller
      * Cancel the redeem item
      *
      * @param  $id
-     * @return JsonResponse|Response
+     * @return JsonResponse
      */
     public function cancel($id)
     {
@@ -89,14 +112,26 @@ class RedeemController extends Controller
         if ($redeem->status != RedeemStatusEnum::WAITING_APPROVAL) {
             return response()->json([
                 'message' => 'Unable to canceled redeem due to it is already in process.',
-                'status' => false,
+                'success' => false,
             ], HttpResponse::HTTP_FORBIDDEN);
         }
 
-        $redeem->status = RedeemStatusEnum::CANCELED->value;
-        $redeem->save();
+        // revert back the product stock
+        $redeem->shop->product->increment('stock', 1);
 
-        return response()->noContent();
+        // refund the user
+        auth()->user()->refund($redeem->shop->product);
+
+        $redeem->status = RedeemStatusEnum::CANCELED->value;
+        $redeem->push();
+
+        /**
+         * @status 200
+         */
+        return response()->json([
+            'message' => 'Redeem canceled successfully, payment has been refunded.',
+            'success' => true,
+        ], HttpResponse::HTTP_OK);
     }
 
     /**
@@ -119,11 +154,31 @@ class RedeemController extends Controller
         if ($redeem->status == RedeemStatusEnum::REDEEMED->value) {
             return response()->json([
                 'message' => 'Unable to change the status due to it was already completed',
-                'status' => false,
+                'success' => false,
             ], HttpResponse::HTTP_FORBIDDEN);
         }
+
+        // refund if cancel / rejected / declined
+        if ($request->status == RedeemStatusEnum::CANCELED->value || $redeem->status == RedeemStatusEnum::DECLINED->value) {
+            // revert back the product stock
+            $redeem->shop->product->increment('stock', 1);
+
+            // refund the user
+            auth()->user()->refund($redeem->shop->product);
+            $redeem->status = $request->status;
+            $redeem->push();
+
+            /**
+             * @status 200
+             */
+            return response()->json([
+                'message' => 'Redeem canceled successfully, payment has been refunded.',
+                'success' => true,
+            ], HttpResponse::HTTP_OK);
+        }
+
         $redeem->status = $request->status;
-        $redeem->save();
+        $redeem->push();
 
         return RedeemResource::make($redeem->refresh());
     }

@@ -4,7 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\ResetPasswordNotification;
-use Dive\Wishlist\Models\Concerns\InteractsWithWishlist;
+use App\Observers\UserObserver;
+use Bavix\Wallet\Interfaces\Customer;
+use Bavix\Wallet\Traits\CanPay;
+use Bavix\Wallet\Traits\HasWallet;
+use Bavix\Wallet\Traits\HasWallets;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -14,9 +19,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+#[ObservedBy([UserObserver::class])]
+class User extends Authenticatable implements Customer
 {
-    use HasApiTokens, HasFactory, HasRoles, InteractsWithWishlist, Notifiable, SoftDeletes;
+    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallet, HasWallets, Notifiable, SoftDeletes;
 
     protected string $guard_name = 'sanctum';
 
@@ -67,11 +73,6 @@ class User extends Authenticatable
     public function departments(): HasOne
     {
         return $this->hasOne(Departments::class, 'id', 'department');
-    }
-
-    public function points(): HasOne
-    {
-        return $this->hasOne(Points::class, 'user_id', 'id');
     }
 
     public function invitations(): HasMany

@@ -26,7 +26,7 @@ class ProductsFactory extends Factory
             'image' => fake()->placeholder(),
             'description' => $this->faker->text(),
             'price' => random_int(1000, 40000),
-            'stock' => random_int(1, 50),
+            'stock' => random_int(100, 300),
             'status' => collect(['available', 'unavailable'])->random(1)[0],
         ];
     }

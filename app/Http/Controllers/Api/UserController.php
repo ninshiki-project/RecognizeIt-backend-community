@@ -78,14 +78,4 @@ class UserController extends Controller
     {
         return response()->json(User::findOrFail($id)->delete(), Response::HTTP_ACCEPTED);
     }
-
-    /**
-     * Get Points of User
-     *
-     * @return JsonResponse
-     */
-    public function showPoints(User $user)
-    {
-        return response()->json($user->points);
-    }
 }

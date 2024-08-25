@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Http\Controllers\Api\Enum\ProductStatusEnum;
 use App\Models\Scopes\ProductAvailableScope;
-use Dive\Wishlist\Contracts\Wishable;
-use Dive\Wishlist\Models\Concerns\CanBeWished;
+use Bavix\Wallet\Interfaces\Customer;
+use Bavix\Wallet\Interfaces\ProductInterface;
+use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,9 +14,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Wildside\Userstamps\Userstamps;
 
-class Products extends Model implements Wishable
+class Products extends Model implements ProductInterface
 {
-    use CanBeWished, HasFactory, HasUuids, SoftDeletes, Userstamps;
+    use HasFactory, HasUuids, HasWallet, SoftDeletes, Userstamps;
 
     protected $fillable = [
         'name',
@@ -55,8 +56,29 @@ class Products extends Model implements Wishable
         return $query->where('status', 'unavailable');
     }
 
+    /**
+     * @return bool
+     */
+    public function isAvailable(): bool
+    {
+        return $this->stock > 0;
+    }
+
     public function shop(): HasOne
     {
         return $this->hasOne(Shop::class, 'product_id', 'id');
+    }
+
+    public function getAmountProduct(Customer $customer): int|string
+    {
+        return $this->price;
+    }
+
+    public function getMetaProduct(): ?array
+    {
+        return [
+            'title' => $this->name,
+            'description' => 'Purchase of Product #'.$this->id,
+        ];
     }
 }
