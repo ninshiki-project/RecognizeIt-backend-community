@@ -5,6 +5,7 @@ namespace Tests\Http\Controllers\Api;
 use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
 use App\Models\Redeem;
 use App\Models\Shop;
+use App\Models\User;
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
@@ -24,8 +25,13 @@ it('can display specific redeem record', function () {
         ]);
 });
 it('can redeem from the shop', function () {
-    postJson('/api/v1/redeems/shop', [
-        'shop' => Shop::inRandomOrder()->first()->id,
+    $user = User::first();
+    $wallet = $user->wallet->deposit(400000);
+    $shop = Shop::whereHas('product', function ($query) {
+        $query->available();
+    })->inRandomOrder()->first();
+    $reps = postJson('/api/v1/redeems/shop', [
+        'shop' => $shop->id,
     ])
         ->assertStatus(201)
         ->assertJsonStructure([
@@ -94,5 +100,9 @@ it('can update the status', function () {
 it('can cancel the redeem item from shop if still in waiting for approval', function () {
     $redeem = Redeem::where('status', RedeemStatusEnum::WAITING_APPROVAL->value)->first();
     deleteJson('/api/v1/redeems/'.$redeem->id)
-        ->assertNoContent();
+        ->assertOk()
+        ->assertJsonStructure([
+            'message',
+            'success',
+        ]);
 });

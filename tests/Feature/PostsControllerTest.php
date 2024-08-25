@@ -11,7 +11,7 @@ it('can like a post', function () {
 it('can create a new post', function () {
     $resp = \Pest\Laravel\postJson('/api/v1/posts', [
         'post_content' => fake()->paragraph(10),
-        'points' => 3,
+        'amount' => 3,
         'attachment_type' => 'gif',
         'gif_url' => fake()->imageUrl(word: 'ninshiki-testing'),
         'type' => 'user',
