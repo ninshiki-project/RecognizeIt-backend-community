@@ -7,6 +7,8 @@
     "require": {
         "php": "^8.3",
         "bavix/laravel-wallet": "^11.2",
+        "bavix/laravel-wallet-uuid": "^3.0",
+        "bavix/laravel-wallet-warmup": "^3.0",
         "calebporzio/sushi": "^2.5",
         "cloudinary-labs/cloudinary-laravel": "^2.1",
         "dedoc/scramble": "^0.11.11",

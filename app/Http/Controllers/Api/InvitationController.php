@@ -8,12 +8,17 @@ use App\Models\Invitation;
 use App\Models\User;
 use App\Notifications\User\Invitation\DeclinedNotification;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class InvitationController extends Controller
 {
     /**
-     * Get All Invitations
+     * Get All Invitation
+     *
+     * @return JsonResponse
+     *
+     * @response Invitation[]
      */
     public function index()
     {
@@ -22,6 +27,9 @@ class InvitationController extends Controller
 
     /**
      * Accept/Decline Invitation
+     *
+     * @param  UserInvitationPatchRequest  $request
+     * @return JsonResponse
      */
     public function invitation(UserInvitationPatchRequest $request)
     {
@@ -48,10 +56,6 @@ class InvitationController extends Controller
             'department' => $invitation?->department,
             'role' => $invitation?->role,
         ])->save();
-
-        User::findOrFail($user)->points->create([
-            'user_id' => $user,
-        ]);
 
         // update the invitation
         $invitation->status = 'accepted';

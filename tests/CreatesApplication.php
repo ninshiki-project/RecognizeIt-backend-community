@@ -11,17 +11,11 @@ trait CreatesApplication
     {
         parent::setUp();
         $this->artisan('migrate:refresh --seed');
-
-        $user = User::factory()
-            ->create();
-        $user->points()->create([
-            'user_id' => $user->id,
-        ]);
+        $user = User::first();
         Sanctum::actingAs(
             $user,
             ['*']
         );
-
         \Event::fake();
 
     }

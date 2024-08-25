@@ -1,11 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Artisan;
-
-beforeEach(function () {
-    Artisan::call('migrate:refresh --seed');
-});
-
 it('can accept invite by user', function () {
     $email = fake()->safeEmail;
     $data = \Pest\Laravel\postJson('/api/v1/users/invite', [

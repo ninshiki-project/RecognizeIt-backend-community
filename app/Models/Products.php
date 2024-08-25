@@ -56,6 +56,11 @@ class Products extends Model implements ProductInterface
         return $query->where('status', 'unavailable');
     }
 
+    public function isAvailable(): bool
+    {
+        return $this->stock < 1;
+    }
+
     public function shop(): HasOne
     {
         return $this->hasOne(Shop::class, 'product_id', 'id');
