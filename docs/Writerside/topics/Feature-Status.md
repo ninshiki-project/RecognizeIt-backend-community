@@ -2,7 +2,6 @@
 
 | **Feature**                          | **Status**                                             |
 |--------------------------------------|--------------------------------------------------------|
-| Recognition                          | ![2714.png](2714.png){width="20"}_Implemented_         |
 | Personalized Profiles                | ![23f3.png](23f3.png){width="20"}_Partial Implemented_ |
 | Peer-to-Peer Recognition             | ![2714.png](2714.png){width="20"}_Implemented_         |
 | Virtual Wallet                       | ![2714.png](2714.png){width="20"}_Implemented_         |
