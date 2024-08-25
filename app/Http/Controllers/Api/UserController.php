@@ -78,5 +78,4 @@ class UserController extends Controller
     {
         return response()->json(User::findOrFail($id)->delete(), Response::HTTP_ACCEPTED);
     }
-
 }

@@ -18,6 +18,7 @@ class RedeemFactory extends Factory
      * Define the model's default state.
      *
      * @return array
+     *
      * @throws ExceptionInterface
      */
     public function definition(): array
