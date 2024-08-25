@@ -76,11 +76,6 @@ class User extends Authenticatable implements Customer
         return $this->hasOne(Departments::class, 'id', 'department');
     }
 
-    public function points(): HasOne
-    {
-        return $this->hasOne(Points::class, 'user_id', 'id');
-    }
-
     public function invitations(): HasMany
     {
         return $this->hasMany(Invitation::class, 'invited_by_user', 'id');

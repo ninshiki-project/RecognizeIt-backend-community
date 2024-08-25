@@ -12,7 +12,6 @@ use App\Models\Shop;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
@@ -52,7 +51,7 @@ class RedeemController extends Controller
         $product = $shop->product;
 
         // check if the product still available
-        if (! $shop->product->isAvailable()) {
+        if (! $product->isAvailable()) {
             return response()->json([
                 'message' => 'Product is not available due to unavailable of the stock',
                 'success' => false,
@@ -113,7 +112,7 @@ class RedeemController extends Controller
         if ($redeem->status != RedeemStatusEnum::WAITING_APPROVAL) {
             return response()->json([
                 'message' => 'Unable to canceled redeem due to it is already in process.',
-                'status' => false,
+                'success' => false,
             ], HttpResponse::HTTP_FORBIDDEN);
         }
 
@@ -131,7 +130,7 @@ class RedeemController extends Controller
          */
         return response()->json([
             'message' => 'Redeem canceled successfully, payment has been refunded.',
-            'status' => true,
+            'success' => true,
         ], HttpResponse::HTTP_OK);
     }
 
@@ -155,7 +154,7 @@ class RedeemController extends Controller
         if ($redeem->status == RedeemStatusEnum::REDEEMED->value) {
             return response()->json([
                 'message' => 'Unable to change the status due to it was already completed',
-                'status' => false,
+                'success' => false,
             ], HttpResponse::HTTP_FORBIDDEN);
         }
 
@@ -174,7 +173,7 @@ class RedeemController extends Controller
              */
             return response()->json([
                 'message' => 'Redeem canceled successfully, payment has been refunded.',
-                'status' => true,
+                'success' => true,
             ], HttpResponse::HTTP_OK);
         }
 
