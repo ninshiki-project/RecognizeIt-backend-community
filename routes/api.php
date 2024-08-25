@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\SessionController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\WalletController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login/credentials', [AuthenticationController::class, 'loginViaEmail'])
@@ -84,6 +85,13 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [RedeemController::class, 'cancel']);
         Route::patch('/{id}', [RedeemController::class, 'status']);
         Route::get('/{id}', [RedeemController::class, 'show']);
+    });
+
+    //Wallets
+    Route::prefix('wallets')->group(function () {
+        Route::get('/default/balance', [WalletController::class, 'defaultWalletBalance']);
+        Route::get('/spend/balance', [WalletController::class, 'spendWalletBalance']);
+        Route::get('/currency/balance', [WalletController::class, 'currencyWalletBalance']);
     });
 
 });
