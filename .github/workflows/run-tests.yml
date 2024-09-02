@@ -61,4 +61,4 @@ jobs:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
         run: |
           cp .env.example .env
-          ./vendor/bin/pest --ci
+          ./vendor/bin/pest --ci --bail
