@@ -25,7 +25,7 @@ it('can create a new post', function () {
             'success' => true,
         ]);
 
-    $this->assertDatabaseCount('posts', $count+1);
+    $this->assertDatabaseCount('posts', $count + 1);
 });
 
 it('can get all posts', function () {
@@ -48,7 +48,6 @@ it('can get all 5 post', function () {
         ->assertJsonPath('meta.per_page', 5);
     $this->assertDatabaseCount('posts', $total);
 });
-
 
 it('can like/unlike a post', function () {
     $post = \App\Models\Posts::inRandomOrder()->first();
