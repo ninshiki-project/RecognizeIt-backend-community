@@ -43,6 +43,13 @@ it('can get all 5 post', function () {
     $this->assertDatabaseCount('posts', $count);
 });
 
+
+it('can like/unlike a post', function () {
+    $post = \App\Models\Posts::inRandomOrder()->first();
+    \Pest\Laravel\patchJson('/api/v1/posts/'.$post->id.'/toggle/like')
+        ->assertStatus(200);
+});
+
 it('can set to any page of the pagination in post', function () {
     $count = 20;
     \App\Models\Posts::factory()->count($count)->create();
