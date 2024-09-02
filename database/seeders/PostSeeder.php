@@ -15,7 +15,7 @@ class PostSeeder extends Seeder
      */
     public function run(): void
     {
-        if (app()->isLocal() || app()->runningUnitTests()) {
+        if (app()->isLocal()) {
             Posts::factory()
                 ->has(Recipients::factory(3), 'recipients')
                 ->count(50)->create();
