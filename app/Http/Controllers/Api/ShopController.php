@@ -3,21 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Events\ShopAdded;
+use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ShopResource;
 use App\Models\Shop;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShopController extends Controller
 {
+    use CanPurgeCache;
+
+    protected static string $cacheKey = 'shops';
+
     /**
      * Get all shop products
      */
     public function index()
     {
-        return ShopResource::collection(Shop::all());
+        return Cache::remember(static::$cacheKey, now()->addDays(5), function () {
+            return ShopResource::collection(Shop::all());
+        });
     }
 
     /**
@@ -61,6 +69,11 @@ class ShopController extends Controller
         ShopAdded::dispatch($shop);
 
         /**
+         * Removed Cache
+         */
+        $this->purgeCache();
+
+        /**
          * The product added to shop
          *
          * @status 201
@@ -78,6 +91,11 @@ class ShopController extends Controller
     public function destroy($id)
     {
         Shop::destroy($id);
+
+        /**
+         * Removed Cache
+         */
+        $this->purgeCache();
 
         return response()->noContent();
     }

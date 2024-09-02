@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Api\Enum\InvitationCaseEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInvitationRequest;
 use App\Models\Invitation;
 use App\Models\User;
 use App\Notifications\User\Invitation\InvitationNotification;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
+    use CanPurgeCache;
+
+    protected static string $cacheKey = 'users';
+
     /**
      * Get all users
      *
@@ -21,7 +27,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
+        return Cache::remember(static::$cacheKey, Carbon::now()->addDays(5), function () {
+            return response()->json(User::all());
+        });
     }
 
     /**
@@ -66,16 +74,25 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return response()->json(User::findOrFail($id));
+        return Cache::remember(static::$cacheKey.$id, Carbon::now()->addDays(5), function () use ($id) {
+            return response()->json(User::findOrFail($id));
+        });
+
     }
 
     /**
      * Delete User
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        return response()->json(User::findOrFail($id)->delete(), Response::HTTP_ACCEPTED);
+        /**
+         * Removed Cache
+         */
+        $this->purgeCache();
+        $this->purgeCache(static::$cacheKey.$id);
+
+        return response()->noContent();
     }
 }

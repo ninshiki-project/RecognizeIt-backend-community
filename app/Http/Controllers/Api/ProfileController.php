@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileResetPasswordRequest;
 use App\Http\Requests\ProfileUpdatePasswordRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -17,6 +20,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
 {
+    use CanPurgeCache;
+
+    protected static string $cacheKey = 'profile';
+
     /**
      * Session Profile
      *
@@ -24,7 +31,10 @@ class ProfileController extends Controller
      */
     public function me()
     {
-        return new ProfileResource(auth()->user());
+        return Cache::remember(static::$cacheKey.auth()->user()->id, Carbon::now()->addHour(5), function () {
+            return new ProfileResource(auth()->user());
+        });
+
     }
 
     /**
