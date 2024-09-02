@@ -42,7 +42,7 @@ class PostsController extends Controller
     {
         return Cache::remember(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, Carbon::now()->addDays(2), function () use ($request) {
             return PostResource::collection(
-                Posts::with(['recipients', 'likes'])
+                Posts::with(['recipients'])
                     ->orderByDesc('created_at')
                     ->fastPaginate(
                         perPage: $request->perPage ?? 15,
@@ -141,23 +141,16 @@ class PostsController extends Controller
     }
 
     /**
-     * Like A Post
+     * Like/Unlike Post
      *
      * This route will have automatically used the authenticated user to Like/Unlike the Post
      *
-     * @param  Posts  $posts  supply the Post ID that the user will be like
+     * @param  Posts  $posts  supply the post_id that the user will like/unlike
      * @return JsonResponse
      */
-    public function like(Posts $posts): JsonResponse
+    public function toggleLike(Posts $posts): JsonResponse
     {
-        $existing = $posts->likes()->where('user_id', auth()->id())->first();
-        if ($existing) {
-            $existing->delete();
-        } else {
-            $posts->likes()->create([
-                'user_id' => auth()->id(),
-            ]);
-        }
+        auth()->user()->toggleLike($posts);
 
         /**
          * Removed Cache

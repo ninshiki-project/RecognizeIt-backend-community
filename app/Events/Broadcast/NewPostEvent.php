@@ -39,9 +39,9 @@ class NewPostEvent implements ShouldBroadcast
             'meta' => [
                 'post_id' => $this->post->id,
                 'post_by' => [
-                    'id' => $this->post->postedBy->id,
-                    'name' => $this->post->postedBy->name,
-                    'avatar' => $this->post->postedBy->avatar,
+                    'id' => $this->post->originalPoster->id,
+                    'name' => $this->post->originalPoster->name,
+                    'avatar' => $this->post->originalPoster->avatar,
                 ],
             ],
         ];

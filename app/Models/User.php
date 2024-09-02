@@ -17,12 +17,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Overtrue\LaravelLike\Traits\Liker;
 use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements Customer
 {
-    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallet, HasWallets, Notifiable, SoftDeletes;
+    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallet, HasWallets, Liker, Notifiable, SoftDeletes;
 
     protected string $guard_name = 'sanctum';
 

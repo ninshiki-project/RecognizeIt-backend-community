@@ -66,7 +66,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('roles', RolesController::class)->only(['index', 'show']);
 
     // Post
-    Route::patch('posts/{posts}/like', [PostsController::class, 'like']);
+    Route::patch('posts/{posts}/toggle/like', [PostsController::class, 'toggleLike']);
     Route::apiResource('posts', PostsController::class)->except(['show', 'update', 'destroy']);
 
     // Designation / Position / Job Title

@@ -20,7 +20,7 @@ class PostsFactory extends Factory
             'attachment_url' => $this->faker->imageUrl(),
             'type' => 'user',
             'attachment_type' => 'gif',
-            'posted_by' => User::all()->random(1)->value('id'),
+            'posted_by' => User::first()->id,
         ];
     }
 }

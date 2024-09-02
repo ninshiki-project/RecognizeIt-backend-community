@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Event;
 use Laravel\Sanctum\Sanctum;
 
 trait CreatesApplication
@@ -16,7 +17,7 @@ trait CreatesApplication
             $user,
             ['*']
         );
-        \Event::fake();
+        Event::fake();
 
     }
 }
