@@ -31,7 +31,7 @@ class ProfileController extends Controller
      */
     public function me()
     {
-        return Cache::remember(static::$cacheKey.auth()->user()->id, Carbon::now()->addHour(5), function () {
+        return Cache::remember(static::$cacheKey.auth()->user()->id, Carbon::now()->addHours(5), function () {
             return new ProfileResource(auth()->user());
         });
 
