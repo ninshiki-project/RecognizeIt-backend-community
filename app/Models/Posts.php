@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Overtrue\LaravelLike\Traits\Likeable;
 
 #[ObservedBy([PostsObserver::class])]
 class Posts extends Model
 {
-    use HasFactory;
+    use HasFactory, Likeable;
 
     protected $fillable = [
         'content',
@@ -29,13 +30,8 @@ class Posts extends Model
         return $this->morphMany(Recipients::class, 'recipientable');
     }
 
-    public function postedBy(): BelongsTo
+    public function originalPoster(): BelongsTo
     {
         return $this->belongsTo(User::class, 'posted_by');
-    }
-
-    public function likes(): HasMany
-    {
-        return $this->hasMany(PostLike::class, 'post_id');
     }
 }
