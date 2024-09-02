@@ -6,14 +6,31 @@ use Illuminate\Support\Facades\Cache;
 
 trait CanPurgeCache
 {
-    protected static string $cacheKey;
-
     /**
-     * @param  mixed|null  $key
+     * @param  string|null  $key
      * @return void
      */
-    public function purgeCache(mixed $key = null)
+    public function purgeCache(?string $key = null)
     {
-        isset($key) ? Cache::forget($key) : Cache::forget(static::$cacheKey);
+
+        isset($key) ? static::setCacheKey($key) : static::setCacheKey(static::getCacheKey());
+
+        Cache::forget(static::getCacheKey());
+
+    }
+
+    protected static function getCacheKey(): string
+    {
+        $reflection = new \ReflectionClass(static::class);
+        if (! $reflection->hasProperty('cacheKey')) {
+            throw new \RuntimeException('Cache key property does not exist');
+        }
+
+        return static::$cacheKey;
+    }
+
+    protected static function setCacheKey(string $key)
+    {
+        static::$cacheKey = $key;
     }
 }

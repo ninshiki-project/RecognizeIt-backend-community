@@ -40,7 +40,7 @@ class PostsController extends Controller
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        return Cache::remember(static::$cacheKey, Carbon::now()->addDays(2), function () {
+        return Cache::remember(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, Carbon::now()->addDays(2), function () use ($request) {
             return PostResource::collection(
                 Posts::with(['recipients', 'likes'])
                     ->orderByDesc('created_at')

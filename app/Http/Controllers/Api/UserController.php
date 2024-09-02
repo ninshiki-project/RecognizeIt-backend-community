@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     use CanPurgeCache;
 
-    protected static string $cacheKey = 'users';
+    protected static ?string $cacheKey = 'users';
 
     /**
      * Get all users
