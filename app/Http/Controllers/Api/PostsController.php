@@ -141,11 +141,11 @@ class PostsController extends Controller
     }
 
     /**
-     * Like A Post
+     * Like/Unlike Post
      *
      * This route will have automatically used the authenticated user to Like/Unlike the Post
      *
-     * @param  Posts  $posts  supply the Post ID that the user will be like
+     * @param  Posts  $posts  supply the post_id that the user will like/unlike
      * @return JsonResponse
      */
     public function toggleLike(Posts $posts): JsonResponse
