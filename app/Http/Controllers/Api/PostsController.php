@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Api\Enum\WalletsEnum;
 use App\Http\Controllers\Controller;
@@ -16,15 +17,20 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostsController extends Controller
 {
+    use CanPurgeCache;
+
     private CloudinaryEngine $uploadedAsset;
 
     private Posts $post;
+
+    protected static string $cacheKey = 'posts';
 
     /**
      *  Get All Posts
@@ -34,14 +40,17 @@ class PostsController extends Controller
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        return PostResource::collection(
-            Posts::with(['recipients', 'likes'])
-                ->orderByDesc('created_at')
-                ->fastPaginate(
-                    perPage: $request->perPage ?? 15,
-                    page: $request->page ?? 1,
-                )
-        );
+        return Cache::remember(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, Carbon::now()->addDays(2), function () use ($request) {
+            return PostResource::collection(
+                Posts::with(['recipients', 'likes'])
+                    ->orderByDesc('created_at')
+                    ->fastPaginate(
+                        perPage: $request->perPage ?? 15,
+                        page: $request->page ?? 1,
+                    )
+            );
+        });
+
     }
 
     /**
@@ -116,6 +125,11 @@ class PostsController extends Controller
         ]);
 
         /**
+         * Removed Cache
+         */
+        $this->purgeCache();
+
+        /**
          * @status 201
          */
         return response()->json([
@@ -144,6 +158,11 @@ class PostsController extends Controller
                 'user_id' => auth()->id(),
             ]);
         }
+
+        /**
+         * Removed Cache
+         */
+        $this->purgeCache();
 
         /**
          * @status 200

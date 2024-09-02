@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DepartmentPostRequest;
 use App\Http\Requests\DepartmentPutRequest;
 use App\Models\Departments;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 
 class DepartmentsController extends Controller
 {
+    use CanPurgeCache;
+
+    protected static string $cacheKey = 'departments';
+
     /**
      * Get all Departments
      *
@@ -19,7 +25,10 @@ class DepartmentsController extends Controller
      */
     public function index()
     {
-        return response()->json(Departments::all());
+        return Cache::remember(self::$cacheKey, now()->addDays(5), function () {
+            return response()->json(Departments::all());
+        });
+
     }
 
     /**
@@ -29,6 +38,11 @@ class DepartmentsController extends Controller
      */
     public function store(DepartmentPostRequest $request)
     {
+        /**
+         * Removed Cache
+         */
+        $this->purgeCache();
+
         return response()->json(Departments::create($request->all()));
     }
 
@@ -39,7 +53,10 @@ class DepartmentsController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Departments::findOrFail($id));
+        return Cache::remember(self::$cacheKey.$id, now()->addDays(5), function () use ($id) {
+            return response()->json(Departments::findOrFail($id));
+        });
+
     }
 
     /**
@@ -49,6 +66,12 @@ class DepartmentsController extends Controller
      */
     public function update(DepartmentPutRequest $request, $id)
     {
+        /**
+         * Removed Cache
+         */
+        $this->purgeCache();
+        $this->purgeCache(static::$cacheKey.$id);
+
         return response()->json(Departments::findOrFail($id)->update($request->all()));
     }
 
@@ -59,6 +82,12 @@ class DepartmentsController extends Controller
      */
     public function destroy($id)
     {
+        /**
+         * Removed Cache
+         */
+        $this->purgeCache();
+        $this->purgeCache(static::$cacheKey.$id);
+
         Departments::findOrFail($id)->each(function ($department) {
             $department->users()->each(function (User $user) {
                 $user->department = null;
@@ -67,6 +96,6 @@ class DepartmentsController extends Controller
         })->delete();
 
         // @phpstan-ignore-next-line
-        return response()->json(status: Response::HTTP_ACCEPTED);
+        return response()->noContent();
     }
 }
