@@ -3,6 +3,8 @@
 namespace Tests;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\Sanctum;
 
 trait CreatesApplication
@@ -16,7 +18,8 @@ trait CreatesApplication
             $user,
             ['*']
         );
-        \Event::fake();
+        Event::fake();
+        Mail::fake();
 
     }
 }
