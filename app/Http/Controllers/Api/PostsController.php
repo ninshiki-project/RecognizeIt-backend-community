@@ -148,16 +148,9 @@ class PostsController extends Controller
      * @param  Posts  $posts  supply the Post ID that the user will be like
      * @return JsonResponse
      */
-    public function like(Posts $posts): JsonResponse
+    public function toggleLike(Posts $posts): JsonResponse
     {
-        $existing = $posts->likes()->where('user_id', auth()->id())->first();
-        if ($existing) {
-            $existing->delete();
-        } else {
-            $posts->likes()->create([
-                'user_id' => auth()->id(),
-            ]);
-        }
+        auth()->user()->toggleLike($posts);
 
         /**
          * Removed Cache
