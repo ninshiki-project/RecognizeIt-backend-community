@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Events\Broadcast\NewPostEvent;
-use App\Events\PostAdded;
 use App\Models\Posts;
 
 class PostsObserver
@@ -14,11 +13,6 @@ class PostsObserver
          * Send Broadcast Event for the new post
          */
         NewPostEvent::dispatch($posts);
-
-        /**
-         * Send Event
-         */
-        PostAdded::dispatch($posts);
 
     }
 

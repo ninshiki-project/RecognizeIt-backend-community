@@ -10,7 +10,6 @@ use App\Models\Departments;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
-use Symfony\Component\HttpFoundation\Response;
 
 class DepartmentsController extends Controller
 {

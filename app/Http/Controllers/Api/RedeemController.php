@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\UserRedeem;
 use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetRedeemRequest;
@@ -13,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Validation\Rule;
+use MarJose123\NinshikiEvent\Events\Shop\UserRedeemFromShop;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class RedeemController extends Controller
@@ -79,7 +79,10 @@ class RedeemController extends Controller
             'product_id' => $shop?->product?->id,
         ]);
 
-        UserRedeem::dispatch($redeem, $request->user(), $shop);
+        /**
+         * Dispatch event
+         */
+        UserRedeemFromShop::dispatch($redeem, $request->user(), $shop);
 
         /**
          * @status 201

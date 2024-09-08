@@ -15,6 +15,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
+use MarJose123\NinshikiEvent\Events\Session\UserLogin;
+use MarJose123\NinshikiEvent\Events\Session\UserLogout;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Throwable;
@@ -117,11 +119,16 @@ class AuthenticationController extends Controller
 
                 $token = $userCreated->createToken($request->device_name ?? 'nanshiki')->plainTextToken;
 
+                /**
+                 * Dispatch event for the user login
+                 */
+                UserLogin::dispatch($userCreated);
+
                 return response()->json([
                     'success' => true,
                     'token' => [
                         //@var string Token for authentication.
-                        //@example 31|b2da4411aa4e6d153d6725a17c672b8177c071e60a05158ff19af75a3b5829aa
+                        //@format 31|b2da4411aa4e6d153d6725a17c672b8177c071e60a05158ff19af75a3b5829aa
                         'accessToken' => $token,
                     ],
                     'user' => new ProfileResource($userCreated),
@@ -152,6 +159,11 @@ class AuthenticationController extends Controller
 
         $token = $user->createToken($request->header('User-Agent') ?? 'unknown')->plainTextToken;
 
+        /**
+         * Dispatch event for the user login
+         */
+        UserLogin::dispatch($user);
+
         return response()->json([
             'success' => true,
             'token' => [
@@ -172,6 +184,11 @@ class AuthenticationController extends Controller
         /** @var \Laravel\Sanctum\PersonalAccessToken $token */
         $token = $request->user()->currentAccessToken();
         $token->delete();
+
+        /**
+         * Dispatch event for user logout
+         */
+        UserLogout::dispatch($request->user());
 
         return response()->json('', Response::HTTP_ACCEPTED);
     }

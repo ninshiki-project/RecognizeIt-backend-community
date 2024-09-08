@@ -20,6 +20,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use MarJose123\NinshikiEvent\Events\Post\NewPostAdded;
+use MarJose123\NinshikiEvent\Events\Post\PostToggleLike;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostsController extends Controller
@@ -27,8 +29,6 @@ class PostsController extends Controller
     use CanPurgeCache;
 
     private CloudinaryEngine $uploadedAsset;
-
-    private Posts $post;
 
     protected static string $cacheKey = 'posts';
 
@@ -84,7 +84,7 @@ class PostsController extends Controller
             $fileName = "{$request->user()->id}-{$uud}";
             $this->uploadedAsset = $request->image->storeOnCloudinaryAs('posts', $fileName);
         }
-        $this->post = Posts::create([
+        $post = Posts::create([
             'content' => $request->post_content,
             'attachment_type' => $request->attachment_type,
             'attachment_url' => $request->has('image') ? $this->uploadedAsset->getSecurePath() : $request->gif_url,
@@ -99,7 +99,7 @@ class PostsController extends Controller
                 'user_id' => $item,
             ];
         });
-        $this->post->recipients()->createMany($recipients);
+        $recipientsInstance = $post->recipients()->createMany($recipients);
         /**
          *  Distribute the points to each recipient
          */
@@ -130,12 +130,17 @@ class PostsController extends Controller
         $this->purgeCache();
 
         /**
+         * Dispatch an event for the new post
+         */
+        NewPostAdded::dispatch($post, $recipientsInstance);
+
+        /**
          * @status 201
          */
         return response()->json([
             'success' => true,
             'message' => 'post created',
-            'post' => $this->post,
+            'post' => $post,
         ], Response::HTTP_CREATED);
 
     }
@@ -156,6 +161,11 @@ class PostsController extends Controller
          * Removed Cache
          */
         $this->purgeCache();
+
+        /**
+         * Dispatch an event for toggle like
+         */
+        PostToggleLike::dispatch($posts, auth()->user());
 
         /**
          * @status 200

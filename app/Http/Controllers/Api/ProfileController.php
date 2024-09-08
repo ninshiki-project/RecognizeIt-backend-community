@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use MarJose123\NinshikiEvent\Events\Session\UserChangedPassword;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
@@ -110,6 +111,7 @@ class ProfileController extends Controller
      */
     public function resetPassword(ProfileResetPasswordRequest $request)
     {
+        $_user = null;
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
@@ -119,12 +121,18 @@ class ProfileController extends Controller
                 ])->setRememberToken(Str::random(60));
 
                 $user->save();
+                $_user = $user->fresh();
 
                 event(new PasswordReset($user));
             }
         );
 
         if ($status === Password::PASSWORD_RESET) {
+            /**
+             * Dispatch event for success changed password
+             */
+            UserChangedPassword::dispatch($_user);
+
             return response()->json([
                 'success' => true,
                 'message' => __($status),
