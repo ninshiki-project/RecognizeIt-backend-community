@@ -42,7 +42,7 @@ class PostsController extends Controller
     {
         return Cache::remember(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, Carbon::now()->addDays(2), function () use ($request) {
             return PostResource::collection(
-                Posts::with(['recipients'])
+                Posts::with(['recipients', 'likers'])
                     ->orderByDesc('created_at')
                     ->fastPaginate(
                         perPage: $request->perPage ?? 15,
