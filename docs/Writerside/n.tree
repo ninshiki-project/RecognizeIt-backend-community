@@ -19,4 +19,5 @@
         <toc-element topic="Peer-Recognition.md"/>
         <toc-element topic="Logout-Other-Devices.md"/>
     </toc-element>
+    <toc-element topic="Extensions.md"/>
 </instance-profile>
