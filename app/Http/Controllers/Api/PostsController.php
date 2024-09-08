@@ -152,10 +152,13 @@ class PostsController extends Controller
      *
      * @param  Posts  $posts  supply the post_id that the user will like/unlike
      * @return JsonResponse
+     *
+     * @throws \Exception
      */
     public function toggleLike(Posts $posts): JsonResponse
     {
-        auth()->user()->toggleLike($posts);
+        $user = User::find(auth()->user()->id);
+        $user->toggleLike($posts);
 
         /**
          * Removed Cache

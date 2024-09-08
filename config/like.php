@@ -4,7 +4,7 @@ return [
     /**
      * Use uuid as primary key.
      */
-    'uuids' => true,
+    'uuids' => false,
 
     /*
      * User tables foreign key name.
