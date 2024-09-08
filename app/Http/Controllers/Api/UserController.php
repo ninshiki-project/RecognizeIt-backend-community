@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
+use MarJose123\NinshikiEvent\Events\User\UserAdded;
+use MarJose123\NinshikiEvent\Events\User\UserDeleted;
 
 class UserController extends Controller
 {
@@ -57,6 +59,11 @@ class UserController extends Controller
         Notification::route('mail', $request->email)
             ->notify(new InvitationNotification($user, $invitation));
 
+        /**
+         * Dispatch event for invited user
+         */
+        UserAdded::dispatch($invitation);
+
         return response()->json([
             'success' => true,
             'data' => [
@@ -92,6 +99,18 @@ class UserController extends Controller
          */
         $this->purgeCache();
         $this->purgeCache(static::$cacheKey.$id);
+
+        $user = User::findOrFail($id);
+
+        /**
+         * Dispatch event
+         */
+        UserDeleted::dispatch($user);
+
+        /**
+         * Delete user
+         */
+        $user->delete();
 
         return response()->noContent();
     }

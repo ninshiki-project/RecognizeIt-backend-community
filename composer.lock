@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "40ca5639c5347a336fb77c967b992e6f",
+    "content-hash": "d4ce6b1251c630b9f2cb0ebf5151e386",
     "packages": [
         {
             "name": "bavix/laravel-wallet",
@@ -3980,6 +3980,78 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.1.0"
             },
             "time": "2024-07-01T20:03:41+00:00"
+        },
+        {
+            "name": "ninshiki-project/ninshiki-event",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ninshiki-project/ninshiki-event.git",
+                "reference": "6b7bbdbc6d0e6d22767d0f35ab83807f14c4ec6f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ninshiki-project/ninshiki-event/zipball/6b7bbdbc6d0e6d22767d0f35ab83807f14c4ec6f",
+                "reference": "6b7bbdbc6d0e6d22767d0f35ab83807f14c4ec6f",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^11.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "larastan/larastan": "^2.9",
+                "laravel/pint": "^1.14",
+                "nunomaduro/collision": "^8.1.1||^7.10.0",
+                "orchestra/testbench": "^9.0.0||^8.22.0",
+                "pestphp/pest": "^2.34",
+                "pestphp/pest-plugin-arch": "^2.7",
+                "pestphp/pest-plugin-laravel": "^2.3",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/phpstan-deprecation-rules": "^1.1",
+                "phpstan/phpstan-phpunit": "^1.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MarJose123\\NinshikiEvent\\NinshikiEventServiceProvider"
+                    ],
+                    "aliases": {
+                        "NinshikiEvent": "MarJose123\\NinshikiEvent\\Facades\\NinshikiEvent"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MarJose123\\NinshikiEvent\\": "src/",
+                    "MarJose123\\NinshikiEvent\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "MarJose123",
+                    "email": "18107626+MarJose123@users.noreply.github.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Ninshiki Event Dispatcher",
+            "homepage": "https://github.com/ninshiki-project/ninshiki-event",
+            "keywords": [
+                "MarJose123",
+                "laravel",
+                "ninshiki-event"
+            ],
+            "support": {
+                "issues": "https://github.com/ninshiki-project/ninshiki-event/issues",
+                "source": "https://github.com/ninshiki-project/ninshiki-event/tree/v1.0.0"
+            },
+            "time": "2024-09-07T09:12:15+00:00"
         },
         {
             "name": "nunomaduro/termwind",

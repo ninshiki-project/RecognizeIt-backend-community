@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\ShopAdded;
 use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ShopResource;
@@ -10,6 +9,7 @@ use App\Models\Shop;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use MarJose123\NinshikiEvent\Events\Shop\NewProductAddedToShop;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShopController extends Controller
@@ -66,7 +66,7 @@ class ShopController extends Controller
         /**
          * Dispatch an event
          */
-        ShopAdded::dispatch($shop);
+        NewProductAddedToShop::dispatch($shop);
 
         /**
          * Removed Cache

@@ -22,6 +22,7 @@
         "mailersend/laravel-driver": "^2.5",
         "mbezhanov/faker-provider-collection": "^2.0",
         "mobiledetect/mobiledetectlib": "^4.8",
+        "ninshiki-project/ninshiki-event": "^1.0",
         "overtrue/laravel-like": "^5.3",
         "resend/resend-php": "^0.12.0",
         "socialiteproviders/zoho": "^4.1",

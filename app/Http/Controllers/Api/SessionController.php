@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Events\Broadcast\LogoutSessionEvent;
-use App\Events\LogoutOtherBrowser;
 use App\Http\Controllers\Api\Concern\Agent;
 use App\Http\Controllers\Api\Concern\CanLogoutOtherDevices;
 use App\Http\Controllers\Controller;
@@ -12,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use MarJose123\NinshikiEvent\Events\Session\LogoutOtherBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 class SessionController extends Controller
@@ -58,7 +58,9 @@ class SessionController extends Controller
 
         // Send Broadcast Event
         LogoutSessionEvent::dispatch(auth()->user());
-        // Send Event
+        /**
+         * Dispatch an event
+         */
         LogoutOtherBrowser::dispatch($request->user());
     }
 
