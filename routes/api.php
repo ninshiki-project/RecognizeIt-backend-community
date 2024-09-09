@@ -29,6 +29,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     // Users
     Route::group(['prefix' => '/users'], function () {
         Route::post('/invite', [UserController::class, 'inviteUser']);
+        Route::get('/invite', [UserController::class, 'invitedUserList']);
     });
     Route::apiResource('users', UserController::class)->except(['store', 'update']);
 
