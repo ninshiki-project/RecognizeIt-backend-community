@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
@@ -96,16 +97,17 @@ class AuthenticationController extends Controller
                         'message' => 'Unauthorized email domain, please try again later.',
                     ], Response::HTTP_FORBIDDEN);
                 }
-
-                $user = User::where('email', $userProvider->email)->first();
-                if (! $user) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Unauthorized email or User does not exist.',
-                    ], Response::HTTP_FORBIDDEN);
-                }
-
-                $user->providers()->updateOrCreate(
+                $userCreated = User::firstOrCreate(
+                    [
+                        'email' => $userProvider->email,
+                    ],
+                    [
+                        'email_verified_at' => Carbon::now(),
+                        'name' => $userProvider->name,
+                        'avatar' => $userProvider->avatar,
+                    ]
+                );
+                $userCreated->providers()->updateOrCreate(
                     [
                         'provider' => $provider,
                         'provider_id' => $userProvider->id,
@@ -115,12 +117,12 @@ class AuthenticationController extends Controller
                     ]
                 );
 
-                $token = $user->createToken($request->header('User-Agent') ?? 'unknown')->plainTextToken;
+                $token = $userCreated->createToken($request->device_name ?? 'nanshiki')->plainTextToken;
 
                 /**
                  * Dispatch event for the user login
                  */
-                UserLogin::dispatch($user);
+                UserLogin::dispatch($userCreated);
 
                 return response()->json([
                     'success' => true,
@@ -129,7 +131,7 @@ class AuthenticationController extends Controller
                         //@format 31|b2da4411aa4e6d153d6725a17c672b8177c071e60a05158ff19af75a3b5829aa
                         'accessToken' => $token,
                     ],
-                    'user' => new ProfileResource($user),
+                    'user' => new ProfileResource($userCreated),
                 ], Response::HTTP_OK);
 
             }

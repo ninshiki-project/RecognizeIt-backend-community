@@ -35,18 +35,6 @@ class UserController extends Controller
     }
 
     /**
-     * Get all invited users
-     *
-     * @return JsonResponse
-     */
-    public function invitedUserList()
-    {
-        return Cache::remember(static::$cacheKey, Carbon::now()->addDays(5), function () {
-            return response()->json(Invitation::all());
-        });
-    }
-
-    /**
      * Invite User
      *
      * @return JsonResponse
