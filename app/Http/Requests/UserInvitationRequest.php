@@ -16,7 +16,7 @@ class UserInvitationRequest extends FormRequest
                 Rule::unique('users', 'email'),
                 Rule::unique('invitations', 'email'),
             ],
-            'invited_by_user' => ['required', 'exists:users,id'],
+            'added_by' => ['required', 'exists:users,id'],
         ];
     }
 

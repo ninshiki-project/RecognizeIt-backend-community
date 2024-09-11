@@ -8,10 +8,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GetProductRequest;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductsResource;
+use App\Http\Resources\ShopResource;
 use App\Models\Products;
 use App\Models\Scopes\ProductAvailableScope;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +31,8 @@ class ProductController extends Controller
      * Get all product
      *
      * Get all the products that are available and unavailable
+     *
+     * @return AnonymousResourceCollection<LengthAwarePaginator<ProductsResource>>
      */
     public function index(GetProductRequest $request)
     {

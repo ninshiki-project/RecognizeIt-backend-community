@@ -13,6 +13,8 @@ class UserInvitationPatchRequest extends FormRequest
             'name' => ['required', 'string', 'max:255', 'sometimes', 'required_if:status,accepted'],
             'email' => ['required',  'email', 'max:254', 'sometimes', 'required_if:status,accepted'],
             'token' => ['required', 'exists:invitations,token'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password_confirmation' => ['required', 'string', 'min:8', 'same:password'],
             'status' => ['required', Rule::in(['accepted', 'declined'])],
         ];
     }

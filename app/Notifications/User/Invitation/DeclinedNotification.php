@@ -11,9 +11,9 @@ class DeclinedNotification extends Notification
 {
     public User $user;
 
-    public Invitation $invitation;
+    public User $invitation;
 
-    public function __construct(User $user, Invitation $invitation)
+    public function __construct(User $user, User $invitation)
     {
         $this->user = $user;
         $this->invitation = $invitation;

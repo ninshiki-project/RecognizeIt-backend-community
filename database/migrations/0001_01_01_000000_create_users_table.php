@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->foreignId('department')->nullable();
             $table->string('designation')->nullable();
+            $table->string('status')->nullable();
+            $table->string('invitation_token')->nullable();
+            $table->foreignId('added_by')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

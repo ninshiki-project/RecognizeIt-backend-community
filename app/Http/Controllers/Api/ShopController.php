@@ -8,6 +8,8 @@ use App\Http\Resources\ShopResource;
 use App\Models\Shop;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 use MarJose123\NinshikiEvent\Events\Shop\NewProductAddedToShop;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,8 +22,10 @@ class ShopController extends Controller
 
     /**
      * Get all shop products
+     *
+     * @return AnonymousResourceCollection<LengthAwarePaginator<ShopResource>>
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return Cache::remember(static::$cacheKey, now()->addDays(5), function () {
             return ShopResource::collection(Shop::all());

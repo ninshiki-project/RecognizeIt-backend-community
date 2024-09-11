@@ -23,6 +23,7 @@ use Illuminate\Validation\ValidationException;
 use MarJose123\NinshikiEvent\Events\Post\NewPostAdded;
 use MarJose123\NinshikiEvent\Events\Post\PostToggleLike;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostsController extends Controller
 {
@@ -36,15 +37,15 @@ class PostsController extends Controller
      *  Get All Posts
      *
      * @param  Request  $request
-     * @return AnonymousResourceCollection
+     * @return AnonymousResourceCollection<LengthAwarePaginator<PostResource>>
      */
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Request $request)
     {
         return Cache::remember(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, Carbon::now()->addDays(2), function () use ($request) {
             return PostResource::collection(
                 Posts::with(['recipients', 'likers'])
                     ->orderByDesc('created_at')
-                    ->fastPaginate(
+                    ->paginate(
                         perPage: $request->perPage ?? 15,
                         page: $request->page ?? 1,
                     )
