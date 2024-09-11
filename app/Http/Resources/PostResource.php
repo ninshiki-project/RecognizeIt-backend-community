@@ -23,7 +23,7 @@ class PostResource extends JsonResource
             'posted_by' => new UserPostedByResource($this->originalPoster),
             'is_liked' => $this->isLikedBy(auth()->user()),
             'recipients' => PostUserRecipientsResource::collection($this->whenLoaded('recipients')),
-            'liked_by' => UserPostedByResource::collection($this->likers)
+            'liked_by' => UserPostedByResource::collection($this->likers),
         ];
     }
 }

@@ -3,11 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Notifications\ResetPasswordNotification;
 use App\Observers\UserObserver;
 use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Traits\CanPay;
-use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWallets;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,6 +41,9 @@ class User extends Authenticatable implements Customer
         'designation',
         'email_verified_at',
         'remember_token',
+        'status',
+        'invitation_token',
+        'added_by',
     ];
 
     /**
@@ -63,6 +66,7 @@ class User extends Authenticatable implements Customer
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => UserEnum::class,
         ];
     }
 
@@ -78,7 +82,12 @@ class User extends Authenticatable implements Customer
 
     public function invitations(): HasMany
     {
-        return $this->hasMany(Invitation::class, 'invited_by_user', 'id');
+        return $this->hasMany(User::class, 'added_by', 'id');
+    }
+
+    public function scopeInvitedStatus($query)
+    {
+        return $query->where('status', UserEnum::Invited);
     }
 
     /**

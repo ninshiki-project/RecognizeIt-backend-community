@@ -16,6 +16,7 @@ use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -36,15 +37,15 @@ class PostsController extends Controller
      *  Get All Posts
      *
      * @param  Request  $request
-     * @return AnonymousResourceCollection
+     * @return AnonymousResourceCollection<LengthAwarePaginator<PostResource>>
      */
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(Request $request)
     {
         return Cache::remember(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, Carbon::now()->addDays(2), function () use ($request) {
             return PostResource::collection(
                 Posts::with(['recipients', 'likers'])
                     ->orderByDesc('created_at')
-                    ->fastPaginate(
+                    ->paginate(
                         perPage: $request->perPage ?? 15,
                         page: $request->page ?? 1,
                     )

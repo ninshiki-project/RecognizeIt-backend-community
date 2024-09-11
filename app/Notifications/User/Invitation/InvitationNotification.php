@@ -2,7 +2,6 @@
 
 namespace App\Notifications\User\Invitation;
 
-use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -12,18 +11,18 @@ class InvitationNotification extends Notification
 {
     public User $user;
 
-    public Invitation $invitation;
+    public User $invitation;
 
     public string $acceptInvitationUrl;
 
     public string $declineInvitationUrl;
 
-    public function __construct(User $user, Invitation $invitation)
+    public function __construct(User $user, User $invitation)
     {
         $this->user = $user;
         $this->invitation = $invitation;
-        $this->acceptInvitationUrl = config('frontend.invitation.accept_url').'?token='.$invitation->token.'&accept=true';
-        $this->declineInvitationUrl = config('frontend.invitation.decline_url').'?token='.$invitation->token.'&accept=false';
+        $this->acceptInvitationUrl = config('frontend.invitation.accept_url').'?token='.$invitation->invitation_token.'&accept=true';
+        $this->declineInvitationUrl = config('frontend.invitation.decline_url').'?token='.$invitation->invitation_token.'&accept=false';
     }
 
     public function via($notifiable): array

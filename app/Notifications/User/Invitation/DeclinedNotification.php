@@ -2,7 +2,6 @@
 
 namespace App\Notifications\User\Invitation;
 
-use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -11,9 +10,9 @@ class DeclinedNotification extends Notification
 {
     public User $user;
 
-    public Invitation $invitation;
+    public User $invitation;
 
-    public function __construct(User $user, Invitation $invitation)
+    public function __construct(User $user, User $invitation)
     {
         $this->user = $user;
         $this->invitation = $invitation;

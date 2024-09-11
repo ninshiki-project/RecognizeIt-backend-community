@@ -9,7 +9,7 @@ it('can invite new user', function () {
         'role' => \App\Models\Role::all()->random()->first()->id,
         'department' => \App\Models\Departments::first()->id,
         'email' => fake()->safeEmail,
-        'invited_by_user' => \App\Models\User::all()->random()->first()->id,
+        'added_by' => \App\Models\User::first()->id,
     ])
         ->assertStatus(200)
         ->assertJson([

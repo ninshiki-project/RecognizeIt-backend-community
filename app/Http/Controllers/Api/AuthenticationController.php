@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Concern\AllowedDomain;
 use App\Http\Controllers\Api\Concern\CanValidateProvider;
+use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginViaEmailRequest;
 use App\Http\Resources\ProfileResource;
@@ -11,7 +12,6 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
@@ -95,15 +95,17 @@ class AuthenticationController extends Controller
                     return response()->json([
                         'success' => false,
                         'message' => 'Unauthorized email domain, please try again later.',
-                    ], Response::HTTP_FORBIDDEN);
+                    ], Response::HTTP_UNAUTHORIZED);
                 }
                 $user = User::where('email', $userProvider->email)->first();
                 if (! $user) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Unauthorized email or User does not exist.',
-                    ], Response::HTTP_FORBIDDEN);
+                    ], Response::HTTP_UNAUTHORIZED);
                 }
+
+                $this->userStatusValidate($user);
 
                 $user->providers()->updateOrCreate(
                     [
@@ -155,6 +157,8 @@ class AuthenticationController extends Controller
             ]);
         }
 
+        $this->userStatusValidate($user);
+
         $token = $user->createToken($request->header('User-Agent') ?? 'unknown')->plainTextToken;
 
         /**
@@ -189,5 +193,35 @@ class AuthenticationController extends Controller
         UserLogout::dispatch($request->user());
 
         return response()->json('', Response::HTTP_ACCEPTED);
+    }
+
+    public function userStatusValidate(User $user)
+    {
+        if ($user->status != UserEnum::Active) {
+            if ($user->status == UserEnum::Inactive) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User is not active.',
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+            if ($user->status == UserEnum::Invited) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The user need to activate account.',
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
+            if ($user->status == UserEnum::Ban) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The user account is banned from accessing the application.',
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'User is not active.',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
     }
 }
