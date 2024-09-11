@@ -197,21 +197,21 @@ class AuthenticationController extends Controller
 
     public function userStatusValidate(User $user)
     {
-        if ($user->status !== UserEnum::Active) {
-            if ($user->status === UserEnum::Inactive) {
+        if ($user->status != UserEnum::Active) {
+            if ($user->status == UserEnum::Inactive) {
                 return response()->json([
                     'success' => false,
                     'message' => 'User is not active.',
                 ], Response::HTTP_UNAUTHORIZED);
             }
-            if ($user->status === UserEnum::Invited) {
+            if ($user->status == UserEnum::Invited) {
                 return response()->json([
                     'success' => false,
                     'message' => 'The user need to activate account.',
                 ], Response::HTTP_UNAUTHORIZED);
             }
 
-            if ($user->status === UserEnum::Ban) {
+            if ($user->status == UserEnum::Ban) {
                 return response()->json([
                     'success' => false,
                     'message' => 'The user account is banned from accessing the application.',

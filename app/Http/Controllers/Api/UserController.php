@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use MarJose123\NinshikiEvent\Events\User\UserAdded;
 use MarJose123\NinshikiEvent\Events\User\UserDeleted;
 use Symfony\Component\HttpFoundation\Response;
@@ -135,9 +136,10 @@ class UserController extends Controller
             'email' => $request->email,
             'added_by' => $request->added_by,
         ]));
-        $user = User::findOrFail($request->invited_by_user);
+        $user = User::findOrFail($request->added_by);
         $roles = Role::findById($request->role);
         $invitation = User::create([
+            'name' => Str::of($request->email)->before('@'),
             'added_by' => $user?->id,
             'department' => $request->department,
             'email' => $request->email,
