@@ -23,7 +23,7 @@ use Spatie\Permission\Traits\HasRoles;
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements Customer
 {
-    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallet, HasWallets, Liker, Notifiable, SoftDeletes;
+    use CanPay, HasApiTokens, HasFactory, HasRoles,  HasWallets, Liker, Notifiable, SoftDeletes;
 
     protected string $guard_name = 'sanctum';
 

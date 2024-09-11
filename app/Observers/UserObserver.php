@@ -25,11 +25,17 @@ class UserObserver
         $defaultWallet = $user->createWallet([
             'name' => 'Ninshiki Wallet',
             'slug' => 'ninshiki-wallet',
+            'meta' => [
+                'currency' => 'NSK',
+            ],
         ]);
 
         $spendWallet = $user->createWallet([
             'name' => 'Spend Wallet',
             'slug' => 'spend-wallet',
+            'meta' => [
+                'currency' => 'NSW',
+            ]
         ]);
 
         $spendWallet->deposit(config('ninshiki.fund.normal'), [
@@ -40,6 +46,9 @@ class UserObserver
         $currencyWallet = $user->createWallet([
             'name' => 'Currency Wallet',
             'slug' => 'currency-wallet',
+            'meta' => [
+                'currency' => 'PHP',
+            ],
         ]);
     }
 }

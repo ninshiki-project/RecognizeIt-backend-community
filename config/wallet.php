@@ -85,14 +85,14 @@ return [
          *
          * @var string
          */
-        'driver' => env('WALLET_CACHE_DRIVER', 'array'),
+        'driver' => env('WALLET_CACHE_DRIVER', 'database'),
 
         /**
          * The time to live for the cache in seconds.
          *
          * @var int
          */
-        'ttl' => env('WALLET_CACHE_TTL', 24 * 3600),
+        'ttl' => env('WALLET_CACHE_TTL', 5),
     ],
 
     /**
@@ -115,7 +115,7 @@ return [
          *
          * @var string
          */
-        'driver' => env('WALLET_LOCK_DRIVER', 'array'),
+        'driver' => env('WALLET_LOCK_DRIVER', 'database'),
 
         /**
          * The time to live for the lock in seconds.
@@ -479,14 +479,14 @@ return [
              *
              * @var string
              */
-            'name' => env('WALLET_DEFAULT_WALLET_NAME', 'Ninshiki Wallet'),
+            'name' => env('WALLET_DEFAULT_WALLET_NAME', 'Default Wallet'),
 
             /**
              * The slug of the default wallet.
              *
              * @var string
              */
-            'slug' => env('WALLET_DEFAULT_WALLET_SLUG', 'ninshiki-wallet'),
+            'slug' => env('WALLET_DEFAULT_WALLET_SLUG', 'default'),
 
             /**
              * The meta information of the default wallet.
