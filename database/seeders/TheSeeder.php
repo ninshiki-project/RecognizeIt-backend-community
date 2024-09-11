@@ -114,7 +114,7 @@ class TheSeeder extends Seeder
                     ->assignRole('Member');
                 $this->command->info(PHP_EOL.'Points created and associated...');
             });
-            $this->command->info('Administrator user created.');
+            $this->command->info('Normal user created.');
 
             $this->command->newLine(2);
         }
