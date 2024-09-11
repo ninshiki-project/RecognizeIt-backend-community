@@ -14,7 +14,7 @@ class ReedemSeeder extends Seeder
      */
     public function run(): void
     {
-        if (app()->isLocal() || app()->runningUnitTests()) {
+        if (app()->runningUnitTests()) {
             Redeem::factory(100)->create();
         }
     }
