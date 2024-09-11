@@ -5,7 +5,7 @@ it('can get all the user', function () {
 });
 
 it('can invite new user', function () {
-   \Pest\Laravel\postJson('/api/v1/users/invite', [
+    \Pest\Laravel\postJson('/api/v1/users/invite', [
         'role' => \App\Models\Role::all()->random()->first()->id,
         'department' => \App\Models\Departments::first()->id,
         'email' => fake()->safeEmail,
