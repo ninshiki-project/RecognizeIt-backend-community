@@ -16,6 +16,7 @@ use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -23,7 +24,6 @@ use Illuminate\Validation\ValidationException;
 use MarJose123\NinshikiEvent\Events\Post\NewPostAdded;
 use MarJose123\NinshikiEvent\Events\Post\PostToggleLike;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostsController extends Controller
 {

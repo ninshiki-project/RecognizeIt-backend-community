@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GetProductRequest;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductsResource;
-use App\Http\Resources\ShopResource;
 use App\Models\Products;
 use App\Models\Scopes\ProductAvailableScope;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;

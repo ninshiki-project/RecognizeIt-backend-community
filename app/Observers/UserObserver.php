@@ -35,7 +35,7 @@ class UserObserver
             'slug' => 'spend-wallet',
             'meta' => [
                 'currency' => 'NSW',
-            ]
+            ],
         ]);
 
         $spendWallet->deposit(config('ninshiki.fund.normal'), [

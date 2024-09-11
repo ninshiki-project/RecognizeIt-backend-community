@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\DesignationsController;
-use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\PostsController;
 use App\Http\Controllers\Api\ProductController;
@@ -34,7 +33,6 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
         Route::post('/invite/resend', [UserController::class, 'resendInvitation']);
     });
     Route::apiResource('users', UserController::class)->except(['store', 'update']);
-
 
     // Profile - Authenticated User
     Route::group(['prefix' => '/auth'], function () {

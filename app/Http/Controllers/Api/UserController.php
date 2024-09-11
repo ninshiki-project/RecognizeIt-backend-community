@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInvitationPatchRequest;
 use App\Http\Requests\UserInvitationRequest;
-use App\Http\Resources\PostResource;
 use App\Models\Invitation;
 use App\Models\Role;
 use App\Models\User;
