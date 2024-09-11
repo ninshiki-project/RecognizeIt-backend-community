@@ -139,7 +139,7 @@ class UserController extends Controller
         $user = User::findOrFail($request->added_by);
         $roles = Role::findById($request->role);
         $invitation = User::create([
-            'name' => Str::of($request->email)->before('@'),
+            'name' => Str::ucfirst(Str::replace('.', ' ', Str::of($request->email)->before('@'))),
             'added_by' => $user?->id,
             'department' => $request->department,
             'email' => $request->email,
