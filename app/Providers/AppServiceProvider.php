@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\CarbonInterval;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
@@ -46,6 +47,16 @@ class AppServiceProvider extends ServiceProvider
         // Throttle for login
         RateLimiter::for('login', function (Request $request) {
             return Limit::perMinute(5, decayMinutes: 5)->by($request->input('email').'|'.$request->ip());
+        });
+        RateLimiter::for('post', function (Request $request) {
+            $key = $request->user()->id;
+
+            return Limit::perMinute(1, decayMinutes: 10)->by($key)
+                ->response(function (Request $request, array $headers) {
+                    $retryAfter = CarbonInterval::seconds($headers['Retry-After'])->forHumans();
+
+                    return response("You're to fast in posting. please try again after ".$retryAfter, 429, $headers);
+                });
         });
         // Throttle for request forgot password
         RateLimiter::for('forgotPassword', function (Request $request) {
