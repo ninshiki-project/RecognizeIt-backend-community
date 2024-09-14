@@ -91,7 +91,6 @@ class PostsController extends Controller
         /**
          *  Link the User who will receive the points to the post via middle table
          */
-        \Log::info($request->recipient_id);
         $recipients = collect($request->recipient_id)->map(function ($item) {
             return [
                 'user_id' => $item,
