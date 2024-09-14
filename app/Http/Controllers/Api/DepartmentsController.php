@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DepartmentPostRequest;
 use App\Http\Requests\DepartmentPutRequest;
@@ -13,8 +12,6 @@ use Illuminate\Support\Facades\Cache;
 
 class DepartmentsController extends Controller
 {
-    use CanPurgeCache;
-
     protected static string $cacheKey = 'departments';
 
     /**
@@ -24,7 +21,7 @@ class DepartmentsController extends Controller
      */
     public function index()
     {
-        return Cache::remember(self::$cacheKey, now()->addDays(5), function () {
+        return Cache::flexible(self::$cacheKey, [5, 10], function () {
             return response()->json(Departments::all());
         });
 
@@ -37,10 +34,6 @@ class DepartmentsController extends Controller
      */
     public function store(DepartmentPostRequest $request)
     {
-        /**
-         * Removed Cache
-         */
-        $this->purgeCache();
 
         return response()->json(Departments::create($request->all()));
     }
@@ -52,7 +45,7 @@ class DepartmentsController extends Controller
      */
     public function show($id)
     {
-        return Cache::remember(self::$cacheKey.$id, now()->addDays(5), function () use ($id) {
+        return Cache::flexible(self::$cacheKey.$id, [5, 10], function () use ($id) {
             return response()->json(Departments::findOrFail($id));
         });
 
@@ -65,11 +58,6 @@ class DepartmentsController extends Controller
      */
     public function update(DepartmentPutRequest $request, $id)
     {
-        /**
-         * Removed Cache
-         */
-        $this->purgeCache();
-        $this->purgeCache(static::$cacheKey.$id);
 
         return response()->json(Departments::findOrFail($id)->update($request->all()));
     }
@@ -81,11 +69,6 @@ class DepartmentsController extends Controller
      */
     public function destroy($id)
     {
-        /**
-         * Removed Cache
-         */
-        $this->purgeCache();
-        $this->purgeCache(static::$cacheKey.$id);
 
         Departments::findOrFail($id)->each(function ($department) {
             $department->users()->each(function (User $user) {

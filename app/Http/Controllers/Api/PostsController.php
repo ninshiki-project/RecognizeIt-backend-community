@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Api\Enum\WalletsEnum;
 use App\Http\Controllers\Controller;
@@ -27,8 +26,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostsController extends Controller
 {
-    use CanPurgeCache;
-
     private CloudinaryEngine $uploadedAsset;
 
     protected static string $cacheKey = 'posts';
@@ -41,7 +38,7 @@ class PostsController extends Controller
      */
     public function index(Request $request)
     {
-        return Cache::remember(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, Carbon::now()->addDays(2), function () use ($request) {
+        return Cache::flexible(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, [5, 10], function () use ($request) {
             return PostResource::collection(
                 Posts::with(['recipients', 'likers'])
                     ->orderByDesc('created_at')
@@ -126,11 +123,6 @@ class PostsController extends Controller
         ]);
 
         /**
-         * Removed Cache
-         */
-        $this->purgeCache();
-
-        /**
          * Dispatch an event for the new post
          */
         NewPostAdded::dispatch($post, $recipientsInstance);
@@ -160,11 +152,6 @@ class PostsController extends Controller
     {
         $user = User::find(auth()->user()->id);
         $user->toggleLike($posts);
-
-        /**
-         * Removed Cache
-         */
-        $this->purgeCache();
 
         /**
          * Dispatch an event for toggle like

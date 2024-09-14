@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ShopResource;
 use App\Models\Shop;
@@ -16,8 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ShopController extends Controller
 {
-    use CanPurgeCache;
-
     protected static string $cacheKey = 'shops';
 
     /**
@@ -27,7 +24,7 @@ class ShopController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return Cache::remember(static::$cacheKey, now()->addDays(5), function () {
+        return Cache::flexible(static::$cacheKey, [5, 10], function () {
             return ShopResource::collection(Shop::all());
         });
     }
@@ -73,11 +70,6 @@ class ShopController extends Controller
         NewProductAddedToShop::dispatch($shop);
 
         /**
-         * Removed Cache
-         */
-        $this->purgeCache();
-
-        /**
          * The product added to shop
          *
          * @status 201
@@ -95,11 +87,6 @@ class ShopController extends Controller
     public function destroy($id)
     {
         Shop::destroy($id);
-
-        /**
-         * Removed Cache
-         */
-        $this->purgeCache();
 
         return response()->noContent();
     }
