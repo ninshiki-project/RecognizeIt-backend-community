@@ -66,7 +66,7 @@ class PostsController extends Controller
          *  Manual Validation if the remaining points sufficed to reward
          */
         $totalFundsToDeduct = count($request->recipient_id) * $request->amount;
-        $authenticated_user = $request->user();
+        $authenticated_user = auth()->user();
         $wallet = $authenticated_user->getWallet(WalletsEnum::SPEND->value);
 
         if ($request->type === PostTypeEnum::User && $totalFundsToDeduct > $wallet->balanceInt) {
@@ -110,7 +110,10 @@ class PostsController extends Controller
                 'date_at' => Carbon::now(),
             ]);
             // send email notification and application notification
-            PostRecognizeJob::dispatchAfterResponse($_user);
+            PostRecognizeJob::dispatch($_user)
+                ->delay(now()->addMinutes(2))
+                ->afterCommit()
+                ->afterResponse();
 
         });
         /**
