@@ -85,6 +85,12 @@
         ],
         "scan": [
             "@php artisan enlightn"
+        ],
+        "reverb": [
+            "@php artisan reverb:start --hostname=ninshiki-backend.test --port=8080"
+        ],
+        "mailpit": [
+            ".bin/mailpit"
         ]
     },
     "scripts-descriptions": {

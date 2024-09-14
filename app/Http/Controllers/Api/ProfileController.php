@@ -1,14 +1,22 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ *
+ * Filename: ProfileController.php
+ * Project Name: ninshiki-backend
+ * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
+ *  License: MIT
+ *  GitHub: https://github.com/MarJose123
+ *  Written By: Marjose123
+ */
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileResetPasswordRequest;
 use App\Http\Requests\ProfileUpdatePasswordRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,8 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
 {
-    use CanPurgeCache;
-
     protected static string $cacheKey = 'profile';
 
     /**
@@ -32,7 +38,7 @@ class ProfileController extends Controller
      */
     public function me()
     {
-        return Cache::remember(static::$cacheKey.auth()->user()->id, Carbon::now()->addHours(5), function () {
+        return Cache::flexible(static::$cacheKey.auth()->user()->id, [5, 10], function () {
             return new ProfileResource(auth()->user());
         });
 

@@ -1,8 +1,17 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ *
+ * Filename: ProductController.php
+ * Project Name: ninshiki-backend
+ * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
+ *  License: MIT
+ *  GitHub: https://github.com/MarJose123
+ *  Written By: Marjose123
+ */
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Api\Enum\ProductStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetProductRequest;
@@ -20,8 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
-    use CanPurgeCache;
-
     private CloudinaryEngine $uploadedAsset;
 
     protected static string $cacheKey = 'products';
@@ -44,8 +51,8 @@ class ProductController extends Controller
             }
         }
 
-        return Cache::remember(static::$cacheKey, now()->addDays(3), function () use ($products) {
-            return ProductsResource::collection($products->fastPaginate());
+        return Cache::flexible(static::$cacheKey, [5, 10], function () use ($products) {
+            return ProductsResource::collection($products->paginate());
         });
 
     }
@@ -72,11 +79,6 @@ class ProductController extends Controller
 
         if ($result) {
             /**
-             * Removed Cache
-             */
-            $this->purgeCache();
-
-            /**
              * @status 201
              */
             return ProductsResource::make($result);
@@ -98,7 +100,7 @@ class ProductController extends Controller
     {
         $product = Products::findOrFail($id);
 
-        return Cache::remember(static::$cacheKey.$id, now()->addMinutes(60), function () use ($product) {
+        return Cache::flexible(static::$cacheKey.$id, [5, 10], function () use ($product) {
             return new ProductsResource($product);
         });
     }
@@ -146,12 +148,6 @@ class ProductController extends Controller
             ], Response::HTTP_NOT_MODIFIED);
         }
 
-        /**
-         * Removed Cache
-         */
-        $this->purgeCache();
-        $this->purgeCache(static::$cacheKey.$id);
-
         return ProductsResource::make($product->refresh());
     }
 
@@ -179,12 +175,6 @@ class ProductController extends Controller
         }
 
         $product->delete();
-
-        /**
-         * Removed Cache
-         */
-        $this->purgeCache();
-        $this->purgeCache(static::$cacheKey.$id);
 
         return response()->noContent();
     }

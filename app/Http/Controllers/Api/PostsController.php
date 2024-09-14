@@ -1,8 +1,17 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ *
+ * Filename: PostsController.php
+ * Project Name: ninshiki-backend
+ * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
+ *  License: MIT
+ *  GitHub: https://github.com/MarJose123
+ *  Written By: Marjose123
+ */
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use App\Http\Controllers\Api\Enum\WalletsEnum;
 use App\Http\Controllers\Controller;
@@ -17,6 +26,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -25,10 +36,8 @@ use MarJose123\NinshikiEvent\Events\Post\NewPostAdded;
 use MarJose123\NinshikiEvent\Events\Post\PostToggleLike;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostsController extends Controller
+class PostsController extends Controller implements HasMiddleware
 {
-    use CanPurgeCache;
-
     private CloudinaryEngine $uploadedAsset;
 
     protected static string $cacheKey = 'posts';
@@ -41,7 +50,7 @@ class PostsController extends Controller
      */
     public function index(Request $request)
     {
-        return Cache::remember(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, Carbon::now()->addDays(2), function () use ($request) {
+        return Cache::flexible(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, [5, 10], function () use ($request) {
             return PostResource::collection(
                 Posts::with(['recipients', 'likers'])
                     ->orderByDesc('created_at')
@@ -69,12 +78,11 @@ class PostsController extends Controller
          *  Manual Validation if the remaining points sufficed to reward
          */
         $totalFundsToDeduct = count($request->recipient_id) * $request->amount;
-        $authenticated_user = $request->user();
-        $wallet = $authenticated_user->getWallet(WalletsEnum::SPEND->value);
+        $wallet = auth()->user()->getWallet(WalletsEnum::SPEND->value);
 
-        if ($request->type === PostTypeEnum::User && $totalFundsToDeduct > $wallet->balanceInt) {
+        if ($request->type === PostTypeEnum::User->value && $totalFundsToDeduct > $wallet->balanceInt) {
             throw ValidationException::withMessages([
-                'points' => 'insufficient fund left',
+                'amount' => 'Insufficient Available Credits.',
             ]);
         }
         /**
@@ -105,7 +113,7 @@ class PostsController extends Controller
          *  Distribute the points to each recipient
          */
         $recipients->each(function ($item) use ($request) {
-            $_user = User::findOrFail($item['user_id'])->first();
+            $_user = User::findOrFail($item['user_id']);
             $defaultWallet = $_user->getWallet(WalletsEnum::DEFAULT->value);
             $defaultWallet->deposit($request->amount, [
                 'title' => 'Ninshiki Wallet',
@@ -113,7 +121,10 @@ class PostsController extends Controller
                 'date_at' => Carbon::now(),
             ]);
             // send email notification and application notification
-            PostRecognizeJob::dispatchAfterResponse($_user);
+            PostRecognizeJob::dispatch($_user)
+                ->delay(now()->addMinutes(2))
+                ->afterCommit()
+                ->afterResponse();
 
         });
         /**
@@ -124,11 +135,6 @@ class PostsController extends Controller
             'description' => 'Deduction from posting recognition',
             'date_at' => Carbon::now(),
         ]);
-
-        /**
-         * Removed Cache
-         */
-        $this->purgeCache();
 
         /**
          * Dispatch an event for the new post
@@ -162,11 +168,6 @@ class PostsController extends Controller
         $user->toggleLike($posts);
 
         /**
-         * Removed Cache
-         */
-        $this->purgeCache();
-
-        /**
          * Dispatch an event for toggle like
          */
         PostToggleLike::dispatch($posts, auth()->user());
@@ -177,5 +178,12 @@ class PostsController extends Controller
         return response()->json([
             'success' => true,
         ], Response::HTTP_OK);
+    }
+
+    public static function middleware()
+    {
+        return [
+            new Middleware('throttle:post', only: ['store']),
+        ];
     }
 }

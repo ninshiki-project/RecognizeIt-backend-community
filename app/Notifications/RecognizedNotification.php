@@ -1,4 +1,14 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ *
+ * Filename: RecognizedNotification.php
+ * Project Name: ninshiki-backend
+ * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
+ *  License: MIT
+ *  GitHub: https://github.com/MarJose123
+ *  Written By: Marjose123
+ */
 
 namespace App\Notifications;
 
@@ -23,9 +33,9 @@ class RecognizedNotification extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
-            ->greeting('Hey!')
+            ->greeting('Hi '.$this->user->name.' 👋')
             ->line("Just wanted to drop you a quick note to say congrats! I heard through the grapevine that your efforts in the app haven't gone unnoticed. It's awesome to see your work getting recognized by the team. Keep it up!")
-            ->action('Visit', config('frontend.url'));
+            ->action('View Post!', config('frontend.url'));
     }
 
     public function toDatabase($notifiable): array

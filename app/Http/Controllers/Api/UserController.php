@@ -1,8 +1,17 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ *
+ * Filename: UserController.php
+ * Project Name: ninshiki-backend
+ * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
+ *  License: MIT
+ *  GitHub: https://github.com/MarJose123
+ *  Written By: Marjose123
+ */
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Concern\CanPurgeCache;
 use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInvitationPatchRequest;
@@ -25,8 +34,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    use CanPurgeCache;
-
     protected static ?string $cacheKey = 'users';
 
     /**
@@ -36,7 +43,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return Cache::remember(static::$cacheKey, Carbon::now()->addDays(5), function () {
+        return Cache::flexible(static::$cacheKey, [5, 10], function () {
             return User::paginate();
         });
     }
@@ -173,7 +180,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return Cache::remember(static::$cacheKey.$id, Carbon::now()->addDays(5), function () use ($id) {
+        return Cache::flexible(static::$cacheKey.$id, [5, 10], function () use ($id) {
             return response()->json(User::findOrFail($id));
         });
 
@@ -186,11 +193,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        /**
-         * Removed Cache
-         */
-        $this->purgeCache();
-        $this->purgeCache(static::$cacheKey.$id);
 
         $user = User::findOrFail($id);
 
