@@ -26,6 +26,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -34,7 +36,7 @@ use MarJose123\NinshikiEvent\Events\Post\NewPostAdded;
 use MarJose123\NinshikiEvent\Events\Post\PostToggleLike;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostsController extends Controller
+class PostsController extends Controller implements HasMiddleware
 {
     private CloudinaryEngine $uploadedAsset;
 
@@ -176,5 +178,12 @@ class PostsController extends Controller
         return response()->json([
             'success' => true,
         ], Response::HTTP_OK);
+    }
+
+    public static function middleware()
+    {
+        return [
+            new Middleware('throttle:post', only: ['store']),
+        ];
     }
 }
