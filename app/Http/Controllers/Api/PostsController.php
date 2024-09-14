@@ -66,12 +66,11 @@ class PostsController extends Controller
          *  Manual Validation if the remaining points sufficed to reward
          */
         $totalFundsToDeduct = count($request->recipient_id) * $request->amount;
-        $authenticated_user = auth()->user();
-        $wallet = $authenticated_user->getWallet(WalletsEnum::SPEND->value);
+        $wallet = auth()->user()->getWallet(WalletsEnum::SPEND->value);
 
-        if ($request->type === PostTypeEnum::User && $totalFundsToDeduct > $wallet->balanceInt) {
+        if ($request->type === PostTypeEnum::User->value && $totalFundsToDeduct > $wallet->balanceInt) {
             throw ValidationException::withMessages([
-                'points' => 'insufficient fund left',
+                'amount' => 'Insufficient Available Credits.',
             ]);
         }
         /**
@@ -92,6 +91,7 @@ class PostsController extends Controller
         /**
          *  Link the User who will receive the points to the post via middle table
          */
+        \Log::info($request->recipient_id);
         $recipients = collect($request->recipient_id)->map(function ($item) {
             return [
                 'user_id' => $item,
@@ -102,7 +102,7 @@ class PostsController extends Controller
          *  Distribute the points to each recipient
          */
         $recipients->each(function ($item) use ($request) {
-            $_user = User::findOrFail($item['user_id'])->first();
+            $_user = User::findOrFail($item['user_id']);
             $defaultWallet = $_user->getWallet(WalletsEnum::DEFAULT->value);
             $defaultWallet->deposit($request->amount, [
                 'title' => 'Ninshiki Wallet',
