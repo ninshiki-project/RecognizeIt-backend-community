@@ -1,4 +1,14 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ *
+ * Filename: 2018_11_07_192923_create_transfers_table.php
+ * Project Name: ninshiki-backend
+ * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
+ *  License: MIT
+ *  GitHub: https://github.com/MarJose123
+ *  Written By: Marjose123
+ */
 
 declare(strict_types=1);
 

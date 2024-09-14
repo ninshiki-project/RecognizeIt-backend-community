@@ -1,4 +1,14 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ *
+ * Filename: 2018_12_14_000000_create_likes_table.php
+ * Project Name: ninshiki-backend
+ * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
+ *  License: MIT
+ *  GitHub: https://github.com/MarJose123
+ *  Written By: Marjose123
+ */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

@@ -1,4 +1,14 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ *
+ * Filename: 2023_12_30_113122_extra_columns_removed.php
+ * Project Name: ninshiki-backend
+ * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
+ *  License: MIT
+ *  GitHub: https://github.com/MarJose123
+ *  Written By: Marjose123
+ */
 
 declare(strict_types=1);
 

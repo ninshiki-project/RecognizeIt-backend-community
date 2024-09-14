@@ -1,4 +1,14 @@
 <?php
+/*
+ * Copyright (c) 2024.
+ *
+ * Filename: 2024_01_24_185401_add_extra_column_in_transfer.php
+ * Project Name: ninshiki-backend
+ * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
+ *  License: MIT
+ *  GitHub: https://github.com/MarJose123
+ *  Written By: Marjose123
+ */
 
 declare(strict_types=1);
 
