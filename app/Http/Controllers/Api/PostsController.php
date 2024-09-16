@@ -50,12 +50,12 @@ class PostsController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
-        return Cache::flexible(static::$cacheKey.'pp'.$request->perPage.'page'.$request->page, [5, 10], function () use ($request) {
+        return Cache::flexible(static::$cacheKey.'pp'.$request->per_page.'page'.$request->page, [5, 10], function () use ($request) {
             return PostResource::collection(
                 Posts::with(['recipients', 'likers'])
                     ->orderByDesc('created_at')
                     ->paginate(
-                        perPage: $request->perPage ?? 15,
+                        perPage: $request->per_page ?? 15,
                         page: $request->page ?? 1,
                     )
             );
