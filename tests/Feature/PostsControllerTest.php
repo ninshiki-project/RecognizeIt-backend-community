@@ -41,7 +41,7 @@ it('can get all 5 post', function () {
     $count = 20;
     $total = $count + $dbCount;
     \App\Models\Posts::factory()->count($count)->create();
-    \Pest\Laravel\getJson('/api/v1/posts?perPage=5')
+    \Pest\Laravel\getJson('/api/v1/posts?per_page=5')
         ->assertStatus(200)
         ->assertJsonCount(5, 'data')
         ->assertJsonPath('meta.total', $total)
@@ -59,7 +59,7 @@ it('can set to any page of the pagination in post', function () {
     $dbCount = Posts::count();
     $count = 20;
     \App\Models\Posts::factory()->count($count)->create();
-    \Pest\Laravel\getJson('/api/v1/posts?perPage=5&page=2')
+    \Pest\Laravel\getJson('/api/v1/posts?per_page=5&page=2')
         ->assertStatus(200)
         ->assertJsonCount(5, 'data')
         ->assertJsonPath('meta.current_page', 2)
