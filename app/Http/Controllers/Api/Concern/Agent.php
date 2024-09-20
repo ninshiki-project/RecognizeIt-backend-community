@@ -133,7 +133,6 @@ class Agent extends MobileDetect
             }
         }
 
-        return null;
     }
 
     /**

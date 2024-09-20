@@ -30,7 +30,7 @@ trait AllowedDomain
 
         if (! is_array($tldDomain)) {
             if (Str::of($tldDomain)->contains(',')) {
-                $domains = Str::of($tldDomain)->explode(',');
+                $domains = Str::of($tldDomain)->explode(',')->toArray();
 
                 return in_array($email, $domains);
             }

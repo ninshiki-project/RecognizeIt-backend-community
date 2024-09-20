@@ -5,6 +5,15 @@ parameters:
     paths:
         - app/
         - database/
-    level: 3
+    level: 6
     universalObjectCratesClasses:
         - Illuminate\Http\Resources\Json\JsonResource
+        - app\Models\*
+
+    ignoreErrors:
+        - identifier: missingType.generics
+        - identifier: missingType.iterableValue
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false
+
+

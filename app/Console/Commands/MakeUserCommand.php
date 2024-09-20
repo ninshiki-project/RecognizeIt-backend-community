@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Throwable;
 
 use function Laravel\Prompts\password;
 use function Laravel\Prompts\select;
@@ -27,12 +28,12 @@ class MakeUserCommand extends Command
     protected $description = 'Create a new Ninshiki user with an Owner Role and Permissions';
 
     /**
-     * @var array{'name': string | null, 'email': string | null, 'password': string | null, 'role': string | null}
+     * @var array{'name': string | null, 'email': string | null, 'password': string | null, 'role': string | int}
      */
     protected array $options;
 
     /**
-     * @return array{'name': string, 'email': string, 'password': string, 'role': string}
+     * @return array{'name': string | null, 'email': string | null, 'password': string | null, 'role': string | int}
      */
     protected function getUserData(): array
     {
@@ -83,7 +84,7 @@ class MakeUserCommand extends Command
                 'email' => $this->options['email'],
                 'designation' => config('ninshiki.designation')[0],
             ])->assignRole($this->options['role']);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             info($th->getMessage());
         }
 
@@ -105,7 +106,7 @@ class MakeUserCommand extends Command
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function handle(): int
     {

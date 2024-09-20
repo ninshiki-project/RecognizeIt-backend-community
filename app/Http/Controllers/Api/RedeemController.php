@@ -83,10 +83,10 @@ class RedeemController extends Controller
         }
 
         $redeem = Redeem::create([
-            'shop_id' => $shop?->id,
+            'shop_id' => $shop->id,
             'user_id' => $request->user()->id,
             'status' => RedeemStatusEnum::WAITING_APPROVAL->value,
-            'product_id' => $shop?->product?->id,
+            'product_id' => $shop->product->id,
         ]);
 
         /**

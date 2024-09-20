@@ -107,7 +107,7 @@ class UserController extends Controller
             $whoUser = User::findOrFail($invitedUser->added_by);
             // Send email notification to the user who invited,
             //that the invited person has declined accepting the invitation to join
-            $whoUser?->notify(new DeclinedNotification($whoUser, $invitedUser));
+            $whoUser->notify(new DeclinedNotification($whoUser, $invitedUser));
             $invitedUser->delete();
 
             return response()->json([
@@ -147,7 +147,7 @@ class UserController extends Controller
         $roles = Role::findById($request->role);
         $invitation = User::create([
             'name' => Str::ucfirst(Str::replace('.', ' ', Str::of($request->email)->before('@'))),
-            'added_by' => $user?->id,
+            'added_by' => $user->id,
             'department' => $request->department,
             'email' => $request->email,
             'token' => $token,
