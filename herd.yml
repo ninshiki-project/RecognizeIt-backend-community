@@ -1,0 +1,10 @@
+name: ninshiki-backend
+php: '8.3'
+secured: false
+aliases: {  }
+services:
+    reverb:
+        version: 1.x
+        port: '${REVERB_PORT}'
+integrations:
+    forge: {  }
