@@ -18,7 +18,7 @@ _Coming Soon_
 
 ## Documentation
 
-### :book: [Visit Documentation](https://marjose123.github.io/Ninshiki-backend/)
+### :book: [Visit Documentation](https://ninshiki-project.github.io/Ninshiki-backend/overview.html)
 
 ## License
 
