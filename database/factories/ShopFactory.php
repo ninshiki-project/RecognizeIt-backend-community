@@ -29,7 +29,7 @@ class ShopFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => Products::inRandomOrder()?->first()?->id,
+            'product_id' => Products::inRandomOrder()->first()->id,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

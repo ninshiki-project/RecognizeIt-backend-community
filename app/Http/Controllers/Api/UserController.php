@@ -107,7 +107,7 @@ class UserController extends Controller
             $whoUser = User::findOrFail($invitedUser->added_by);
             // Send email notification to the user who invited,
             //that the invited person has declined accepting the invitation to join
-            $whoUser?->notify(new DeclinedNotification($whoUser, $invitedUser));
+            $whoUser->notify(new DeclinedNotification($whoUser, $invitedUser));
             $invitedUser->delete();
 
             return response()->json([
@@ -135,9 +135,11 @@ class UserController extends Controller
      *
      * The system will handle for sending invitation email
      *
+     *
+     * @param  UserInvitationRequest  $request
      * @return JsonResponse
      */
-    public function inviteUser(UserInvitationRequest $request)
+    public function inviteUser(UserInvitationRequest $request): JsonResponse
     {
         $token = base64_encode(json_encode([
             'email' => $request->email,
@@ -145,9 +147,11 @@ class UserController extends Controller
         ]));
         $user = User::findOrFail($request->added_by);
         $roles = Role::findById($request->role);
+        $name = Str::replace('.', ' ', Str::of($request->email)->before('@'));
+        $name = Str::ucfirst($name);
         $invitation = User::create([
-            'name' => Str::ucfirst(Str::replace('.', ' ', Str::of($request->email)->before('@'))),
-            'added_by' => $user?->id,
+            'name' => $name,
+            'added_by' => $user->id,
             'department' => $request->department,
             'email' => $request->email,
             'token' => $token,
@@ -176,9 +180,10 @@ class UserController extends Controller
      * Get User by ID
      *
      *
+     * @param  string  $id
      * @return JsonResponse
      */
-    public function show($id)
+    public function show(string $id)
     {
         return Cache::flexible(static::$cacheKey.$id, [5, 10], function () use ($id) {
             return response()->json(User::findOrFail($id));
@@ -189,9 +194,10 @@ class UserController extends Controller
     /**
      * Delete User
      *
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
 
         $user = User::findOrFail($id);

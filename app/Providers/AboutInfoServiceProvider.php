@@ -39,10 +39,10 @@ class AboutInfoServiceProvider extends ServiceProvider
         ]);
         AboutCommand::add('Ninshiki Owner', static fn () => [
             'User Administrator' => fn () => User::with('roles')->get()->filter(
-                fn ($user) => $user->roles->where('name', 'Administrator')->toArray()
+                fn ($user) => $user->roles->where('name', 'Administrator')->count() > 0
             )->count() > 0 ? self::$checked : self::$times,
             'Owner' => fn () => User::with('roles')->get()->filter(
-                fn ($user) => $user->roles->where('name', 'Administrator')->toArray()
+                fn ($user) => $user->roles->where('name', 'Administrator')->count() > 0
             )->count(),
         ]);
         AboutCommand::add('Ninshiki Configuration', static fn () => [

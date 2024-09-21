@@ -18,6 +18,9 @@ use Illuminate\Validation\Rule;
 
 class PostsPostRequest extends FormRequest
 {
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [

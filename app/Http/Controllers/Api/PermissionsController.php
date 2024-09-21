@@ -31,9 +31,10 @@ class PermissionsController extends Controller
     /**
      * Get Permission by ID
      *
+     * @param  string  $id
      * @return JsonResponse
      */
-    public function show($id)
+    public function show(string $id): JsonResponse
     {
         return response()->json(Permission::findById($id));
     }
@@ -43,7 +44,7 @@ class PermissionsController extends Controller
      *
      * @return JsonResponse
      */
-    public function permissions()
+    public function permissions(): JsonResponse
     {
         $permissions = auth()->user()->roles()->with('permissions')->get()
             ->pluck('permissions')

@@ -83,10 +83,10 @@ class RedeemController extends Controller
         }
 
         $redeem = Redeem::create([
-            'shop_id' => $shop?->id,
+            'shop_id' => $shop->id,
             'user_id' => $request->user()->id,
             'status' => RedeemStatusEnum::WAITING_APPROVAL->value,
-            'product_id' => $shop?->product?->id,
+            'product_id' => $shop->product->id,
         ]);
 
         /**
@@ -103,10 +103,10 @@ class RedeemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  $id
+     * @param  string  $id
      * @return RedeemResource
      */
-    public function show($id)
+    public function show(string $id)
     {
         $redeem = Redeem::findOrFail($id);
 
@@ -116,10 +116,10 @@ class RedeemController extends Controller
     /**
      * Cancel the redeem item
      *
-     * @param  $id
+     * @param  string  $id
      * @return JsonResponse
      */
-    public function cancel($id)
+    public function cancel(string $id)
     {
         $redeem = Redeem::findOrFail($id);
         if ($redeem->status != RedeemStatusEnum::WAITING_APPROVAL) {
@@ -135,7 +135,7 @@ class RedeemController extends Controller
         // refund the user
         auth()->user()->refund($redeem->shop->product);
 
-        $redeem->status = RedeemStatusEnum::CANCELED->value;
+        $redeem->status = RedeemStatusEnum::CANCELED;
         $redeem->push();
 
         /**
@@ -151,10 +151,10 @@ class RedeemController extends Controller
      * Update Redeemed Status
      *
      * @param  Request  $request
-     * @param  $id
+     * @param  string  $id
      * @return RedeemResource|JsonResponse
      */
-    public function status(Request $request, $id)
+    public function status(Request $request, string $id)
     {
         $request->validate([
             'status' => [

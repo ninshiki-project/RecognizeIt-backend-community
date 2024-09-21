@@ -18,6 +18,7 @@ use App\Http\Requests\DepartmentPutRequest;
 use App\Models\Departments;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
 class DepartmentsController extends Controller
@@ -51,9 +52,10 @@ class DepartmentsController extends Controller
     /**
      * Display Department
      *
+     * @param  string  $id
      * @return JsonResponse
      */
-    public function show($id)
+    public function show(string $id)
     {
         return Cache::flexible(self::$cacheKey.$id, [5, 10], function () use ($id) {
             return response()->json(Departments::findOrFail($id));
@@ -64,9 +66,11 @@ class DepartmentsController extends Controller
     /**
      * Update Department
      *
+     * @param  DepartmentPutRequest  $request
+     * @param  string  $id
      * @return JsonResponse
      */
-    public function update(DepartmentPutRequest $request, $id)
+    public function update(DepartmentPutRequest $request, string $id)
     {
 
         return response()->json(Departments::findOrFail($id)->update($request->all()));
@@ -75,19 +79,19 @@ class DepartmentsController extends Controller
     /**
      * Delete Department
      *
-     * @return null JsonResponse There is no response
+     * @param  string  $id
+     * @return Response JsonResponse There is no response
      */
-    public function destroy($id)
+    public function destroy(string $id): Response
     {
 
-        Departments::findOrFail($id)->each(function ($department) {
-            $department->users()->each(function (User $user) {
-                $user->department = null;
-                $user->save();
-            });
-        })->delete();
+        $department = Departments::findOrFail($id);
+        $department->users()->each(function (User $user) {
+            $user->department = null;
+            $user->save();
+        });
+        $department->delete();
 
-        // @phpstan-ignore-next-line
         return response()->noContent();
     }
 }

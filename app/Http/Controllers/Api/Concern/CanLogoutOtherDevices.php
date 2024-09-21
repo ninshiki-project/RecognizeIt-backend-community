@@ -17,7 +17,11 @@ use Illuminate\Support\Str;
 
 trait CanLogoutOtherDevices
 {
-    public function logoutOtherDevicesSession(Request $request)
+    /**
+     * @param  Request  $request
+     * @return void
+     */
+    public function logoutOtherDevicesSession(Request $request): void
     {
         $token = $request->user()->tokens();
         /** @var \Laravel\Sanctum\PersonalAccessToken $token */

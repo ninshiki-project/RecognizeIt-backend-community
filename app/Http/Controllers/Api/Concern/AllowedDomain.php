@@ -17,10 +17,10 @@ use Illuminate\Support\Str;
 trait AllowedDomain
 {
     /**
-     * @param  $email
+     * @param  array|string  $email
      * @return bool
      */
-    protected function isWhitelistedDomain($email): bool
+    protected function isWhitelistedDomain(array|string $email): bool
     {
         $tldDomain = config('ninshiki.allowed_email_domain');
 
@@ -30,7 +30,7 @@ trait AllowedDomain
 
         if (! is_array($tldDomain)) {
             if (Str::of($tldDomain)->contains(',')) {
-                $domains = Str::of($tldDomain)->explode(',');
+                $domains = Str::of($tldDomain)->explode(',')->toArray();
 
                 return in_array($email, $domains);
             }

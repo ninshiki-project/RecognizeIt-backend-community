@@ -72,13 +72,13 @@ class AuthenticationController extends Controller
     /**
      * Login Provider Callback
      *
-     * @param  $provider
+     * @param  string  $provider
      * @param  Request  $request
      * @return JsonResponse|void
      *
      * @throws Throwable
      */
-    public function providerCallback($provider, Request $request)
+    public function providerCallback(string $provider, Request $request)
     {
         $this->validateProvider($provider);
 
@@ -205,7 +205,11 @@ class AuthenticationController extends Controller
         return response()->json('', Response::HTTP_ACCEPTED);
     }
 
-    public function userStatusValidate(User $user)
+    /**
+     * @param  User  $user
+     * @return JsonResponse|null
+     */
+    public function userStatusValidate(User $user): ?JsonResponse
     {
         if ($user->status != UserEnum::Active) {
             if ($user->status == UserEnum::Inactive) {
@@ -233,5 +237,7 @@ class AuthenticationController extends Controller
                 'message' => 'User is not active.',
             ], Response::HTTP_UNAUTHORIZED);
         }
+
+        return null;
     }
 }

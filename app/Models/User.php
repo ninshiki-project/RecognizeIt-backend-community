@@ -20,6 +20,7 @@ use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Traits\CanPay;
 use Bavix\Wallet\Traits\HasWallets;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -80,22 +81,35 @@ class User extends Authenticatable implements Customer
         ];
     }
 
+    /**
+     * @return HasMany<Provider>
+     */
     public function providers(): HasMany
     {
         return $this->hasMany(Provider::class, 'user_id', 'id');
     }
 
+    /**
+     * @return HasOne<Departments>
+     */
     public function departments(): HasOne
     {
         return $this->hasOne(Departments::class, 'id', 'department');
     }
 
+    /**
+     * @return HasMany<User>
+     */
     public function invitations(): HasMany
     {
         return $this->hasMany(User::class, 'added_by', 'id');
     }
 
-    public function scopeInvitedStatus($query)
+    /**
+     * @param  Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeInvitedStatus(Builder $query): Builder
     {
         return $query->where('status', UserEnum::Invited);
     }

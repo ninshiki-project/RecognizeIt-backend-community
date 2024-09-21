@@ -25,12 +25,20 @@ class RecognizedNotification extends Notification
         $this->user = $user;
     }
 
-    public function via($notifiable): array
+    /**
+     * @param  object  $notifiable
+     * @return string[]
+     */
+    public function via(object $notifiable): array
     {
         return ['mail', 'database'];
     }
 
-    public function toMail($notifiable): MailMessage
+    /**
+     * @param  object  $notifiable
+     * @return MailMessage
+     */
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
             ->greeting('Hi '.$this->user->name.' 👋')
@@ -38,7 +46,11 @@ class RecognizedNotification extends Notification
             ->action('View Post!', config('frontend.url'));
     }
 
-    public function toDatabase($notifiable): array
+    /**
+     * @param  object  $notifiable
+     * @return string[]
+     */
+    public function toDatabase(object $notifiable): array
     {
         return [
             'title' => 'Congratulations on Your Recognition!',
@@ -46,6 +58,10 @@ class RecognizedNotification extends Notification
         ];
     }
 
+    /**
+     * @param  object  $notifiable
+     * @return string
+     */
     public function databaseType(object $notifiable): string
     {
         return 'post-recognized-by';

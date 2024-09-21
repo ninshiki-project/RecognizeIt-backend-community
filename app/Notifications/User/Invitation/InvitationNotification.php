@@ -35,12 +35,20 @@ class InvitationNotification extends Notification
         $this->declineInvitationUrl = config('frontend.invitation.decline_url').'?token='.$invitation->invitation_token.'&accept=false';
     }
 
-    public function via($notifiable): array
+    /**
+     * @param  object  $notifiable
+     * @return string[]
+     */
+    public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    public function toMail($notifiable): MailMessage
+    /**
+     * @param  object  $notifiable
+     * @return MailMessage
+     */
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject('You are invited by '.$this->user->name.' to join '.config('app.name').' - Join Our Recognition System Today!')
@@ -70,7 +78,11 @@ class InvitationNotification extends Notification
             ->line('Thank you for using our application!');
     }
 
-    public function toArray($notifiable): array
+    /**
+     * @param  object  $notifiable
+     * @return array
+     */
+    public function toArray(object $notifiable): array
     {
         return [];
     }
