@@ -93,10 +93,10 @@ class ProductController extends Controller
     /**
      * Show Product
      *
-     * @param  $id
+     * @param  string  $id
      * @return ProductsResource
      */
-    public function show($id)
+    public function show(string $id)
     {
         $product = Products::findOrFail($id);
 
@@ -111,10 +111,10 @@ class ProductController extends Controller
      *  Update product its information by bulk column or single column
      *
      * @param  ProductRequest  $request
-     * @param  $id
+     * @param  string  $id
      * @return ProductsResource|JsonResponse
      */
-    public function update(ProductRequest $request, $id)
+    public function update(ProductRequest $request, string $id)
     {
         if ($request->has('image')) {
             $fileName = Str::orderedUuid();
@@ -154,10 +154,10 @@ class ProductController extends Controller
     /**
      * Delete Product
      *
-     * @param  $id
+     * @param  string  $id
      * @return JsonResponse|\Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
         $productInUsed = false;
 

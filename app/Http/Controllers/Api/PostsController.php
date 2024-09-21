@@ -103,7 +103,11 @@ class PostsController extends Controller implements HasMiddleware
         /**
          *  Link the User who will receive the points to the post via middle table
          */
-        $recipients = collect($request->recipient_id)->map(function ($item) {
+
+        /** @var array<string, string> $recipientsIds */
+        $recipientsIds = $request->recipient_id ?? [];
+
+        $recipients = collect($recipientsIds)->map(function ($item) {
             return [
                 'user_id' => $item,
             ];
@@ -115,7 +119,9 @@ class PostsController extends Controller implements HasMiddleware
         $recipients->each(function ($item) use ($request) {
             $_user = User::findOrFail($item['user_id']);
             $defaultWallet = $_user->getWallet(WalletsEnum::DEFAULT->value);
-            $defaultWallet->deposit($request->amount, [
+            /** @var int $amount */
+            $amount = $request->amount ?? 0;
+            $defaultWallet->deposit($amount, [
                 'title' => 'Ninshiki Wallet',
                 'description' => 'Added funds for being recognize by your colleague',
                 'date_at' => Carbon::now(),

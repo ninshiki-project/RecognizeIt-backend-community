@@ -32,9 +32,10 @@ class RolesController extends Controller
      * Get Role by ID
      *
      *
+     * @param  string  $id
      * @return JsonResponse
      */
-    public function show($id)
+    public function show(string $id)
     {
         return response()->json(Role::findById($id));
     }

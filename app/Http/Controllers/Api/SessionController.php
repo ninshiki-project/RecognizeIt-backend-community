@@ -61,7 +61,7 @@ class SessionController extends Controller
     /**
      *  Logout Other Device Session
      */
-    public function logoutOtherDevices(LogOutOtherBrowserRequest $request)
+    public function logoutOtherDevices(LogOutOtherBrowserRequest $request): void
     {
 
         $this->logoutOtherDevicesSession($request);
@@ -75,11 +75,13 @@ class SessionController extends Controller
     }
 
     /**
-     * Session Health
+     *  Session Health
      *
-     * This route is used to check if the session with the backend is still healthy, and it has not been logout from other device this will check via Sanctum token
+     *  This route is used to check if the session with the backend is still healthy, and it has not been logout from other device this will check via Sanctum token
+     *
+     * @return JsonResponse
      */
-    public function health()
+    public function health(): JsonResponse
     {
         return response()->json('', Response::HTTP_OK);
     }
@@ -90,7 +92,7 @@ class SessionController extends Controller
      * @param  mixed  $session
      * @return Agent
      */
-    protected function createAgent(mixed $session)
+    protected function createAgent(mixed $session): Agent
     {
         return tap(new Agent, fn ($agent) => $agent->setUserAgent($session->name));
     }

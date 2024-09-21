@@ -91,10 +91,10 @@ class ShopController extends Controller
     /**
      * Remove Product to Shop
      *
-     * @param  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
         Shop::destroy($id);
 

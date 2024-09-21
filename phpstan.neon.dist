@@ -8,11 +8,11 @@ parameters:
     level: 6
     universalObjectCratesClasses:
         - Illuminate\Http\Resources\Json\JsonResource
-        - app\Models\*
 
     ignoreErrors:
         - identifier: missingType.generics
         - identifier: missingType.iterableValue
+        - '#Unable to resolve the template type TSubject in call to method static method Illuminate\\Support\\Str::replace\(\)#'
     treatPhpDocTypesAsCertain: false
     reportUnmatchedIgnoredErrors: false
 

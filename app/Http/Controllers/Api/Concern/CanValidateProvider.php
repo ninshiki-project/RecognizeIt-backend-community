@@ -16,7 +16,13 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 trait CanValidateProvider
 {
-    protected function validateProvider(string $provider)
+    /**
+     * @param  string  $provider
+     * @return void
+     *
+     * @throw UnprocessableEntityHttpException
+     */
+    protected function validateProvider(string $provider): void
     {
         if ($provider !== 'zoho') {
             throw new UnprocessableEntityHttpException('Please login using credentials, or zoho');

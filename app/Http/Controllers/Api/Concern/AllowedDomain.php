@@ -17,10 +17,10 @@ use Illuminate\Support\Str;
 trait AllowedDomain
 {
     /**
-     * @param  $email
+     * @param  array|string  $email
      * @return bool
      */
-    protected function isWhitelistedDomain($email): bool
+    protected function isWhitelistedDomain(array|string $email): bool
     {
         $tldDomain = config('ninshiki.allowed_email_domain');
 

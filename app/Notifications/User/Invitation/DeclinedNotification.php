@@ -28,12 +28,20 @@ class DeclinedNotification extends Notification
         $this->invitation = $invitation;
     }
 
-    public function via($notifiable): array
+    /**
+     * @param  object  $notifiable
+     * @return string[]
+     */
+    public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    public function toMail($notifiable): MailMessage
+    /**
+     * @param  object  $notifiable
+     * @return MailMessage
+     */
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject('Invitation declined')
@@ -42,7 +50,11 @@ class DeclinedNotification extends Notification
             ->line('Thank you for using our platform.');
     }
 
-    public function toArray($notifiable): array
+    /**
+     * @param  object  $notifiable
+     * @return array
+     */
+    public function toArray(object $notifiable): array
     {
         return [];
     }

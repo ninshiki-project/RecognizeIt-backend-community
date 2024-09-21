@@ -13,6 +13,7 @@
 namespace App\Models;
 
 use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,26 +34,41 @@ class Redeem extends Model
         'status' => RedeemStatusEnum::class,
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function product(): BelongsTo
     {
         return $this->belongsTo(Products::class, 'product_id', 'id');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function shop(): BelongsTo
     {
         return $this->belongsTo(Shop::class, 'shop_id', 'id');
     }
 
-    public function scopeUser($query, $userId)
+    /**
+     * @param  Builder  $query
+     * @param  string|array|null  $userId
+     * @return Builder
+     */
+    public function scopeUser(Builder $query, string|array|null $userId): Builder
     {
         if (! $userId) {
             return $query;
         }
+
         if (is_array($userId)) {
             return $query->whereIn('user_id', $userId);
         }
@@ -60,7 +76,12 @@ class Redeem extends Model
         return $query->where('user_id', $userId);
     }
 
-    public function scopeStatus($query, $status)
+    /**
+     * @param  Builder  $query
+     * @param  string|null  $status
+     * @return Builder
+     */
+    public function scopeStatus(Builder $query, ?string $status): Builder
     {
         if (! $status) {
             return $query;

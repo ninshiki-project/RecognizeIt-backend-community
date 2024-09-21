@@ -17,6 +17,7 @@ use App\Models\Scopes\ProductAvailableScope;
 use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Interfaces\ProductInterface;
 use Bavix\Wallet\Traits\HasWallet;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -56,12 +57,20 @@ class Products extends Model implements ProductInterface
         });
     }
 
-    public function scopeAvailable($query)
+    /**
+     * @param  Builder  $query
+     * @return mixed
+     */
+    public function scopeAvailable(Builder $query): mixed
     {
         return $query->where('status', 'available');
     }
 
-    public function scopeUnavailable($query)
+    /**
+     * @param  Builder  $query
+     * @return mixed
+     */
+    public function scopeUnavailable(Builder $query): mixed
     {
         return $query->where('status', 'unavailable');
     }
@@ -74,16 +83,26 @@ class Products extends Model implements ProductInterface
         return $this->stock > 0;
     }
 
+    /**
+     * @return HasOne<Shop>
+     */
     public function shop(): HasOne
     {
         return $this->hasOne(Shop::class, 'product_id', 'id');
     }
 
+    /**
+     * @param  Customer  $customer
+     * @return int|string
+     */
     public function getAmountProduct(Customer $customer): int|string
     {
         return $this->price;
     }
 
+    /**
+     * @return array|mixed[]|null
+     */
     public function getMetaProduct(): ?array
     {
         return [

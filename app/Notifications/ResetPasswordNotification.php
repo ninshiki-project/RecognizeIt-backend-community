@@ -20,17 +20,28 @@ class ResetPasswordNotification extends Notification
 {
     public string $url;
 
-    public function __construct($url)
+    /**
+     * @param  string  $url
+     */
+    public function __construct(string $url)
     {
         $this->url = $url;
     }
 
-    public function via($notifiable): array
+    /**
+     * @param  object  $notifiable
+     * @return string[]
+     */
+    public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    public function toMail($notifiable): MailMessage
+    /**
+     * @param  object  $notifiable
+     * @return MailMessage
+     */
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject(Lang::get('Reset Password Notification'))
@@ -40,7 +51,11 @@ class ResetPasswordNotification extends Notification
             ->line(Lang::get('If you did not request a password reset, no further action is required.'));
     }
 
-    public function toArray($notifiable): array
+    /**
+     * @param  object  $notifiable
+     * @return array
+     */
+    public function toArray(object $notifiable): array
     {
         return [];
     }
