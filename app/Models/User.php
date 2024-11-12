@@ -19,6 +19,8 @@ use App\Observers\UserObserver;
 use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Traits\CanPay;
 use Bavix\Wallet\Traits\HasWallets;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,7 +34,7 @@ use Overtrue\LaravelLike\Traits\Liker;
 use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy([UserObserver::class])]
-class User extends Authenticatable implements Customer
+class User extends Authenticatable implements Customer, FilamentUser
 {
     use CanPay, HasApiTokens, HasFactory, HasRoles,  HasWallets, Liker, Notifiable, SoftDeletes;
 
@@ -124,5 +126,10 @@ class User extends Authenticatable implements Customer
         $url = config('frontend.reset_password').'?token='.$token;
 
         $this->notify(new ResetPasswordNotification($url));
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasRole('Administrator');
     }
 }
