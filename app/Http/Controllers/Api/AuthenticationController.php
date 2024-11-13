@@ -157,6 +157,8 @@ class AuthenticationController extends Controller
      * @return JsonResponse
      *
      * @unauthenticated
+     *
+     * @deprecated use login via providers
      */
     public function loginViaEmail(LoginViaEmailRequest $request)
     {
