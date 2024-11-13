@@ -2,7 +2,12 @@
     "name": "ninshiki/backend",
     "type": "project",
     "description": "Inspiring Recognition: Celebrate Success",
-    "keywords": ["laravel", "framework", "ninshiki", "recognition"],
+    "keywords": [
+        "laravel",
+        "framework",
+        "ninshiki",
+        "recognition"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.3",
@@ -13,6 +18,7 @@
         "cloudinary-labs/cloudinary-laravel": "^2.1",
         "dedoc/scramble": "^0.11.11",
         "doctrine/dbal": "^4.0",
+        "filament/filament": "^3.2",
         "hammerstone/fast-paginate": "^1.1",
         "laravel/framework": "^11.0",
         "laravel/reverb": "^1.0",
@@ -58,7 +64,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
