@@ -50,6 +50,8 @@ class UserResource extends Resource
                     ->relationship('departments', 'name'),
                 Forms\Components\Select::make('designation')
                     ->required()
+                    ->hintIcon('heroicon-o-question-mark-circle', tooltip: 'To add designation, update the Designations model file.')
+                    ->hintColor(Color::Orange)
                     ->native(false)
                     ->options(Designations::all()->pluck('name', 'name')),
             ]);
