@@ -28,7 +28,6 @@ use Laravel\Socialite\Facades\Socialite;
 use MarJose123\NinshikiEvent\Events\Session\UserLogin;
 use MarJose123\NinshikiEvent\Events\Session\UserLogout;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Throwable;
 
 class AuthenticationController extends Controller
@@ -39,7 +38,7 @@ class AuthenticationController extends Controller
     public string $url;
 
     /**
-     * Login via Provider
+     * Request Provider Login Link
      *
      * @param  string  $provider  Possible options: zoho
      * @return JsonResponse
@@ -82,9 +81,9 @@ class AuthenticationController extends Controller
     {
         $this->validateProvider($provider);
 
-        if (is_null($request->code)) {
-            throw new UnprocessableEntityHttpException('Code is required');
-        }
+        $request->validate([
+            'code' => ['required', 'string'],
+        ]);
 
         try {
             if ($provider === 'zoho') {
