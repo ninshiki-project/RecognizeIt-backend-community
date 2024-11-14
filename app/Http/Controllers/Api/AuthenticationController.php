@@ -69,7 +69,7 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Login Provider Callback
+     * Login via Provider Code
      *
      * @param  string  $provider
      * @param  Request  $request
