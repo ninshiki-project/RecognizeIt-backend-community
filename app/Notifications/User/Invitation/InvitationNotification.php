@@ -21,7 +21,7 @@ class InvitationNotification extends Notification
 {
     public string $frontEndUri;
 
-    public function __construct(public User $user)
+    public function __construct()
     {
         $this->frontEndUri = config('frontend.url');
     }
@@ -42,7 +42,7 @@ class InvitationNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('You are invited by '.$this->user->name.' to join '.config('app.name').' - Join Our Recognition System Today!')
+            ->subject('You are invited to join '.config('app.name').' - Join Our Recognition System Today!')
             ->greeting('Hello!')
             ->line('We are thrilled to extend to you an invitation to join our cutting-edge Recognition System! 🌟')
             ->line('We believe in celebrating the exceptional contributions of every member of our team. Our Recognition System is designed to shine a spotlight on your hard work, dedication, and achievements within our community.')
