@@ -19,20 +19,11 @@ use Illuminate\Support\HtmlString;
 
 class InvitationNotification extends Notification
 {
-    public User $user;
+    public string $frontEndUri;
 
-    public User $invitation;
-
-    public string $acceptInvitationUrl;
-
-    public string $declineInvitationUrl;
-
-    public function __construct(User $user, User $invitation)
+    public function __construct(public User $user)
     {
-        $this->user = $user;
-        $this->invitation = $invitation;
-        $this->acceptInvitationUrl = config('frontend.invitation.accept_url').'?token='.$invitation->invitation_token.'&accept=true';
-        $this->declineInvitationUrl = config('frontend.invitation.decline_url').'?token='.$invitation->invitation_token.'&accept=false';
+        $this->frontEndUri = config('frontend.url');
     }
 
     /**
@@ -72,8 +63,7 @@ class InvitationNotification extends Notification
             ->with(new HtmlString('14. <strong>Accessibility and Inclusivity:</strong> Ensure the system is accessible to all users for inclusivity.'))
             ->with(new HtmlString('15. <strong>Shop for Reward Redemption:</strong> Allow users to redeem their earned points for rewards in a virtual shop.'))
             ->line('Joining our Recognition System is simple! Just click the button below to get started:')
-            ->action('Accept Invitation', $this->acceptInvitationUrl)
-            ->action('Decline Invitation', $this->declineInvitationUrl)
+            ->action('Visit', $this->frontEndUri)
             ->line("By joining, you'll not only be part of a culture of appreciation and support but also contribute to fostering a positive work environment where everyone's efforts are acknowledged and valued.")
             ->line('Thank you for using our application!');
     }

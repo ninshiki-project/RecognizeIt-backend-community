@@ -13,7 +13,9 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Notifications\User\Invitation\InvitationNotification;
 use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
+use Illuminate\Support\Facades\Notification;
 
 class UserObserver
 {
@@ -60,5 +62,11 @@ class UserObserver
                 'currency' => 'PHP',
             ],
         ]);
+
+        /**
+         *  Sending Email Invitation
+         */
+        Notification::route('mail', $user->email)
+            ->notify(new InvitationNotification($user->createdBy));
     }
 }
