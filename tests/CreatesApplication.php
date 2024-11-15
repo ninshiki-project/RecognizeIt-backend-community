@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Sanctum\Sanctum;
 
 trait CreatesApplication
@@ -18,6 +19,7 @@ trait CreatesApplication
             ['*']
         );
         Event::fake();
+        Notification::fake();
 
     }
 }
