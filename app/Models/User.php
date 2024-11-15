@@ -37,7 +37,7 @@ use Spatie\Permission\Traits\HasRoles;
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements Customer, FilamentUser
 {
-    use CanPay, HasApiTokens, HasFactory, HasRoles,  HasWallets, Liker, Notifiable, SoftDeletes;
+    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable, SoftDeletes;
 
     protected string $guard_name = 'sanctum';
 
@@ -84,9 +84,7 @@ class User extends Authenticatable implements Customer, FilamentUser
         ];
     }
 
-    /**
-     * @return HasMany<Provider>
-     */
+
     public function providers(): HasMany
     {
         return $this->hasMany(Provider::class, 'user_id', 'id');
@@ -97,42 +95,21 @@ class User extends Authenticatable implements Customer, FilamentUser
         return $this->belongsTo(User::class, 'added_by');
     }
 
-    /**
-     * @return HasOne<Departments>
-     */
+
     public function departments(): HasOne
     {
         return $this->hasOne(Departments::class, 'id', 'department');
     }
 
     /**
-     * @return HasMany<User>
-     */
-    public function invitations(): HasMany
-    {
-        return $this->hasMany(User::class, 'added_by', 'id');
-    }
-
-    /**
      * @param  Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeInvitedStatus(Builder $query): Builder
     {
         return $query->where('status', UserEnum::Invited);
     }
 
-    /**
-     * Send a password reset notification to the user.
-     *
-     * @param  string  $token
-     */
-    public function sendPasswordResetNotification($token): void
-    {
-        $url = config('frontend.reset_password').'?token='.$token;
-
-        $this->notify(new ResetPasswordNotification($url));
-    }
 
     public function canAccessPanel(Panel $panel): bool
     {

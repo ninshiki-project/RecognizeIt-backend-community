@@ -28,12 +28,12 @@ class MakeUserCommand extends Command
     protected $description = 'Create a new Ninshiki user with an Owner Role and Permissions';
 
     /**
-     * @var array{'name': string | null, 'email': string | null, 'password': string | null, 'role': string | int}
+     * @var array{'name': string | null, 'email': string | null, 'password': string | null, 'role': string | int | null}
      */
     protected array $options;
 
     /**
-     * @return array{'name': string | null, 'email': string | null, 'password': string | null, 'role': string | int}
+     * @return array{'name': string | null, 'email': string | null, 'password': string | null, 'role': string | int | null}
      */
     protected function getUserData(): array
     {

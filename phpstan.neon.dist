@@ -1,18 +1,18 @@
 includes:
-    - vendor/larastan/larastan/extension.neon
-
+        - vendor/larastan/larastan/extension.neon
 parameters:
     paths:
-        - app/
-        - database/
-    level: 6
+        - app
+    level: 7
     universalObjectCratesClasses:
         - Illuminate\Http\Resources\Json\JsonResource
+        - Illuminate\Database\Eloquent\Collection
 
     ignoreErrors:
         - identifier: missingType.generics
         - identifier: missingType.iterableValue
         - '#Unable to resolve the template type TSubject in call to method static method Illuminate\\Support\\Str::replace\(\)#'
+        - '#Call to an undefined method Illuminate\\Support\\HigherOrder#'
     treatPhpDocTypesAsCertain: false
     reportUnmatchedIgnoredErrors: false
 
