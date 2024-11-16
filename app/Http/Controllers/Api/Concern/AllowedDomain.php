@@ -25,13 +25,13 @@ trait AllowedDomain
         $tldDomain = config('ninshiki.allowed_email_domain');
         $emailDomain = Str::of($email)->lower()->afterLast('@');
 
-        if (is_null($tldDomain)) {
+        if (is_null($tldDomain) || Str::of($tldDomain)->isEmpty()) {
             return true;
         }
+
         // check if the domain variable is an array and if array then validate
         if (is_array($tldDomain)) {
             return in_array($emailDomain, $tldDomain);
-
         }
         // if not array then possible a string? with comma-separated? or a single string
         if (Str::of($tldDomain)->contains(',')) {
@@ -42,7 +42,7 @@ trait AllowedDomain
         }
 
         // the tld domain filter is a single string
-        return Str::of($emailDomain)->containsAll($tldDomain);
+        return Str::of($tldDomain)->contains($emailDomain, ignoreCase: true);
 
     }
 }

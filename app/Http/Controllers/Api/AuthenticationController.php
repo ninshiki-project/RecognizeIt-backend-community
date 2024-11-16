@@ -23,6 +23,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 use MarJose123\NinshikiEvent\Events\Session\UserLogin;
@@ -149,6 +150,7 @@ class AuthenticationController extends Controller
 
             }
         } catch (Throwable $throwable) {
+            Log::info($throwable->getMessage());
             throw new $throwable;
         }
 
