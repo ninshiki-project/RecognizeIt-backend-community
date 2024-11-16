@@ -21,4 +21,8 @@
         <description>Created after removal of "Starter" from Ninshiki Backend Documentation</description>
         <accepts>starter.html</accepts>
     </rule>
+    <rule id="7e68181f">
+        <description>Created after removal of "Users" from Ninshiki Backend Documentation</description>
+        <accepts>Users.html</accepts>
+    </rule>
 </rules>
