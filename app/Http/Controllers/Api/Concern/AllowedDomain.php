@@ -23,22 +23,26 @@ trait AllowedDomain
     protected function isWhitelistedDomain(string $email): bool
     {
         $tldDomain = config('ninshiki.allowed_email_domain');
+        $emailDomain = Str::of($email)->lower()->afterLast('@');
 
         if (is_null($tldDomain)) {
             return true;
         }
+        // check if the domain variable is an array and if array then validate
+        if (is_array($tldDomain)) {
+            return in_array($emailDomain, $tldDomain);
 
-        if (! is_array($tldDomain)) {
-            if (Str::of($tldDomain)->contains(',')) {
-                $domains = Str::of($tldDomain)->explode(',')->toArray();
+        }
+        // if not array then possible a string? with comma-separated? or a single string
+        if (Str::of($tldDomain)->contains(',')) {
+            // The filter domain is in comma-separated
+            $domains = Str::of($tldDomain)->explode(',')->toArray();
 
-                return in_array($email, $domains);
-            }
-
-            return Str::of($email)->endsWith($tldDomain);
+            return in_array($emailDomain, $domains);
         }
 
-        return in_array($email, $tldDomain);
+        // the tld domain filter is a single string
+        return Str::of($emailDomain)->containsAll($tldDomain);
 
     }
 }
