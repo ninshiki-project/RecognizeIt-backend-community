@@ -15,7 +15,7 @@ permissions:
 env:
   INSTANCE: 'Writerside/n'
   ARTIFACT: 'webHelpN2-all.zip'
-  DOCKER_VERSION: '241.18775'
+  DOCKER_VERSION: '243.21565'
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
 
       - name: Build docs using Writerside Docker builder
-        uses: JetBrains/writerside-github-action@v5
+        uses: JetBrains/writerside-github-action@v4
         with:
           instance: ${{ env.INSTANCE }}
           artifact: ${{ env.ARTIFACT }}
@@ -74,7 +74,7 @@ jobs:
         run: unzip -O UTF-8 -qq '${{ env.ARTIFACT }}' -d dir
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v4
 
       - name: Package and upload Pages artifact
         uses: actions/upload-pages-artifact@v3
