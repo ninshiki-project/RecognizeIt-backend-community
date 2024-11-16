@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 it('can change password', function () {

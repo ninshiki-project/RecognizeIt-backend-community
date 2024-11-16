@@ -14,7 +14,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Http\Controllers\Api\Enum\UserEnum;
-use App\Notifications\ResetPasswordNotification;
 use App\Observers\UserObserver;
 use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Traits\CanPay;
@@ -84,7 +83,6 @@ class User extends Authenticatable implements Customer, FilamentUser
         ];
     }
 
-
     public function providers(): HasMany
     {
         return $this->hasMany(Provider::class, 'user_id', 'id');
@@ -94,7 +92,6 @@ class User extends Authenticatable implements Customer, FilamentUser
     {
         return $this->belongsTo(User::class, 'added_by');
     }
-
 
     public function departments(): HasOne
     {
@@ -109,7 +106,6 @@ class User extends Authenticatable implements Customer, FilamentUser
     {
         return $query->where('status', UserEnum::Invited);
     }
-
 
     public function canAccessPanel(Panel $panel): bool
     {

@@ -83,7 +83,6 @@ class Products extends Model implements ProductInterface
         return $this->stock > 0;
     }
 
-
     public function shop(): HasOne
     {
         return $this->hasOne(Shop::class, 'product_id', 'id');

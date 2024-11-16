@@ -26,7 +26,7 @@ return [
      * If the ALLOWED_EMAIL_DOMAIN is null, then all the TLD domains will be passed in the filter
      * ==============================================
      */
-    'allowed_email_domain' => env('ALLOWED_EMAIL_DOMAIN', null),
+    'allowed_email_domain' => env('ALLOWED_EMAIL_DOMAIN'),
 
     /**
      *  =======================================================

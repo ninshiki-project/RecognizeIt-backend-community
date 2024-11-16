@@ -67,6 +67,6 @@ class UserObserver
          *  Sending Email Invitation
          */
         Notification::route('mail', $user->email)
-            ->notify(new InvitationNotification());
+            ->notify(new InvitationNotification);
     }
 }

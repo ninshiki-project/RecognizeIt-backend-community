@@ -12,7 +12,6 @@
 
 namespace App\Notifications\User\Invitation;
 
-use App\Models\User;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
