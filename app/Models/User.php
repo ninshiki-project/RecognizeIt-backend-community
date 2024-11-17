@@ -38,8 +38,6 @@ class User extends Authenticatable implements Customer, FilamentUser
 {
     use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable, SoftDeletes;
 
-    protected string $guard_name = 'sanctum';
-
     /**
      * The attributes that are mass assignable.
      *

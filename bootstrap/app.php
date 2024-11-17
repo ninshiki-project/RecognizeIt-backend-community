@@ -25,15 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ['prefix' => 'api', 'middleware' => ['api', 'auth:sanctum']],
     )
     ->withSchedule(function (Schedule $schedule) {})
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->use([
-            \Illuminate\Http\Middleware\HandleCors::class,
-            \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
-            \Illuminate\Http\Middleware\ValidatePostSize::class,
-            \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
-            \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        ]);
-    })
+    ->withMiddleware(function (Middleware $middleware) {})
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->expectsJson() || $request->ajax());
         $exceptions->stopIgnoring(HttpException::class);

@@ -60,7 +60,7 @@ class TheSeeder extends Seeder
         ];
 
         $permissions = collect($allPermissionNames)->map(function ($permission) {
-            return ['name' => $permission, 'guard_name' => 'sanctum'];
+            return ['name' => $permission, 'guard_name' => 'web'];
         });
 
         /**
@@ -75,14 +75,14 @@ class TheSeeder extends Seeder
          */
         $this->command->warn(PHP_EOL.'Creating Admin roles...');
         $this->withProgressBar(1, function () {
-            $role = Role::create(['name' => 'Administrator', 'guard_name' => 'sanctum']);
+            $role = Role::create(['name' => 'Administrator', 'guard_name' => 'web']);
             $role->givePermissionTo(Permission::all());
         });
         $this->command->info('Roles has been created.');
 
         $this->command->warn(PHP_EOL.'Creating member roles...');
         $this->withProgressBar(1, function () {
-            $role = Role::create(['name' => 'Member', 'guard_name' => 'sanctum']);
+            $role = Role::create(['name' => 'Member', 'guard_name' => 'web']);
             $roles = collect(Permission::all())->filter(function ($permission) {
                 return ! Str::of($permission->name)->contains([
                     'invite user',
