@@ -68,12 +68,13 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status')
-                    ->tooltip(function (User $user): ?string {
+                    ->tooltip(function (User $user): string {
                         return match ($user->status) {
                             UserEnum::Invited => 'User is Invited',
                             UserEnum::Active => 'User is Active',
                             UserEnum::Inactive => 'User is Inactive',
                             UserEnum::Ban => 'User is Ban for some reason by the administrator',
+                            default => '',
                         };
                     }),
                 Tables\Columns\TextColumn::make('email')
