@@ -107,6 +107,6 @@ class User extends Authenticatable implements Customer, FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole('Administrator') && $this->status !== UserEnum::Ban;
+        return $this->hasRole('Administrator') && $this->status !== UserEnum::Deactivate;
     }
 }

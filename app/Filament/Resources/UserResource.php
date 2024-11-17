@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Models\Designations;
+use App\Models\Role;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -72,11 +73,13 @@ class UserResource extends Resource
                         return match ($user->status) {
                             UserEnum::Invited => 'User is Invited',
                             UserEnum::Active => 'User is Active',
-                            UserEnum::Inactive => 'User is Inactive',
-                            UserEnum::Ban => 'User is Ban for some reason by the administrator',
+                            UserEnum::Deactivate => 'User has been Deactivated by the administrator',
                             default => '',
                         };
                     }),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->label('Role')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('department')
@@ -117,6 +120,14 @@ class UserResource extends Resource
                                 })
                                 ->native(false)
                                 ->preload()
+                                ->disableOptionWhen(function (string $value, User $user): bool {
+                                    if ($user->status !== UserEnum::Invited) {
+                                        return $value === UserEnum::Invited->value;
+                                    }
+                                    if ($user->status === UserEnum::Invited) {
+                                        return $value === UserEnum::Active->value;
+                                    }
+                                })
                                 ->options(UserEnum::class),
                         ])
                         ->requiresConfirmation()
@@ -128,8 +139,28 @@ class UserResource extends Resource
                         ->modalWidth(MaxWidth::Small)
                         ->modalAlignment(Alignment::Center)
                         ->icon('heroicon-o-user-circle')
-                        ->color(COlor::Orange)
                         ->label('Update Status'),
+                    Tables\Actions\Action::make('update_role')
+                        ->form([
+                            Forms\Components\Select::make('roles')
+                                ->required()
+                                ->live()
+                                ->reactive()
+                                ->native(false)
+                                ->preload()
+                                ->default(function (User $record) {
+                                    return $record->getRoleNames()[0] ?? null;
+                                })
+                                ->options(Role::all()->pluck('name', 'name')),
+                        ])
+                        ->requiresConfirmation()
+                        ->action(function (User $user, array $data) {
+                            $user->syncRoles($data['roles']);
+                        })
+                        ->modalWidth(MaxWidth::Small)
+                        ->modalAlignment(Alignment::Center)
+                        ->icon('heroicon-o-shield-check')
+                        ->label('Update Role'),
                     Tables\Actions\DeleteAction::make(),
                 ])
                     ->icon('heroicon-o-ellipsis-horizontal-circle'),

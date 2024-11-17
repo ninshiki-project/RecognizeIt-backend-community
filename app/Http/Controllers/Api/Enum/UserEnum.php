@@ -21,16 +21,14 @@ enum UserEnum: string implements HasColor, HasIcon, HasLabel
 {
     case Invited = 'invited';
     case Active = 'active';
-    case Inactive = 'inactive';
-    case Ban = 'banned';
+    case Deactivate = 'deactivated';
 
     public function getColor(): string|array|null
     {
         return match ($this) {
             self::Invited => Color::Orange,
             self::Active => Color::Green,
-            self::Inactive => Color::Gray,
-            self::Ban => Color::Red,
+            self::Deactivate => Color::Gray,
         };
     }
 
@@ -39,8 +37,7 @@ enum UserEnum: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::Invited => 'heroicon-o-envelope',
             self::Active => 'heroicon-o-check-circle',
-            self::Inactive => 'heroicon-o-arrow-trending-down',
-            self::Ban => 'heroicon-o-x-circle',
+            self::Deactivate => 'heroicon-o-arrow-trending-down',
         };
     }
 
@@ -49,8 +46,7 @@ enum UserEnum: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::Invited => 'Invited',
             self::Active => 'Active',
-            self::Inactive => 'Inactive',
-            self::Ban => 'Banned',
+            self::Deactivate => 'Deactivate',
         };
     }
 }
