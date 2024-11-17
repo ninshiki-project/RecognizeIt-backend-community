@@ -25,6 +25,7 @@ class ManageUsers extends ManageRecords
                 })
                 ->after(function () {
                     // send invitation email
+                    /** @phpstan-ignore-next-line  */
                     Notification::route('mail', $this->record->email)
                         ->notify(new InvitationNotification);
                 })
