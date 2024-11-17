@@ -14,8 +14,6 @@ use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
-use function Clue\StreamFilter\fun;
 
 class UserResource extends Resource
 {
@@ -110,7 +108,7 @@ class UserResource extends Resource
                                 ->options(UserEnum::class),
                         ])
                         ->requiresConfirmation()
-                        ->action(function (User $user, array $data){
+                        ->action(function (User $user, array $data) {
                             $user->update([
                                 'status' => $data['status'],
                             ]);

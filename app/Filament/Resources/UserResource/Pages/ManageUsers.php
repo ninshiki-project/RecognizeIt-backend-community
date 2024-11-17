@@ -4,8 +4,10 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Notifications\User\Invitation\InvitationNotification;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Illuminate\Support\Facades\Notification;
 
 class ManageUsers extends ManageRecords
 {
@@ -20,6 +22,11 @@ class ManageUsers extends ManageRecords
                     $data['status'] = UserEnum::Invited->value;
 
                     return $data;
+                })
+                ->after(function () {
+                    // send invitation email
+                    Notification::route('mail', $this->record->email)
+                        ->notify(new InvitationNotification);
                 })
                 ->createAnother(false),
         ];

@@ -19,6 +19,7 @@ use App\Models\User;
 use Closure;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -106,6 +107,7 @@ class TheSeeder extends Seeder
                 $user = User::factory()->create([
                     'name' => 'Test User',
                     'email' => 'test@example.com',
+                    'password' => Hash::make('password'),
                     'status' => UserEnum::Active->value,
                     'designation' => Designations::inRandomOrder()->first()->name,
                     'department' => Departments::inRandomOrder()->first()->id,
