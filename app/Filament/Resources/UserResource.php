@@ -112,6 +112,9 @@ class UserResource extends Resource
                             Forms\Components\Select::make('status')
                                 ->label('User Account Status')
                                 ->required()
+                                ->default(function (User $record) {
+                                    return $record->status;
+                                })
                                 ->native(false)
                                 ->preload()
                                 ->options(UserEnum::class),
