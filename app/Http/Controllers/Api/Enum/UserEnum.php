@@ -38,7 +38,7 @@ enum UserEnum: string implements HasColor, HasIcon, HasLabel
     {
         return match ($this) {
             self::Invited => 'heroicon-o-envelope',
-            self::Active => 'heroicon-o-user',
+            self::Active => 'heroicon-o-check-circle',
             self::Inactive => 'heroicon-o-arrow-trending-down',
             self::Ban => 'heroicon-o-x-circle',
         };

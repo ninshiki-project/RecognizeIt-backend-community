@@ -64,10 +64,18 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
+            ->columns(components: [
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('status'),
+                Tables\Columns\IconColumn::make('status')
+                    ->tooltip(function (User $user): ?string {
+                        return match ($user->status) {
+                            UserEnum::Invited => 'User is Invited',
+                            UserEnum::Active => 'User is Active',
+                            UserEnum::Inactive => 'User is Inactive',
+                            UserEnum::Ban => 'User is Ban for some reason by the administrator',
+                        };
+                    }),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('department')
