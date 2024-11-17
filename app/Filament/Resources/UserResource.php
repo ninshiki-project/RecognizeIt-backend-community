@@ -10,8 +10,12 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use function Clue\StreamFilter\fun;
 
 class UserResource extends Resource
 {
@@ -25,13 +29,6 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('status')
-                    ->required()
-                    ->visibleOn('edit')
-                    ->default(UserEnum::Invited->value)
-                    ->native(false)
-                    ->preload()
-                    ->options(UserEnum::class),
                 Forms\Components\TextInput::make('name')
                     ->hintIcon('heroicon-o-question-mark-circle', tooltip: 'This will be updated with the information once the user login.')
                     ->hintColor(Color::Orange)
@@ -72,6 +69,7 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\IconColumn::make('status'),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('department')
@@ -101,7 +99,30 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('update_status')
+                        ->form([
+                            Forms\Components\Select::make('status')
+                                ->label('User Account Status')
+                                ->required()
+                                ->native(false)
+                                ->preload()
+                                ->options(UserEnum::class),
+                        ])
+                        ->requiresConfirmation()
+                        ->action(function (User $user, array $data){
+                            $user->update([
+                                'status' => $data['status'],
+                            ]);
+                        })
+                        ->modalWidth(MaxWidth::Small)
+                        ->modalAlignment(Alignment::Center)
+                        ->icon('heroicon-o-user-circle')
+                        ->color(COlor::Orange)
+                        ->label('Update Status'),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->icon('heroicon-o-ellipsis-horizontal-circle'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

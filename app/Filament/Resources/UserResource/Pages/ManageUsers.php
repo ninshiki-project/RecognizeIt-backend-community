@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
+use App\Http\Controllers\Api\Enum\UserEnum;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
@@ -16,6 +17,7 @@ class ManageUsers extends ManageRecords
             Actions\CreateAction::make()
                 ->mutateFormDataUsing(function (array $data) {
                     $data['added_by'] = auth()->id();
+                    $data['status'] = UserEnum::Invited->value;
 
                     return $data;
                 })
