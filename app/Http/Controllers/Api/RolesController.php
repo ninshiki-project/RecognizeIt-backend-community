@@ -37,6 +37,6 @@ class RolesController extends Controller
      */
     public function show(string $id)
     {
-        return response()->json(Role::findById($id));
+        return response()->json(Role::findById($id, 'web'));
     }
 }

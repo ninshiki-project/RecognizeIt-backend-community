@@ -36,7 +36,7 @@ class PermissionsController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        return response()->json(Permission::findById($id));
+        return response()->json(Permission::findById($id, 'web'));
     }
 
     /**
