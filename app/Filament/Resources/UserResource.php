@@ -29,10 +29,12 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->disabledOn('edit')
                     ->hintIcon('heroicon-o-question-mark-circle', tooltip: 'This will be updated with the information once the user login.')
                     ->hintColor(Color::Orange)
                     ->required(),
                 Forms\Components\TextInput::make('email')
+                    ->disabledOn('edit')
                     ->email()
                     ->required(),
                 Forms\Components\Select::make('roles')
@@ -40,6 +42,7 @@ class UserResource extends Resource
                     ->live()
                     ->reactive()
                     ->native(false)
+                    ->visibleOn('create')
                     ->preload()
                     ->relationship('roles', 'name'),
                 Forms\Components\TextInput::make('password')
@@ -113,7 +116,7 @@ class UserResource extends Resource
                     Tables\Actions\Action::make('update_status')
                         ->form([
                             Forms\Components\Select::make('status')
-                                ->label('User Account Status')
+                                ->label('Change User Account Status')
                                 ->required()
                                 ->default(function (User $record) {
                                     return $record->status;
@@ -143,6 +146,7 @@ class UserResource extends Resource
                     Tables\Actions\Action::make('update_role')
                         ->form([
                             Forms\Components\Select::make('roles')
+                                ->label('Change User Role to:')
                                 ->required()
                                 ->live()
                                 ->reactive()
@@ -152,9 +156,19 @@ class UserResource extends Resource
                                     return $record->getRoleNames()[0] ?? null;
                                 })
                                 ->options(Role::all()->pluck('name', 'name')),
+                            Forms\Components\TextInput::make('password')
+                                ->label('Set Temporary Password:')
+                                ->reactive()
+                                ->hidden(fn (Forms\Get $get): bool => ! $get('roles') || $get('roles') === 'Member')
+                                ->revealable()
+                                ->required(fn (Forms\Get $get): bool => ! $get('roles') || $get('roles') === 'Administrator')
+                                ->password(),
                         ])
                         ->requiresConfirmation()
                         ->action(function (User $user, array $data) {
+                            $user->update([
+                                'password' => $data['password'] ?? null,
+                            ]);
                             $user->syncRoles($data['roles']);
                         })
                         ->modalWidth(MaxWidth::Small)
