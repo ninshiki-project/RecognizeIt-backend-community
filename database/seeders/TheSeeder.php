@@ -12,6 +12,8 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Models\Departments;
 use App\Models\Designations;
 use App\Models\User;
 use Closure;
@@ -104,7 +106,9 @@ class TheSeeder extends Seeder
                 $user = User::factory()->create([
                     'name' => 'Test User',
                     'email' => 'test@example.com',
+                    'status' => UserEnum::Active->value,
                     'designation' => Designations::inRandomOrder()->first()->name,
+                    'department' => Departments::inRandomOrder()->first()->id,
                 ])
                     ->assignRole('Administrator');
                 $this->command->info(PHP_EOL.'Points created and associated...');
@@ -119,7 +123,9 @@ class TheSeeder extends Seeder
             $this->command->warn(PHP_EOL.'Creating Normal user and assigning roles...');
             $this->withProgressBar(5, function () {
                 $user = User::factory()->create([
-                    'designation' => Designations::inRandomOrder()->first()?->name,
+                    'status' => UserEnum::Active->value,
+                    'designation' => Designations::inRandomOrder()->first()->name,
+                    'department' => Departments::inRandomOrder()->first()->id,
                 ])
                     ->assignRole('Member');
                 $this->command->info(PHP_EOL.'Points created and associated...');

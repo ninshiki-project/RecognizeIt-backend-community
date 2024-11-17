@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Models\Designations;
 use App\Models\User;
 use Filament\Forms;
@@ -24,6 +25,13 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('status')
+                    ->required()
+                    ->visibleOn('edit')
+                    ->default(UserEnum::Invited->value)
+                    ->native(false)
+                    ->preload()
+                    ->options(UserEnum::class),
                 Forms\Components\TextInput::make('name')
                     ->hintIcon('heroicon-o-question-mark-circle', tooltip: 'This will be updated with the information once the user login.')
                     ->hintColor(Color::Orange)
@@ -40,6 +48,7 @@ class UserResource extends Resource
                     ->relationship('roles', 'name'),
                 Forms\Components\TextInput::make('password')
                     ->reactive()
+                    ->visibleOn('create')
                     ->hidden(fn (Forms\Get $get): bool => ! $get('roles') || $get('roles') === 'Member')
                     ->revealable()
                     ->required(fn (Forms\Get $get): bool => ! $get('roles') || $get('roles') === 'Administrator')

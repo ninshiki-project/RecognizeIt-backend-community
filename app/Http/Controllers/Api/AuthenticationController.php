@@ -226,10 +226,9 @@ class AuthenticationController extends Controller
                 ], Response::HTTP_UNAUTHORIZED);
             }
             if ($user->status == UserEnum::Invited) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'The user need to activate account.',
-                ], Response::HTTP_UNAUTHORIZED);
+                // update the status to active
+                $user->status = UserEnum::Active->value;
+                $user->save();
             }
 
             if ($user->status == UserEnum::Ban) {
