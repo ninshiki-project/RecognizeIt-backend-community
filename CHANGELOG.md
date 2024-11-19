@@ -11,3 +11,41 @@ All notable changes to this project will be documented in this file.
 * Change License from MIT to GNU GPLv3
 
 **Full Changelog**: https://github.com/ninshiki-project/Ninshiki-backend/compare/0.1.0...0.1.1
+
+## 0.1.0 - 2024-11-19
+
+**Changes**
+
+* Unit test by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/1
+* chore(deps): bump actions/checkout from 2 to 4 by @dependabot in https://github.com/ninshiki-project/Ninshiki-backend/pull/2
+* chore(deps): bump dependabot/fetch-metadata from 1.6.0 to 2.2.0 by @dependabot in https://github.com/ninshiki-project/Ninshiki-backend/pull/3
+* Realtime post notification by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/4
+* API Entry Point Throttle by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/5
+* ✨ feat(test): Start Reverb server in test workflow by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/6
+* ✨ feat(ci): Add database migration to CI workflow by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/7
+* Docs by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/8
+* Create LICENSE by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/10
+* Create SECURITY.md by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/11
+* Feat(Logout other device): Add route to logout other device session by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/9
+* chore(deps): bump actions/configure-pages from 4 to 5 by @dependabot in https://github.com/ninshiki-project/Ninshiki-backend/pull/12
+* Optimize structure and logics by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/13
+* Adding user owner in console by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/14
+* Larastan by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/15
+* Shop Feature by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/17
+* Virtual Wallet feature by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/18
+* Api cache response by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/19
+* Likeable optimization by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/20
+* ✨ feat(app): Integrate Ninshiki Event Dispatcher by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/21
+* Refactor user invitation flow by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/22
+* Cache stale while revalidate and post rate limit by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/23
+* Support Phpstan level 6  by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/24
+* chore(deps): bump laravel/reverb from 1.3.0 to 1.4.0 in the composer group across 1 directory by @dependabot in https://github.com/ninshiki-project/Ninshiki-backend/pull/25
+* chore(deps): bump JetBrains/writerside-github-action from 4 to 5 by @dependabot in https://github.com/ninshiki-project/Ninshiki-backend/pull/26
+* chore(deps): bump laravel/framework from 11.30.0 to 11.31.0 in the composer group across 1 directory by @dependabot in https://github.com/ninshiki-project/Ninshiki-backend/pull/27
+
+## New Contributors
+* @MarJose123 made their first contribution in https://github.com/ninshiki-project/Ninshiki-backend/pull/1
+* @dependabot made their first contribution in https://github.com/ninshiki-project/Ninshiki-backend/pull/2
+
+**Full Changelog**: https://github.com/ninshiki-project/Ninshiki-backend/commits/0.1.0
+
