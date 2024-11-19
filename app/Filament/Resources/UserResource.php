@@ -15,6 +15,7 @@ use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
@@ -68,6 +69,7 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->orderBy('created_at', 'desc'))
             ->columns(components: [
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -111,7 +113,8 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->hidden(fn (User $user): bool => $user->id === auth()->id()),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('update_status')
                         ->form([
@@ -177,6 +180,7 @@ class UserResource extends Resource
                         ->label('Update Role'),
                     Tables\Actions\DeleteAction::make(),
                 ])
+                    ->hidden(fn (User $user): bool => $user->id === auth()->id())
                     ->icon('heroicon-o-ellipsis-horizontal-circle'),
             ])
             ->bulkActions([
