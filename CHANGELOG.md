@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 
 <!--- END HEADER -->
+## 0.1.2 - 2024-11-22
+
+### What's Changed
+
+* Profile page by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/29
+* ✨ feat(exceptions): Implement a global exception handler for API request by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/30
+
+**Full Changelog**: https://github.com/ninshiki-project/Ninshiki-backend/compare/0.1.1...0.1.2
+
 ## 0.1.1 - 2024-11-19
 
 **Changes**
@@ -44,8 +53,8 @@ All notable changes to this project will be documented in this file.
 * chore(deps): bump laravel/framework from 11.30.0 to 11.31.0 in the composer group across 1 directory by @dependabot in https://github.com/ninshiki-project/Ninshiki-backend/pull/27
 
 ## New Contributors
+
 * @MarJose123 made their first contribution in https://github.com/ninshiki-project/Ninshiki-backend/pull/1
 * @dependabot made their first contribution in https://github.com/ninshiki-project/Ninshiki-backend/pull/2
 
 **Full Changelog**: https://github.com/ninshiki-project/Ninshiki-backend/commits/0.1.0
-
