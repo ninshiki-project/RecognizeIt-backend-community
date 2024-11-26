@@ -1,59 +1,40 @@
 <?php
-/*
- * Copyright (c) 2024.
- *
- * Filename: Designations.php
- * Project Name: ninshiki-backend
- * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
- *  License: MIT
- *  GitHub: https://github.com/MarJose123
- *  Written By: Marjose123
- */
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/**
- * App\Models\Designations
- *
- * @property mixed $id
- * @property string $name
- *
- * @method static \Illuminate\Database\Eloquent\Builder|Designations newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Designations newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Designations query()
- * @method static \Illuminate\Database\Eloquent\Builder|Designations whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Designations whereName($value)
- *
- * @mixin \Eloquent
- */
 class Designations extends Model
 {
-    use \Sushi\Sushi;
+    use HasFactory, HasUuids;
 
     /**
-     * @var array|string[]
+     * The attributes that are mass assignable.
+     *
+     * @var array
      */
-    protected array $schema = [
-        'id' => 'integer',
-        'name' => 'string',
+    protected $fillable = [
+        'name',
+        'departments_id',
     ];
 
+    public function departments(): BelongsTo
+    {
+        return $this->belongsTo(Departments::class);
+    }
+
     /**
-     * @return array[]
+     * Get the attributes that should be cast.
+     *
+     * @return array
      */
-    public function getRows(): array
+    protected function casts(): array
     {
         return [
-            ['id' => 1, 'name' => 'Senior Developer'],
-            ['id' => 2, 'name' => 'Human Resource'],
-            ['id' => 3, 'name' => 'Project Manager'],
-            ['id' => 4, 'name' => 'Delivery Manager'],
-            ['id' => 5, 'name' => 'Quality Assurance'],
-            ['id' => 6, 'name' => 'Junior Developer'],
-            ['id' => 7, 'name' => 'CTO'],
-            ['id' => 8, 'name' => 'IT Head'],
+            'id' => 'string',
         ];
     }
 }
