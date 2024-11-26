@@ -57,6 +57,7 @@ class Agent extends MobileDetect
         'Netscape' => 'Netscape',
         'Mozilla' => 'Mozilla',
         'WeChat' => 'MicroMessenger',
+        'node' => 'Node/Postman/API Docs',
     ];
 
     /**

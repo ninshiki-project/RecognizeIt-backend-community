@@ -46,8 +46,8 @@ class SessionController extends Controller
                 ->get()
         )->map(function ($session) {
             return (object) [
-                'platform' => $this->createAgent($session)->platform(),
-                'browser' => $this->createAgent($session)->browser(),
+                'platform' => $this->createAgent($session)->platform() ?? 'Unknown',
+                'browser' => $this->createAgent($session)->browser() ?? 'Unknown',
                 'is_desktop' => $this->createAgent($session)->isDesktop(),
                 // @phpstan-ignore-next-line
                 'is_current_device' => $session->id == \Str::of(auth()->user()->currentAccessToken()->id)->explode('|')[0],
