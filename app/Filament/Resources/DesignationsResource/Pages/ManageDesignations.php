@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Filament\Resources\DepartmentsResource\Pages;
+namespace App\Filament\Resources\DesignationsResource\Pages;
 
-use App\Filament\Resources\DepartmentsResource;
+use App\Filament\Resources\DesignationsResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
 
-class ManageDepartments extends ManageRecords
+class ManageDesignations extends ManageRecords
 {
-    protected static string $resource = DepartmentsResource::class;
+    protected static string $resource = DesignationsResource::class;
 
     protected function getHeaderActions(): array
     {

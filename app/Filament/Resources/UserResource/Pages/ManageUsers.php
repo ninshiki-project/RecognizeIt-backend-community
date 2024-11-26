@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Notifications\User\Invitation\InvitationNotification;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\MaxWidth;
 use Illuminate\Support\Facades\Notification;
 
 class ManageUsers extends ManageRecords
@@ -17,6 +19,8 @@ class ManageUsers extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
+                ->modalWidth(MaxWidth::TwoExtraLarge)
+                ->modalAlignment(Alignment::Center)
                 ->mutateFormDataUsing(function (array $data) {
                     $data['added_by'] = auth()->id();
                     $data['status'] = UserEnum::Invited->value;

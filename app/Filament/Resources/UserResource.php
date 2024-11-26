@@ -56,13 +56,29 @@ class UserResource extends Resource
                 Forms\Components\Select::make('department')
                     ->required()
                     ->native(false)
+                    ->searchable()
+                    ->preload()
+                    ->reactive()
+                    ->live()
+                    ->afterStateUpdated(function (?string $state, ?string $old, Forms\Set $set) {
+                        $set('designation', null);
+                    })
                     ->relationship('departments', 'name'),
                 Forms\Components\Select::make('designation')
                     ->required()
+                    ->searchable()
+                    ->preload()
                     ->hintIcon('heroicon-o-question-mark-circle', tooltip: 'To add designation, update the Designations model file.')
                     ->hintColor(Color::Orange)
                     ->native(false)
-                    ->options(Designations::all()->pluck('name', 'name')),
+                    ->options(function (Forms\Get $get): array {
+                        if (! $get('department')) {
+                            return [];
+                        }
+
+                        return Designations::where('departments_id', $get('department'))->pluck('name', 'id')->toArray();
+
+                    }),
             ]);
     }
 

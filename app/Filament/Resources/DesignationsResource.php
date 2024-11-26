@@ -2,21 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DepartmentsResource\Pages;
-use App\Models\Departments;
+use App\Filament\Resources\DesignationsResource\Pages;
+use App\Models\Designations;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class DepartmentsResource extends Resource
+class DesignationsResource extends Resource
 {
-    protected static ?string $model = Departments::class;
+    protected static ?string $model = Designations::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -24,12 +24,14 @@ class DepartmentsResource extends Resource
             ->columns(1)
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->unique(ignoreRecord: true)
                     ->required(),
-                Forms\Components\Select::make('department_head')
+                Forms\Components\Select::make('departments_id')
                     ->native(false)
                     ->searchable()
                     ->preload()
-                    ->relationship('departmentHead', 'name'),
+                    ->relationship('departments', 'name')
+                    ->required(),
             ]);
     }
 
@@ -37,14 +39,15 @@ class DepartmentsResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('department_head')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('departments.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -71,7 +74,7 @@ class DepartmentsResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageDepartments::route('/'),
+            'index' => Pages\ManageDesignations::route('/'),
         ];
     }
 }
