@@ -34,7 +34,7 @@ class DesignationSeeder extends Seeder
 
                 continue;
             }
-            Departments::create([
+            Designations::create([
                 'name' => $name['name'],
                 'departments_id' => Departments::where('name', '=', 'Tech Department')->first()->id,
             ]);
