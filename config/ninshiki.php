@@ -28,17 +28,4 @@ return [
      * ==============================================
      */
     'allowed_email_domain' => env('ALLOWED_EMAIL_DOMAIN'),
-
-    /**
-     *  =======================================================
-     *  Spend Wallet Founds
-     *
-     * This will use once the Spend Wallet will be reset and the fund will be reset to the default every month based on
-     * the user type
-     */
-    'fund' => [
-        'manager' => 100,
-        'normal' => 30,
-    ],
-
 ];
