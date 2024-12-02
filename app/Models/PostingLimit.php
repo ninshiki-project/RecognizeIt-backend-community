@@ -6,25 +6,24 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Designations extends Model
+class PostingLimit extends Model
 {
     use HasFactory, HasUuids;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'name',
-        'departments_id',
+        'designations_id',
+        'limit',
     ];
 
-    public function departments(): BelongsTo
+    public function designations(): BelongsTo
     {
-        return $this->belongsTo(Departments::class);
-    }
-
-    public function postingLimits(): HasOne
-    {
-        return $this->hasOne(PostingLimit::class);
+        return $this->belongsTo(Designations::class);
     }
 
     /**

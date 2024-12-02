@@ -97,6 +97,11 @@ class User extends Authenticatable implements Customer, FilamentUser
         return $this->hasOne(Departments::class, 'id', 'department');
     }
 
+    public function designations(): HasOne
+    {
+        return $this->hasOne(Designations::class, 'id', 'designation');
+    }
+
     /**
      * @param  Builder  $query
      * @return Builder

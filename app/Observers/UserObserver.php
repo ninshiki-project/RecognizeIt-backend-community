@@ -49,7 +49,7 @@ class UserObserver
             ],
         ]);
 
-        $spendWallet->deposit(config('ninshiki.fund.normal'), [
+        $spendWallet->deposit($user->designations?->postingLimits?->limit ?? 30, [
             'title' => 'Spend Wallet',
             'description' => 'Added funds to your account.',
         ]);
