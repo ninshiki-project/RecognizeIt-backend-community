@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\ShopResource;
 use Filament\Pages\Page;
 
 class ShopGroup extends Page
@@ -16,4 +17,9 @@ class ShopGroup extends Page
     protected static string $view = 'filament.pages.settings-group';
 
     protected static ?int $navigationSort = 4;
+
+    public function mount(): void
+    {
+        $this->redirect(ShopResource::getUrl('index'));
+    }
 }
