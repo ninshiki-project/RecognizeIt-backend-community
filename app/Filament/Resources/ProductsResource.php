@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductsResource\Pages;
+use App\Http\Controllers\Api\Enum\ProductStatusEnum;
 use App\Models\Products;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -37,7 +38,9 @@ class ProductsResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(1),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Select::make('status')
+                    ->options(ProductStatusEnum::class)
+                    ->native(false)
                     ->required(),
             ]);
     }
