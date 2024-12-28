@@ -28,9 +28,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login/credentials', [AuthenticationController::class, 'loginViaEmail'])
     ->middleware('throttle:login');
-Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/login/{provider}', [AuthenticationController::class, 'loginViaProvider']);
 Route::post('/login/{provider}', [AuthenticationController::class, 'providerCallback']);
+Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     // Department
