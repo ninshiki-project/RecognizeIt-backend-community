@@ -16,7 +16,7 @@
         "bavix/laravel-wallet-warmup": "^3.0",
         "calebporzio/sushi": "^2.5",
         "cloudinary-labs/cloudinary-laravel": "^2.1",
-        "dedoc/scramble": "0.11.27",
+        "dedoc/scramble": "^0.11.27",
         "doctrine/dbal": "^4.0",
         "filament/filament": "^3.2",
         "hammerstone/fast-paginate": "^1.1",
