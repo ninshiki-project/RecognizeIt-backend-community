@@ -129,7 +129,9 @@ class AuthenticationController extends Controller
                 );
 
                 $user->name = $userProvider->name;
-                $user->avatar = $userProvider->avatar ?? null;
+                if (! $user->avatar) {
+                    $user->avatar = $userProvider->avatar ?? null;
+                }
                 $user->save();
 
                 $token = $user->createToken($request->header('User-Agent'))->plainTextToken;
