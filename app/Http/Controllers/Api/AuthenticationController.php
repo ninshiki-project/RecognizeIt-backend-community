@@ -78,6 +78,8 @@ class AuthenticationController extends Controller
      * @return JsonResponse|void
      *
      * @throws Throwable
+     *
+     * @unauthenticated
      */
     public function providerCallback(string $provider, Request $request)
     {

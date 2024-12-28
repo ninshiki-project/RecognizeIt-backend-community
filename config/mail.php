@@ -88,7 +88,7 @@ return [
             'mailers' => [
                 'resend',
                 'log',
-                'sendmail'
+                'sendmail',
             ],
         ],
 
