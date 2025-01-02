@@ -94,7 +94,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
         Route::get('/{id}', [RedeemController::class, 'show']);
     });
 
-    //Wallets
+    // Wallets
     Route::prefix('wallets')->group(function () {
         Route::get('/default/balance', [WalletController::class, 'defaultWalletBalance']);
         Route::get('/spend/balance', [WalletController::class, 'spendWalletBalance']);

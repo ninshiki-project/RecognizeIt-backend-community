@@ -16,6 +16,8 @@ namespace App\Traits;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -74,6 +76,16 @@ trait ApiExceptionTrait
             $responseData['statusCode'] = 422;
             $responseData['code'] = 422;
             $responseData['type'] = 'ValidationException';
+        } elseif ($exception instanceof ThrottleRequestsException) {
+            $responseData['message'] = $exception->getMessage();
+            $responseData['statusCode'] = 429;
+            $responseData['code'] = 429;
+            $responseData['type'] = 'ThrottleRequestsException';
+        } elseif ($exception instanceof HttpResponseException) {
+            $responseData['message'] = $exception->getResponse()->getContent();
+            $responseData['statusCode'] = $exception->getResponse()->getStatusCode() ?? null;
+            $responseData['code'] = $exception->getResponse()->getStatusCode();
+            $responseData['type'] = $exception->getResponse()->getStatusCode() === 429 ? 'ThrottleRequestsException' : 'HttpResponseException';
         } else {
             $responseData['message'] = $this->prepareExceptionMessage($exception);
             $responseData['statusCode'] = ($exception instanceof HttpExceptionInterface) ? $exception->getStatusCode() : 500;

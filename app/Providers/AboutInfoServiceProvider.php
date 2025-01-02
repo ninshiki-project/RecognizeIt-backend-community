@@ -24,7 +24,7 @@ use Spatie\Emoji\Emoji;
 
 class AboutInfoServiceProvider extends ServiceProvider
 {
-    //https://unicode.org/Public/emoji/13.1/emoji-test.txt
+    // https://unicode.org/Public/emoji/13.1/emoji-test.txt
     public static string $checked = "<fg=green;options=bold>\u{2714} COMPLETED</>";
 
     public static string $times = '<fg=red;options=bold>NOT SETUP</>';

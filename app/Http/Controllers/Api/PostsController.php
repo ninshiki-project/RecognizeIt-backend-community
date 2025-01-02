@@ -74,7 +74,6 @@ class PostsController extends Controller implements HasMiddleware
      */
     public function store(PostsPostRequest $request): JsonResponse
     {
-
         /**
          *  Manual Validation if the remaining points sufficed to reward
          */
