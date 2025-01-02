@@ -189,7 +189,7 @@ class PostsController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('throttle:post', only: ['store']),
+//            new Middleware('throttle:post', only: ['store']),
         ];
     }
 }
