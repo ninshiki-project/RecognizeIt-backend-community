@@ -4,6 +4,17 @@
 All notable changes to this project will be documented in this file.
 
 <!--- END HEADER -->
+## 0.1.3 - 2025-01-06
+
+### What's Changed
+
+* Designation resources by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/31
+* Posting limit of account per month by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/32
+* ✨ feat(database): Make attachment type nullable in posts table. by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/35
+* ✨ Fix Post Rate Limit by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/36
+
+**Full Changelog**: https://github.com/ninshiki-project/Ninshiki-backend/compare/0.1.2...0.1.3
+
 ## 0.1.2 - 2024-11-22
 
 ### What's Changed
