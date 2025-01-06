@@ -22,7 +22,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->longText('content');
-            $table->enum('attachment_type', ['image', 'gif']);
+            $table->enum('attachment_type', ['image', 'gif'])->nullable();
             $table->string('attachment_url')->nullable();
             $table->enum('type', ['system', 'user']);
             $table->foreignId('posted_by');

@@ -15,7 +15,9 @@ namespace App\Http\Requests;
 
 use App\Http\Controllers\Api\Enum\PostTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 class PostsPostRequest extends FormRequest
 {
@@ -29,7 +31,7 @@ class PostsPostRequest extends FormRequest
             'recipient_id.*' => ['required', 'exists:users,id'],
             'post_content' => ['required', 'string'],
             'amount' => ['required_if:type,user', 'integer', 'in:3,5,10'],
-            'attachment_type' => ['required_if:type,user', Rule::in(['gif', 'image']), 'sometimes'],
+            'attachment_type' => [Rule::in(['gif', 'image']), 'sometimes'],
             'gif_url' => ['required_if:attachment_type,gif', 'url', 'sometimes'],
             'image' => ['required_if:attachment_type,image', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048', 'sometimes'],
             'type' => ['required', Rule::enum(PostTypeEnum::class)],
@@ -39,5 +41,25 @@ class PostsPostRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function rateLimitValidate(): void
+    {
+        if (RateLimiter::tooManyAttempts($this->rateLimitKey(), maxAttempts: 1)) {
+            $seconds = RateLimiter::availableIn($this->rateLimitKey());
+            throw new TooManyRequestsHttpException("You're to fast in posting. please try again after ".$seconds);
+        }
+
+    }
+
+    public function rateLimitIncrease(): void
+    {
+        $decayInMinutes = 5 * 60; // 5 minutes
+        RateLimiter::increment($this->rateLimitKey(), $decayInMinutes);
+    }
+
+    protected function rateLimitKey(): string
+    {
+        return 'post-created:'.$this->user()->id;
     }
 }
