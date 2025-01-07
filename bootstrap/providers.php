@@ -6,4 +6,5 @@ return [
     App\Providers\Filament\AdminPanelProvider::class,
     Bezhanov\Faker\Laravel\FakerServiceProvider::class,
     SocialiteProviders\Manager\ServiceProvider::class,
+    App\Providers\SocialServiceProvider::class,
 ];

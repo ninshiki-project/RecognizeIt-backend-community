@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginViaEmailRequest;
 use App\Http\Resources\ProfileResource;
+use App\Http\Services\Facades\ZohoFacade;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,7 +27,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
-use Laravel\Socialite\Facades\Socialite;
 use MarJose123\NinshikiEvent\Events\Session\UserLogin;
 use MarJose123\NinshikiEvent\Events\Session\UserLogout;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,15 +52,7 @@ class AuthenticationController extends Controller
         $this->validateProvider($provider);
 
         if ($provider === 'zoho') {
-            // @phpstan-ignore-next-line
-            $this->url = Socialite::driver($provider)
-                ->setScopes(['AaaServer.profile.Read'])
-                ->with([
-                    'prompt' => 'consent',
-                    'access_type' => 'offline',
-                    'provider' => $provider,
-                ])
-                ->stateless()->redirect()->getTargetUrl();
+            $this->url = ZohoFacade::loginLink();
         }
 
         return response()->json([
@@ -93,7 +85,7 @@ class AuthenticationController extends Controller
             if ($provider === 'zoho') {
                 // Get Access token from the code generated
                 // @phpstan-ignore-next-line
-                $tokenRequest = Socialite::driver($provider)->stateless()->getAccessTokenResponse($request->code);
+                $tokenRequest = ZohoFacade::setCode($request->code)->callBackAction();
                 if (Arr::has($tokenRequest, 'error')) {
                     return response()->json([
                         'success' => false,
@@ -102,14 +94,17 @@ class AuthenticationController extends Controller
                 }
                 $accessToken = Arr::get($tokenRequest, 'access_token');
                 // @phpstan-ignore-next-line
-                $userProvider = Socialite::driver($provider)->stateless()->userFromToken($accessToken);
+                $userProvider = ZohoFacade::setAccessToken($accessToken)->getUserInfo();
 
+                // @phpstan-ignore-next-line
                 if (! $this->isWhitelistedDomain($userProvider->email)) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Unauthorized email domain, please try again later.',
                     ], Response::HTTP_UNAUTHORIZED);
                 }
+
+                // @phpstan-ignore-next-line
                 $user = User::where('email', $userProvider->email)->first();
                 if (! $user) {
                     return response()->json([
@@ -120,19 +115,26 @@ class AuthenticationController extends Controller
 
                 $this->userStatusValidate($user);
 
+                /**
+                 * Retrieve Zoho User Profile Picture
+                 */
+                $avatar = ZohoFacade::getAvatar();
                 $user->providers()->updateOrCreate(
                     [
                         'provider' => $provider,
+                        // @phpstan-ignore-next-line
                         'provider_id' => $userProvider->id,
                     ],
                     [
+                        // @phpstan-ignore-next-line
                         'avatar' => $userProvider->avatar,
                     ]
                 );
 
+                // @phpstan-ignore-next-line
                 $user->name = $userProvider->name;
                 if (! $user->avatar) {
-                    $user->avatar = $userProvider->avatar ?? null;
+                    $user->avatar = $userProvider->avatar ?? $avatar ?? null;
                 }
                 $user->save();
 
