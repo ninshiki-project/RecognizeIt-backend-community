@@ -16,7 +16,7 @@ namespace App\Http\Services;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
 
-abstract class Oauth implements ProviderInterface
+trait Oauth
 {
     protected string $code;
 
@@ -29,7 +29,7 @@ abstract class Oauth implements ProviderInterface
         $this->driver = Socialite::driver($this->getProviderId());
     }
 
-    public function callBackAction(): array
+    public function performCallBackAction(): array
     {
         return $this->driver->stateless()->getAccessTokenResponse($this->getCode());
 
@@ -37,7 +37,7 @@ abstract class Oauth implements ProviderInterface
 
     public function getUserInfo(): User
     {
-                return $this->driver->stateless()->userFromToken($this->getAccessToken());
+        return $this->driver->stateless()->userFromToken($this->getAccessToken());
     }
 
     public function setAccessToken(string $token): self
@@ -62,15 +62,5 @@ abstract class Oauth implements ProviderInterface
     public function getCode(): string
     {
         return $this->code;
-    }
-
-    public function getProviderId(): string
-    {
-        return 'zoho';
-    }
-
-    public function getProviderName(): string
-    {
-        return 'Zoho';
     }
 }

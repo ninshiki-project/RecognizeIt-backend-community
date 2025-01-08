@@ -15,9 +15,9 @@ namespace App\Http\Services;
 
 interface ProviderInterface
 {
-    public function loginLink(): string;
+    public function getLoginLink(): string;
 
-    public function callBackAction(): array;
+    public function performCallBackAction(): array;
 
     public function getAccessToken(): string;
 
