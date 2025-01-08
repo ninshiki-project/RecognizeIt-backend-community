@@ -23,7 +23,7 @@ trait AllowedDomain
      */
     protected function isWhitelistedDomain(string $email): bool
     {
-        $tldDomain = config('ninshiki.allowed_email_domain');
+        $tldDomain = config('app.allowed_email_domain');
         $emailDomain = Str::of($email)->lower()->afterLast('@');
 
         if (is_null($tldDomain) || Str::of($tldDomain)->isEmpty()) {

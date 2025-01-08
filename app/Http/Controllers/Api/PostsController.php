@@ -27,8 +27,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -37,7 +35,7 @@ use MarJose123\NinshikiEvent\Events\Post\NewPostAdded;
 use MarJose123\NinshikiEvent\Events\Post\PostToggleLike;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostsController extends Controller implements HasMiddleware
+class PostsController extends Controller
 {
     private CloudinaryEngine $uploadedAsset;
 
@@ -74,6 +72,10 @@ class PostsController extends Controller implements HasMiddleware
      */
     public function store(PostsPostRequest $request): JsonResponse
     {
+        /**
+         * Toggle Rate Limit
+         */
+        $request->rateLimitValidate();
 
         /**
          *  Manual Validation if the remaining points sufficed to reward
@@ -104,58 +106,69 @@ class PostsController extends Controller implements HasMiddleware
         /**
          *  Link the User who will receive the points to the post via middle table
          */
+        if ($post) {
+            /** @var array<string, string> $recipientsIds */
+            $recipientsIds = $request->recipient_id ?? [];
 
-        /** @var array<string, string> $recipientsIds */
-        $recipientsIds = $request->recipient_id ?? [];
+            $recipients = collect($recipientsIds)->map(function ($item) {
+                return [
+                    'user_id' => $item,
+                ];
+            });
+            $recipientsInstance = $post->recipients()->createMany($recipients);
+            /**
+             *  Distribute the points to each recipient
+             */
+            $recipients->each(function ($item) use ($request) {
+                $_user = User::findOrFail($item['user_id']);
+                $defaultWallet = $_user->getWallet(WalletsEnum::DEFAULT->value);
+                /** @var int $amount */
+                $amount = $request->amount ?? 0;
+                $defaultWallet->deposit($amount, [
+                    'title' => 'Ninshiki Wallet',
+                    'description' => 'Added funds for being recognize by your colleague',
+                    'date_at' => Carbon::now(),
+                ]);
+                // send email notification and application notification
+                PostRecognizeJob::dispatch($_user)
+                    ->delay(now()->addMinutes(2))
+                    ->afterCommit()
+                    ->afterResponse();
 
-        $recipients = collect($recipientsIds)->map(function ($item) {
-            return [
-                'user_id' => $item,
-            ];
-        });
-        $recipientsInstance = $post->recipients()->createMany($recipients);
-        /**
-         *  Distribute the points to each recipient
-         */
-        $recipients->each(function ($item) use ($request) {
-            $_user = User::findOrFail($item['user_id']);
-            $defaultWallet = $_user->getWallet(WalletsEnum::DEFAULT->value);
-            /** @var int $amount */
-            $amount = $request->amount ?? 0;
-            $defaultWallet->deposit($amount, [
-                'title' => 'Ninshiki Wallet',
-                'description' => 'Added funds for being recognize by your colleague',
+            });
+            /**
+             *  Deduct all the points to the user who posted a post
+             */
+            $wallet->withdraw($totalFundsToDeduct, [
+                'title' => 'Spend Wallet',
+                'description' => 'Deduction from posting recognition',
                 'date_at' => Carbon::now(),
             ]);
-            // send email notification and application notification
-            PostRecognizeJob::dispatch($_user)
-                ->delay(now()->addMinutes(2))
-                ->afterCommit()
-                ->afterResponse();
 
-        });
-        /**
-         *  Deduct all the points to the user who posted a post
-         */
-        $wallet->withdraw($totalFundsToDeduct, [
-            'title' => 'Spend Wallet',
-            'description' => 'Deduction from posting recognition',
-            'date_at' => Carbon::now(),
-        ]);
+            /**
+             * Dispatch an event for the new post
+             */
+            NewPostAdded::dispatch($post, $recipientsInstance);
 
-        /**
-         * Dispatch an event for the new post
-         */
-        NewPostAdded::dispatch($post, $recipientsInstance);
+            /**
+             * Increment the Rate Limit
+             */
+            $request->rateLimitIncrease();
 
-        /**
-         * @status 201
-         */
-        return response()->json([
-            'success' => true,
-            'message' => 'post created',
-            'post' => $post,
-        ], Response::HTTP_CREATED);
+            /**
+             * @status 201
+             */
+            return response()->json([
+                'success' => true,
+                'message' => 'post created',
+                'post' => $post,
+            ], Response::HTTP_CREATED);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ], Response::HTTP_BAD_REQUEST);
+        }
 
     }
 
@@ -185,12 +198,5 @@ class PostsController extends Controller implements HasMiddleware
         return response()->json([
             'success' => true,
         ], Response::HTTP_OK);
-    }
-
-    public static function middleware()
-    {
-        return [
-            new Middleware('throttle:post', only: ['store']),
-        ];
     }
 }

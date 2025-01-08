@@ -72,7 +72,7 @@ class RedeemController extends Controller
         $product->decrement('stock', 1);
         $product->save();
 
-        //pay the item using the ninshiki-wallet
+        // pay the item using the ninshiki-wallet
         /**
          * @status 402
          */
