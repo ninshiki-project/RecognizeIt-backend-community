@@ -13,7 +13,6 @@
 
 namespace App\Traits;
 
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -26,6 +25,7 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Throwable;
 
 trait ApiExceptionTrait
@@ -87,7 +87,7 @@ trait ApiExceptionTrait
             $responseData['statusCode'] = $exception->getResponse()->getStatusCode() ?? null;
             $responseData['code'] = $exception->getResponse()->getStatusCode();
             $responseData['type'] = $exception->getResponse()->getStatusCode() === 429 ? 'ThrottleRequestsException' : 'HttpResponseException';
-        } elseif ($exception instanceof TooManyRequestsException) {
+        } elseif ($exception instanceof TooManyRequestsHttpException) {
             $responseData['message'] = $exception->getMessage();
             $responseData['statusCode'] = 429;
             $responseData['code'] = 429;
