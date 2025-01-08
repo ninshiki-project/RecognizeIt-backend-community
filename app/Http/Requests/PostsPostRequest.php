@@ -47,7 +47,7 @@ class PostsPostRequest extends FormRequest
     {
         if (RateLimiter::tooManyAttempts($this->rateLimitKey(), maxAttempts: 1)) {
             $seconds = RateLimiter::availableIn($this->rateLimitKey());
-            throw new TooManyRequestsHttpException("You're to fast in posting. please try again after ".$seconds);
+            throw new TooManyRequestsHttpException(message: "You're to fast in posting. please try again after ".$seconds);
         }
 
     }

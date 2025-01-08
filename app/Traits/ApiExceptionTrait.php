@@ -13,6 +13,7 @@
 
 namespace App\Traits;
 
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -86,6 +87,11 @@ trait ApiExceptionTrait
             $responseData['statusCode'] = $exception->getResponse()->getStatusCode() ?? null;
             $responseData['code'] = $exception->getResponse()->getStatusCode();
             $responseData['type'] = $exception->getResponse()->getStatusCode() === 429 ? 'ThrottleRequestsException' : 'HttpResponseException';
+        } elseif ($exception instanceof TooManyRequestsException) {
+            $responseData['message'] = $exception->getMessage();
+            $responseData['statusCode'] = 429;
+            $responseData['code'] = 429;
+            $responseData['type'] = 'ThrottleRequestsException';
         } else {
             $responseData['message'] = $this->prepareExceptionMessage($exception);
             $responseData['statusCode'] = ($exception instanceof HttpExceptionInterface) ? $exception->getStatusCode() : 500;
