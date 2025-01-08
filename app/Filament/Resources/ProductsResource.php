@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductsResource extends Resource
 {
@@ -25,6 +26,7 @@ class ProductsResource extends Resource
             ->schema([
                 Forms\Components\FileUpload::make('image')
                     ->image()
+                    ->default(fn ($record) => url($record->image))
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required(),
@@ -32,8 +34,7 @@ class ProductsResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('price')
                     ->required()
-                    ->numeric()
-                    ->prefix('$'),
+                    ->numeric(),
                 Forms\Components\TextInput::make('stock')
                     ->required()
                     ->numeric()
@@ -48,6 +49,7 @@ class ProductsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->orderBy('created_at', 'desc'))
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
