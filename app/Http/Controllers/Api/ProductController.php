@@ -68,7 +68,7 @@ class ProductController extends Controller
     {
         // upload image to the cloudinary
         $fileName = Str::orderedUuid();
-        $this->uploadedAsset = $request->image->storeOnCloudinaryAs('product', $fileName);
+        $this->uploadedAsset = $request->image->storeOnCloudinaryAs('products', $fileName);
         $result = Products::create([
             'name' => $request->name,
             'description' => $request->description,
