@@ -14,19 +14,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Concern\AllowedDomain;
-use App\Http\Controllers\Api\Concern\CanValidateProvider;
 use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginViaEmailRequest;
 use App\Http\Resources\ProfileResource;
+use App\Http\Services\Facades\ZohoFacade;
+use App\Http\Services\Zoho\Zoho;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
-use Laravel\Socialite\Facades\Socialite;
 use MarJose123\NinshikiEvent\Events\Session\UserLogin;
 use MarJose123\NinshikiEvent\Events\Session\UserLogout;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,9 +34,11 @@ use Throwable;
 class AuthenticationController extends Controller
 {
     use AllowedDomain;
-    use CanValidateProvider;
+    use Concern\Zoho;
 
     public string $url;
+
+    public array|JsonResponse|null $payload;
 
     /**
      * Request Provider Login Link
@@ -49,18 +50,9 @@ class AuthenticationController extends Controller
      */
     public function loginViaProvider(string $provider)
     {
-        $this->validateProvider($provider);
 
-        if ($provider === 'zoho') {
-            // @phpstan-ignore-next-line
-            $this->url = Socialite::driver($provider)
-                ->setScopes(['AaaServer.profile.Read'])
-                ->with([
-                    'prompt' => 'consent',
-                    'access_type' => 'offline',
-                    'provider' => $provider,
-                ])
-                ->stateless()->redirect()->getTargetUrl();
+        if ($provider === 'zoho' && $this->isZohoSocialiteInstalled()) {
+            $this->url = ZohoFacade::getLoginLink();
         }
 
         return response()->json([
@@ -83,77 +75,34 @@ class AuthenticationController extends Controller
      */
     public function providerCallback(string $provider, Request $request)
     {
-        $this->validateProvider($provider);
-
         $request->validate([
             'code' => ['required', 'string'],
         ]);
 
         try {
-            if ($provider === 'zoho') {
-                // Get Access token from the code generated
-                // @phpstan-ignore-next-line
-                $tokenRequest = Socialite::driver($provider)->stateless()->getAccessTokenResponse($request->code);
-                if (Arr::has($tokenRequest, 'error')) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => $tokenRequest['error'],
-                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                }
-                $accessToken = Arr::get($tokenRequest, 'access_token');
-                // @phpstan-ignore-next-line
-                $userProvider = Socialite::driver($provider)->stateless()->userFromToken($accessToken);
-
-                if (! $this->isWhitelistedDomain($userProvider->email)) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Unauthorized email domain, please try again later.',
-                    ], Response::HTTP_UNAUTHORIZED);
-                }
-                $user = User::where('email', $userProvider->email)->first();
-                if (! $user) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Unauthorized email or User does not exist.',
-                    ], Response::HTTP_UNAUTHORIZED);
-                }
-
-                $this->userStatusValidate($user);
-
-                $user->providers()->updateOrCreate(
-                    [
-                        'provider' => $provider,
-                        'provider_id' => $userProvider->id,
-                    ],
-                    [
-                        'avatar' => $userProvider->avatar,
-                    ]
-                );
-
-                $user->name = $userProvider->name;
-                if (! $user->avatar) {
-                    $user->avatar = $userProvider->avatar ?? null;
-                }
-                $user->save();
-
-                $token = $user->createToken($request->header('User-Agent'))->plainTextToken;
-
-                /**
-                 * Dispatch event for the user login
-                 */
-                UserLogin::dispatch($user);
-
-                return response()->json([
-                    'success' => true,
-                    'token' => [
-                        // @var string Token for authentication.
-                        // @format 31|b2da4411aa4e6d153d6725a17c672b8177c071e60a05158ff19af75a3b5829aa
-                        'accessToken' => $token,
-                    ],
-                    'user' => new ProfileResource($user),
-                ], Response::HTTP_OK);
-
+            if ($provider === 'zoho' && $this->isZohoSocialiteInstalled()) {
+                $this->payload = $this->performZohoAuthentication($request);
             }
+
+            if (! is_array($this->payload)) {
+                return $this->payload;
+            }
+
+            /**
+             * Dispatch event for the user login
+             */
+            UserLogin::dispatch($this->payload['user']);
+
+            return response()->json([
+                'success' => true,
+                'token' => [
+                    // @var string Token for authentication.
+                    // @format 31|b2da4411aa4e6d153d6725a17c672b8177c071e60a05158ff19af75a3b5829aa
+                    'accessToken' => $this->payload['token'],
+                ],
+                'user' => new ProfileResource($this->payload['user']),
+            ], Response::HTTP_OK);
+
         } catch (Throwable $throwable) {
             Log::info($throwable->getMessage());
             throw new $throwable;
