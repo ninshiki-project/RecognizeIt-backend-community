@@ -6,11 +6,15 @@ use App\Filament\Resources\ProductsResource\Pages;
 use App\Http\Controllers\Api\Enum\ProductStatusEnum;
 use App\Models\Products;
 use Filament\Forms;
+use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
+use League\Flysystem\UnableToCheckFileExistence;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ProductsResource extends Resource
 {
@@ -26,7 +30,39 @@ class ProductsResource extends Resource
             ->schema([
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->default(fn ($record) => url($record->image))
+                    ->disk('cloudinary')
+                    ->directory('products')
+                    ->visibility('private')
+                    ->afterStateHydrated(static function (BaseFileUpload $component, string|array|null $state) {
+                        if (blank($state)) {
+                            $component->state([]);
+
+                            return;
+                        }
+                        $component->state([((string) Str::uuid()) => $state]);
+                    })
+                    ->afterStateUpdated(static function (BaseFileUpload $component, $state) {
+                        $component->state([(string) Str::uuid() => $state]);
+                    })
+                    ->getUploadedFileUsing(static function (BaseFileUpload $component, string $file): array {
+                        return [
+                            'name' => basename($file),
+                            'size' => 0,
+                            'type' => null,
+                            'url' => $file,
+                        ];
+                    })
+                    ->saveUploadedFileUsing((static function (BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
+                        try {
+                            if (! $file->exists()) {
+                                return null;
+                            }
+                        } catch (UnableToCheckFileExistence $exception) {
+                            return null;
+                        }
+
+                        return $file->storeOnCloudinaryAs($component->getDirectory(), $component->getUploadedFileNameForStorage($file))->getSecurePath();
+                    }))
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required(),
