@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductsResource\Pages;
 use App\Http\Controllers\Api\Enum\ProductStatusEnum;
 use App\Models\Products;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Filament\Forms;
 use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Form;
@@ -27,6 +28,8 @@ class ProductsResource extends Resource
     protected static ?int $navigationSort = 2;
 
     public static ?string $cloudinaryPublicId = null;
+
+    public static ?string $oldCloudinaryPublicId = null;
 
     public static function form(Form $form): Form
     {
@@ -135,6 +138,13 @@ class ProductsResource extends Resource
                         $data['cloudinary_id'] = self::$cloudinaryPublicId;
 
                         return $data;
+                    })
+                    ->before(function (Products $record) {
+                        self::$oldCloudinaryPublicId = $record->cloudinary_id;
+                    })
+                    ->after(function () {
+                        // delete cloudinary id
+                        Cloudinary::destroy(self::$oldCloudinaryPublicId);
                     })
                     ->modalAlignment(Alignment::Center)
                     ->modalWidth(MaxWidth::FitContent)
