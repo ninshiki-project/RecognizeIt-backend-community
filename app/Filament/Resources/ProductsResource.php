@@ -9,6 +9,8 @@ use Filament\Forms;
 use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,6 +29,7 @@ class ProductsResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(2)
             ->schema([
                 Forms\Components\FileUpload::make('image')
                     ->image()
@@ -63,11 +66,14 @@ class ProductsResource extends Resource
 
                         return $file->storeOnCloudinaryAs($component->getDirectory(), $component->getUploadedFileNameForStorage($file))->getSecurePath();
                     }))
+                    ->columnSpanFull()
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
+                Forms\Components\Select::make('status')
+                    ->options(ProductStatusEnum::class)
+                    ->native(false)
+                    ->required(),
                 Forms\Components\TextInput::make('price')
                     ->required()
                     ->numeric(),
@@ -75,10 +81,8 @@ class ProductsResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(1),
-                Forms\Components\Select::make('status')
-                    ->options(ProductStatusEnum::class)
-                    ->native(false)
-                    ->required(),
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -119,7 +123,10 @@ class ProductsResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalAlignment(Alignment::Center)
+                    ->modalWidth(MaxWidth::FitContent)
+                    ->modalFooterActionsAlignment(Alignment::Right),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
