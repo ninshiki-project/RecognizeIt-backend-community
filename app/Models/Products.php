@@ -31,6 +31,7 @@ class Products extends Model implements ProductInterface
     use HasFactory, HasUuids, HasWallet, SoftDeletes, Userstamps;
 
     protected $fillable = [
+        'cloudinary_id',
         'name',
         'description',
         'price',
@@ -39,6 +40,7 @@ class Products extends Model implements ProductInterface
         'image',
         'created_by',
         'updated_by',
+        'deleted_by',
     ];
 
     protected $casts = [

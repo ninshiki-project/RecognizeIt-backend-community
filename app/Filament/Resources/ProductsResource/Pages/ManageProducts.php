@@ -16,6 +16,12 @@ class ManageProducts extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
+                ->mutateFormDataUsing(function (array $data): array {
+                    $resource = static::getResource();
+                    $data['cloudinary_id'] = $resource::$cloudinaryPublicId;
+
+                    return $data;
+                })
                 ->modalAlignment(Alignment::Center)
                 ->modalWidth(MaxWidth::FitContent)
                 ->modalFooterActionsAlignment(Alignment::Right)

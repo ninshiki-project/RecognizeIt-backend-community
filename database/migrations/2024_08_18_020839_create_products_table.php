@@ -22,6 +22,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('image');
+            $table->string('cloudinary_id')->nullable();
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('price');
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->enum('status', ['available', 'unavailable'])->default('available');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('deleted_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

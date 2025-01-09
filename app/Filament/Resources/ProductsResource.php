@@ -26,6 +26,8 @@ class ProductsResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    public static ?string $cloudinaryPublicId = null;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -55,7 +57,7 @@ class ProductsResource extends Resource
                             'url' => $file,
                         ];
                     })
-                    ->saveUploadedFileUsing((static function (BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
+                    ->saveUploadedFileUsing((static function (BaseFileUpload $component, TemporaryUploadedFile $file, Forms\Set $set): ?string {
                         try {
                             if (! $file->exists()) {
                                 return null;
@@ -64,8 +66,12 @@ class ProductsResource extends Resource
                             return null;
                         }
 
-                        return $file->storeOnCloudinaryAs($component->getDirectory(), $component->getUploadedFileNameForStorage($file))->getSecurePath();
+                        $uploadedFile = $file->storeOnCloudinaryAs($component->getDirectory(), $component->getUploadedFileNameForStorage($file));
+                        self::$cloudinaryPublicId = $uploadedFile->getPublicId();
+
+                        return $uploadedFile->getSecurePath();
                     }))
+                    ->reactive()
                     ->columnSpanFull()
                     ->required(),
                 Forms\Components\TextInput::make('name')
@@ -73,6 +79,7 @@ class ProductsResource extends Resource
                 Forms\Components\Select::make('status')
                     ->options(ProductStatusEnum::class)
                     ->native(false)
+                    ->hiddenOn('create')
                     ->required(),
                 Forms\Components\TextInput::make('price')
                     ->required()
@@ -124,6 +131,11 @@ class ProductsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['cloudinary_id'] = self::$cloudinaryPublicId;
+
+                        return $data;
+                    })
                     ->modalAlignment(Alignment::Center)
                     ->modalWidth(MaxWidth::FitContent)
                     ->modalFooterActionsAlignment(Alignment::Right),

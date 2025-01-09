@@ -73,6 +73,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
+            'cloudinary_id' => $this->uploadedAsset->getPublicId(),
             'image' => $this->uploadedAsset->getSecurePath(),
             'status' => ProductStatusEnum::AVAILABLE->value,
             'stock' => $request->stock,
