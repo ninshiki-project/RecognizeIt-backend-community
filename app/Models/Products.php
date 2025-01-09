@@ -28,7 +28,7 @@ use Wildside\Userstamps\Userstamps;
 
 class Products extends Model implements ProductInterface
 {
-    use HasFactory, HasUuids, HasWallet, SoftDeletes, Userstamps;
+    use HasFactory, HasUuids, HasWallet, Userstamps;
 
     protected $fillable = [
         'cloudinary_id',
@@ -40,7 +40,6 @@ class Products extends Model implements ProductInterface
         'image',
         'created_by',
         'updated_by',
-        'deleted_by',
     ];
 
     protected $casts = [
