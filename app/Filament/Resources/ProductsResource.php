@@ -41,6 +41,7 @@ class ProductsResource extends Resource
                     ->disk('cloudinary')
                     ->directory('products')
                     ->visibility('private')
+                    ->maxSize(10240) // 10MB
                     ->afterStateHydrated(static function (BaseFileUpload $component, string|array|null $state) {
                         if (blank($state)) {
                             $component->state([]);
