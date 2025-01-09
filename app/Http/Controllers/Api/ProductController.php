@@ -146,7 +146,9 @@ class ProductController extends Controller
             ] : []),
         ]);
         if (! $result) {
-            Cloudinary::destroy($oldCloudinaryId);
+            if ($oldCloudinaryId) {
+                Cloudinary::destroy($oldCloudinaryId);
+            }
 
             return response()->json([
                 'message' => 'Product not updated',
@@ -181,7 +183,9 @@ class ProductController extends Controller
         }
 
         // Delete image file in the cloudinary
-        Cloudinary::destroy($product->cloudinary_id);
+        if ($product->cloudinary_id) {
+            Cloudinary::destroy($product->cloudinary_id);
+        }
 
         $product->delete();
 
