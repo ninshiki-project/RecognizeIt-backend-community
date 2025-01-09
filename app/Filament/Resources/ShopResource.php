@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ShopResource\Pages;
 use App\Models\Shop;
 use Filament\Forms;
+use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,6 +13,8 @@ use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class ShopResource extends Resource
 {
@@ -29,6 +32,28 @@ class ShopResource extends Resource
             ->columns(1)
             ->schema([
                 FileUpload::make('image')
+                    ->deletable(false)
+                    ->fetchFileInformation(false)
+                    ->removeUploadedFileButtonPosition('right')
+                    ->afterStateHydrated(static function (BaseFileUpload $component, string|array|null $state) {
+                        if (blank($state)) {
+                            $component->state([]);
+
+                            return;
+                        }
+                        $component->state([((string) Str::uuid()) => $state]);
+                    })
+                    ->afterStateUpdated(static function (BaseFileUpload $component, $state) {
+                        $component->state([(string) Str::uuid() => $state]);
+                    })
+                    ->getUploadedFileUsing(static function (BaseFileUpload $component, string $file): array {
+                        return [
+                            'name' => basename($file),
+                            'size' => 0,
+                            'type' => null,
+                            'url' => $file,
+                        ];
+                    })
                     ->visibleOn('view')
                     ->image(),
                 Forms\Components\Select::make('product_id')
@@ -51,12 +76,23 @@ class ShopResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->orderBy('created_at', 'desc'))
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('product.image')
+                    ->label('Item Image')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('product.name')
+                    ->label('Item Name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('product.price')
+                    ->label('Price')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('product.stock')
+                    ->label('Stock')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
