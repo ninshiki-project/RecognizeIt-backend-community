@@ -21,6 +21,7 @@ use App\Http\Resources\ProductsResource;
 use App\Models\Products;
 use App\Models\Scopes\ProductAvailableScope;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -123,6 +124,7 @@ class ProductController extends Controller
             $this->uploadedAsset = $request->image->storeOnCloudinaryAs('posts', $fileName);
         }
         $product = Products::findOrFail($id);
+        $oldCloudinaryId = $product->cloudinary_id;
         $result = $product->update([
             ...($request->name ? [
                 'name' => $request->name,
@@ -144,6 +146,8 @@ class ProductController extends Controller
             ] : []),
         ]);
         if (! $result) {
+            Cloudinary::destroy($oldCloudinaryId);
+
             return response()->json([
                 'message' => 'Product not updated',
                 'success' => false,
@@ -175,6 +179,9 @@ class ProductController extends Controller
                 'success' => false,
             ], Response::HTTP_FORBIDDEN);
         }
+
+        // Delete image file in the cloudinary
+        Cloudinary::destroy($product->cloudinary_id);
 
         $product->delete();
 
