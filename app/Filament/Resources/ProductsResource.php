@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductsResource\Pages;
 use App\Models\Products;
+use App\Models\Scopes\ProductAvailableScope;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Filament\Forms;
 use Filament\Forms\Components\BaseFileUpload;
@@ -94,7 +95,7 @@ class ProductsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query): Builder => $query->orderBy('created_at', 'desc'))
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->withoutGlobalScope(new ProductAvailableScope)->orderBy('created_at', 'desc'))
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
