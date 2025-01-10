@@ -34,9 +34,7 @@ class ProductController extends Controller
 
     protected static string $cacheKey = 'products';
 
-    public function __construct(public CloudinaryEngine $cloudinary)
-    {
-    }
+    public function __construct(public CloudinaryEngine $cloudinary) {}
 
     /**
      * Get all product
