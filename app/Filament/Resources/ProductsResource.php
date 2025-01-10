@@ -163,6 +163,7 @@ class ProductsResource extends Resource
                         }
                         if ($record->cloudinary_id) {
                             $cloudinary->destroy($record->cloudinary_id);
+                            $record->delete();
                             $action->success();
                         }
                     }),
@@ -173,6 +174,7 @@ class ProductsResource extends Resource
                         ->action(fn (Collection $records) => $records->each(function (Model $record, CloudinaryEngine $cloudinary) {
                             if ($record->cloudinary_id && (! $record->shop()->exists() || ! $record->redeems()->exists())) {
                                 $cloudinary->destroy($record->cloudinary_id);
+                                $record->delete();
                             }
                         })),
                 ]),
