@@ -107,7 +107,7 @@ it('can update the product status only', function () {
     $file = UploadedFile::fake()->image('avatar.jpg');
 
     $resp = putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
-        'status' => collect(['available', 'unavailable'])->random(1)[0],
+        'status' => collect(['Available', 'Unavailable'])->random(1)[0],
     ])
         ->assertStatus(200)
         ->assertJsonStructure([
