@@ -111,6 +111,7 @@ class ProductsResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->money()
+                    ->formatStateUsing(fn ($state) => number_format($state, 2))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('stock')
                     ->numeric()
