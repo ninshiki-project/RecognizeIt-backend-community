@@ -2,6 +2,7 @@
 
 namespace Tests\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\Enum\ProductStatusEnum;
 use App\Models\Products;
 use Illuminate\Http\UploadedFile;
 
@@ -50,7 +51,7 @@ it('can update the product with batch fields', function () {
         'price' => random_int(10, 100),
         'stock' => random_int(10, 100),
         'image' => $file,
-        'status' => collect(['Unavailable', 'Available'])->random(1)[0],
+        'status' => \Pest\Faker\fake()->randomElement(ProductStatusEnum::cases())->value,
     ])
         ->assertStatus(200)
         ->assertJsonStructure([
@@ -107,7 +108,8 @@ it('can update the product status only', function () {
     $file = UploadedFile::fake()->image('avatar.jpg');
 
     $resp = putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
-        'status' => collect(['Available', 'Unavailable'])->random(1)[0],
+        'status' => \Pest\Faker\fake()->randomElement(ProductStatusEnum::cases())->value,
+
     ])
         ->assertStatus(200)
         ->assertJsonStructure([
@@ -174,9 +176,10 @@ it('it get the specific information of the product', function () {
         ]);
 });
 it('can delete the product that is not in use', function () {
-    $product = Products::has('shop', '<', 1)->first();
-    $resp = deleteJson('/api/v1/products/'.$product->id)
+    $product = Products::has('shop', '=', 0)->first();
+    deleteJson('/api/v1/products/'.$product?->id)
         ->assertStatus(204)
         ->assertNoContent();
+
 
 });
