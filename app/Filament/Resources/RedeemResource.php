@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class RedeemResource extends Resource
 {
@@ -22,6 +23,8 @@ class RedeemResource extends Resource
     protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationLabel = 'Redeems';
+
+    protected static ?string $label = '';
 
     public static function form(Form $form): Form
     {
@@ -45,23 +48,40 @@ class RedeemResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes())
+            ->emptyStateHeading('No Data Available')
+            ->emptyStateDescription('Once an employee redeem a product from the shop, it will appear here.')
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
+                    ->label('Transaction ID')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('shop.id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('product.name')
+                    ->label('Shop ID')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->label('Employee Name')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('user.departments.name')
+                    ->label('Employee Department')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('product.name')
+                    ->label('Redeem Product')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('product.price')
+                    ->label('Redeem Product Price')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Redeem Date')
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -71,13 +91,10 @@ class RedeemResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                //
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 
