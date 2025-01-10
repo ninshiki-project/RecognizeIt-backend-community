@@ -31,7 +31,7 @@ class Redeem extends Model
         'shop_id',
         'decline_reason_category',
         'decline_reason',
-        'decline_date',
+        'declined_at',
     ];
 
     protected $casts = [
