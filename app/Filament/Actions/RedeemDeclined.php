@@ -34,7 +34,7 @@ class RedeemDeclined
         $record->declined_at = Carbon::now();
         $record->save();
         $record->refresh();
-        // refund the item
+        // refund the user
         $userWallet = $record->user->getWallet('ninshiki-wallet');
         $userWallet->refund($record->product);
         // send notification to the user who redeem the item
