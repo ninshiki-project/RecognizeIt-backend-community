@@ -21,7 +21,6 @@ use App\Http\Resources\ProductsResource;
 use App\Models\Products;
 use App\Models\Scopes\ProductAvailableScope;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -34,6 +33,10 @@ class ProductController extends Controller
     private CloudinaryEngine $uploadedAsset;
 
     protected static string $cacheKey = 'products';
+
+    public function __construct(public CloudinaryEngine $cloudinary)
+    {
+    }
 
     /**
      * Get all product
@@ -147,7 +150,7 @@ class ProductController extends Controller
         ]);
         if (! $result) {
             if ($oldCloudinaryId) {
-                Cloudinary::destroy($oldCloudinaryId);
+                $this->cloudinary->destroy($oldCloudinaryId);
             }
 
             return response()->json([
@@ -184,7 +187,7 @@ class ProductController extends Controller
 
         // Delete image file in the cloudinary
         if ($product->cloudinary_id) {
-            Cloudinary::destroy($product->cloudinary_id);
+            $this->cloudinary->destroy($product->cloudinary_id);
         }
 
         $product->delete();
