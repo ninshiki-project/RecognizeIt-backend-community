@@ -181,5 +181,4 @@ it('can delete the product that is not in use', function () {
         ->assertStatus(204)
         ->assertNoContent();
 
-
 });
