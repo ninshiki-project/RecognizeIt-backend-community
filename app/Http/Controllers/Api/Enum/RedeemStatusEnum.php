@@ -13,7 +13,9 @@
 
 namespace App\Http\Controllers\Api\Enum;
 
-enum RedeemStatusEnum: string
+use Filament\Support\Contracts\HasIcon;
+
+enum RedeemStatusEnum: string implements HasIcon
 {
     case REDEEMED = 'Redeemed';
     case APPROVED = 'Approved';
@@ -21,4 +23,16 @@ enum RedeemStatusEnum: string
     case PROCESSING = 'Processing';
     case WAITING_APPROVAL = 'Waiting-Approval';
     case CANCELED = 'Canceled';
+
+    public function getIcon(): ?string
+    {
+        return match ($this) {
+            self::REDEEMED => 'heroicon-o-receipt-percent',
+            self::APPROVED => 'heroicon-o-hand-thumb-up',
+            self::DECLINED => 'heroicon-o-hand-thumb-down',
+            self::PROCESSING => 'heroicon-o-truck',
+            self::WAITING_APPROVAL => 'heroicon-o-cube',
+            self::CANCELED => 'heroicon-o-cube-transparent',
+        };
+    }
 }
