@@ -36,7 +36,7 @@ class ShopController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return Cache::flexible(static::$cacheKey, [5, 10], function () {
-            return ShopResource::collection(Shop::all());
+            return ShopResource::collection(Shop::orderByDesc('created_at')->get());
         });
     }
 
