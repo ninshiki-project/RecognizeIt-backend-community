@@ -12,7 +12,7 @@ return new class extends Migration
             $table->after('status', function ($table) {
                 $table->text('decline_reason_category')->nullable();
                 $table->text('decline_reason')->nullable();
-                $table->timestamp('decline_date')->nullable();
+                $table->timestamp('declined_at')->nullable();
             });
 
         });
@@ -23,7 +23,7 @@ return new class extends Migration
         Schema::table('redeems', function (Blueprint $table) {
             $table->dropColumn('decline_reason_category');
             $table->dropColumn('decline_reason');
-            $table->dropColumn('decline_date');
+            $table->dropColumn('declined_at');
         });
     }
 };
