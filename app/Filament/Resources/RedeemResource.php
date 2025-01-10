@@ -105,6 +105,7 @@ class RedeemResource extends Resource
                     ->requiresConfirmation()
                     ->action(function (Redeem $redeem) {
                         $redeem->status = RedeemStatusEnum::APPROVED;
+                        $redeem->product->stock--;
                         $redeem->save();
                     })
                     ->modalIcon(RedeemStatusEnum::APPROVED->getIcon()),
