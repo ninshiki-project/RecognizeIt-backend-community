@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::table('redeems', function (Blueprint $table) {
             $table->after('status', function ($table) {
+                $table->text('decline_reason_category')->nullable();
                 $table->text('decline_reason')->nullable();
                 $table->timestamp('decline_date')->nullable();
             });
@@ -20,6 +21,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('redeems', function (Blueprint $table) {
+            $table->dropColumn('decline_reason_category');
             $table->dropColumn('decline_reason');
             $table->dropColumn('decline_date');
         });
