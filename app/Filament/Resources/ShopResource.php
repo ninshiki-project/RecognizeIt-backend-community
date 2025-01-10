@@ -8,12 +8,15 @@ use Filament\Forms;
 use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class ShopResource extends Resource
@@ -120,11 +123,29 @@ class ShopResource extends Resource
                     ->modalFooterActionsAlignment(Alignment::Right)
                     ->modalWidth(MaxWidth::Small)
                     ->modalAlignment(Alignment::Center),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->action(function (Shop $record, Tables\Actions\DeleteAction $action) {
+                        // prevent deleting if the record is being used in other model
+                        if ($record->redeems()->exists()) {
+                            Notification::make('stop')
+                                ->title('Unable to Delete')
+                                ->body('Product has existing record in Shop or Redeem')
+                                ->warning()
+                                ->send();
+
+                            return;
+                        }
+                        $record->delete();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(fn (Collection $records) => $records->each(function (Model $record) {
+                            if (! $record->redeems()->exists()) {
+                                $record->delete();
+                            }
+                        })),
                 ]),
             ]);
     }
