@@ -135,10 +135,11 @@ class RedeemController extends Controller
         $redeem->shop->product->increment('stock', 1);
 
         // refund the user
-        auth()->user()->refund($redeem->shop->product);
+        $userWallet = auth()->user()->getWallet('ninshiki-wallet');
+        $userWallet->refund($redeem->shop->product);
 
         $redeem->status = RedeemStatusEnum::CANCELED;
-        $redeem->push();
+        $redeem->save();
 
         /**
          * @status 200
