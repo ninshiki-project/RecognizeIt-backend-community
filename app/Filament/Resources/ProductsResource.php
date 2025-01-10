@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductsResource\Pages;
 use App\Models\Products;
 use App\Models\Scopes\ProductAvailableScope;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Filament\Forms;
 use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Form;
@@ -142,15 +142,15 @@ class ProductsResource extends Resource
                     ->before(function (Products $record) {
                         self::$oldCloudinaryPublicId = $record->cloudinary_id;
                     })
-                    ->after(function () {
+                    ->after(function (CloudinaryEngine $cloudinary) {
                         // delete cloudinary id
-                        Cloudinary::destroy(self::$oldCloudinaryPublicId);
+                        $cloudinary->destroy(self::$oldCloudinaryPublicId);
                     })
                     ->modalAlignment(Alignment::Center)
                     ->modalWidth(MaxWidth::FitContent)
                     ->modalFooterActionsAlignment(Alignment::Right),
                 Tables\Actions\DeleteAction::make()
-                    ->action(function (Products $record, Tables\Actions\DeleteAction $action) {
+                    ->action(function (Products $record, Tables\Actions\DeleteAction $action, CloudinaryEngine $cloudinary) {
                         // prevent deleting if the record is being used in other model
                         if ($record->shop()->exists() || $record->redeems()->exists()) {
                             Notification::make('stop')
@@ -162,7 +162,7 @@ class ProductsResource extends Resource
                             return;
                         }
                         if ($record->cloudinary_id) {
-                            Cloudinary::destroy($record->cloudinary_id);
+                            $cloudinary->destroy($record->cloudinary_id);
                             $action->success();
                         }
                     }),
@@ -170,9 +170,9 @@ class ProductsResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->action(fn (Collection $records) => $records->each(function (Model $record) {
+                        ->action(fn (Collection $records) => $records->each(function (Model $record, CloudinaryEngine $cloudinary) {
                             if ($record->cloudinary_id && (! $record->shop()->exists() || ! $record->redeems()->exists())) {
-                                Cloudinary::destroy($record->cloudinary_id);
+                                $cloudinary->destroy($record->cloudinary_id);
                             }
                         })),
                 ]),
