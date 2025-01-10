@@ -20,7 +20,7 @@ class ManageRedeems extends ManageRecords
 
     public function getDefaultActiveTab(): string|int|null
     {
-        return 'For Approval';
+        return 'all';
     }
 
     public function getTabs(): array
@@ -29,24 +29,24 @@ class ManageRedeems extends ManageRecords
         return [
             'all' => Components\Tab::make()
                 ->label('All Redeems')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '!=', RedeemStatusEnum::CANCELED)),
-            'For Approval' => Components\Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '!=', RedeemStatusEnum::CANCELED)->orderByDesc('created_at')),
+            RedeemStatusEnum::WAITING_APPROVAL->value => Components\Tab::make()
                 ->label('Awaiting Approval')
                 ->icon(RedeemStatusEnum::WAITING_APPROVAL->getIcon())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '=', RedeemStatusEnum::WAITING_APPROVAL)),
-            'Approved' => Components\Tab::make()
+            RedeemStatusEnum::APPROVED->value => Components\Tab::make()
                 ->label('Approved')
                 ->icon(RedeemStatusEnum::APPROVED->getIcon())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '=', RedeemStatusEnum::APPROVED)),
-            'Processing' => Components\Tab::make()
+            RedeemStatusEnum::PROCESSING->value => Components\Tab::make()
                 ->label('Processing')
                 ->icon(RedeemStatusEnum::PROCESSING->getIcon())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '=', RedeemStatusEnum::PROCESSING)),
-            'Redeemed' => Components\Tab::make()
+            RedeemStatusEnum::REDEEMED->value => Components\Tab::make()
                 ->label('Redeemed')
                 ->icon(RedeemStatusEnum::REDEEMED->getIcon())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '=', RedeemStatusEnum::REDEEMED)),
-            'Declined' => Components\Tab::make()
+            RedeemStatusEnum::CANCELED->value => Components\Tab::make()
                 ->label('Declined')
                 ->icon(RedeemStatusEnum::DECLINED->getIcon())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '=', RedeemStatusEnum::DECLINED)),
