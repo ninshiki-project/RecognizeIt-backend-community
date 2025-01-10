@@ -124,7 +124,7 @@ class ShopResource extends Resource
                     ->modalWidth(MaxWidth::Small)
                     ->modalAlignment(Alignment::Center),
                 Tables\Actions\DeleteAction::make()
-                    ->action(function (Shop $record, Tables\Actions\DeleteAction $action) {
+                    ->action(function (Shop $record) {
                         // prevent deleting if the record is being used in other model
                         if ($record->redeems()->exists()) {
                             Notification::make('stop')
