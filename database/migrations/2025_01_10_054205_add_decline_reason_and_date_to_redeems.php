@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('redeems', function (Blueprint $table) {
-            $table->after('status', function () use ($table) {
+            $table->after('status', function ($table) {
                 $table->text('decline_reason')->nullable();
                 $table->timestamp('decline_date')->nullable();
             });
