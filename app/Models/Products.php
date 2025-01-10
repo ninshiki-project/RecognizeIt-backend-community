@@ -51,8 +51,8 @@ class Products extends Model implements ProductInterface
         static::addGlobalScope(new ProductAvailableScope);
 
         static::updated(function ($product) {
-            if ($product->stock === 0 && $product->status === 'available') {
-                $product->status = 'unavailable';
+            if ($product->stock === 0 && $product->status === ProductStatusEnum::AVAILABLE) {
+                $product->status = ProductStatusEnum::UNAVAILABLE;
                 $product->save();
             }
         });
@@ -64,7 +64,7 @@ class Products extends Model implements ProductInterface
      */
     public function scopeAvailable(Builder $query): mixed
     {
-        return $query->where('status', 'available');
+        return $query->where('status', ProductStatusEnum::AVAILABLE->value);
     }
 
     /**
@@ -73,7 +73,7 @@ class Products extends Model implements ProductInterface
      */
     public function scopeUnavailable(Builder $query): mixed
     {
-        return $query->where('status', 'unavailable');
+        return $query->where('status', ProductStatusEnum::UNAVAILABLE->value);
     }
 
     /**

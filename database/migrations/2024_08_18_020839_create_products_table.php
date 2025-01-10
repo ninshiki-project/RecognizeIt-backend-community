@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('price');
             $table->integer('stock')->default(1);
-            $table->enum('status', ['available', 'unavailable'])->default('available');
+            $table->enum('status', ['Available', 'Unavailable'])->default('Available');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
