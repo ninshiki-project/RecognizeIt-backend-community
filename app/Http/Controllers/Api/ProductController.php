@@ -168,15 +168,9 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $productInUsed = false;
-
         $product = Products::findOrFail($id);
 
-        if ($product->shop()->count() > 0) {
-            $productInUsed = true;
-        }
-
-        if ($productInUsed) {
+        if ($product->shop()->exists() || $product->redeems()->exists()) {
             return response()->json([
                 'message' => 'Unable to delete product as it is still in use',
                 'success' => false,
