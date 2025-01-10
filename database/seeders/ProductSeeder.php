@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         if (app()->isLocal() || app()->runningUnitTests()) {
-            Products::factory()->count(250)->create();
+            Products::factory(10)->create();
         }
     }
 }

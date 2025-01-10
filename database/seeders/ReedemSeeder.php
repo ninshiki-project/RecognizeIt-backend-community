@@ -26,7 +26,7 @@ class ReedemSeeder extends Seeder
     public function run(): void
     {
         if (app()->runningUnitTests()) {
-            Redeem::factory(100)->create();
+            Redeem::factory(1)->create();
         }
     }
 }
