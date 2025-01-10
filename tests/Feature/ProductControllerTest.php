@@ -50,7 +50,7 @@ it('can update the product with batch fields', function () {
         'price' => random_int(10, 100),
         'stock' => random_int(10, 100),
         'image' => $file,
-        'status' => collect(['unavailable', 'available'])->random(1)[0],
+        'status' => collect(['Unavailable', 'Available'])->random(1)[0],
     ])
         ->assertStatus(200)
         ->assertJsonStructure([
