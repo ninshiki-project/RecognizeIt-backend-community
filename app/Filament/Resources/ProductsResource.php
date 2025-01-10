@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductsResource\Pages;
-use App\Http\Controllers\Api\Enum\ProductStatusEnum;
 use App\Models\Products;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Filament\Forms;
@@ -79,11 +78,6 @@ class ProductsResource extends Resource
                     ->columnSpanFull()
                     ->required(),
                 Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\Select::make('status')
-                    ->options(ProductStatusEnum::class)
-                    ->native(false)
-                    ->hiddenOn('create')
                     ->required(),
                 Forms\Components\TextInput::make('price')
                     ->required()
