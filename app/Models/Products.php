@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Wildside\Userstamps\Userstamps;
 
@@ -87,6 +88,11 @@ class Products extends Model implements ProductInterface
     public function shop(): HasOne
     {
         return $this->hasOne(Shop::class, 'product_id', 'id');
+    }
+
+    public function redeems(): HasMany
+    {
+        return $this->hasMany(Redeem::class, 'product_id', 'id');
     }
 
     /**
