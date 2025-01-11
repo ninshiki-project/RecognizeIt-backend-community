@@ -3,17 +3,16 @@
 namespace Tests\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
+use App\Http\Controllers\Api\Enum\WalletsEnum;
 use App\Models\Redeem;
 use App\Models\Shop;
 use App\Models\User;
 
 use function Pest\Laravel\deleteJson;
-use function Pest\Laravel\getJson;
-use function Pest\Laravel\patchJson;
-use function Pest\Laravel\postJson;
 
 it('can display specific redeem record', function () {
-    getJson('/api/v1/redeems/'.Redeem::inRandomOrder()->first()->id)
+    $user = User::factory()->create();
+    \Pest\Laravel\actingAs($user)->getJson('/api/v1/redeems/'.Redeem::inRandomOrder()->first()->id)
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [
@@ -25,11 +24,10 @@ it('can display specific redeem record', function () {
         ]);
 });
 it('can redeem from the shop', function () {
-    $user = User::first();
-    $wallet = $user->getWallet('ninshiki-wallet');
-    $wallet->deposit(400000);
+    $user = User::factory()->create();
+    $user->getWallet(WalletsEnum::DEFAULT->value)->deposit(60000000);
     $shop = Shop::inRandomOrder()->first();
-    $reps = postJson('/api/v1/redeems/shop', [
+    $reps = \Pest\Laravel\actingAs($user)->postJson('/api/v1/redeems/shop', [
         'shop' => $shop?->id,
     ])
         ->assertStatus(201)
@@ -43,7 +41,8 @@ it('can redeem from the shop', function () {
         ]);
 });
 it('can display all the redeem item', function () {
-    getJson('/api/v1/redeems')
+    $user = User::factory()->create();
+    \Pest\Laravel\actingAs($user)->getJson('/api/v1/redeems')
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [
@@ -63,7 +62,8 @@ it('can display all the redeem item', function () {
         ]);
 });
 it('can display all the redeem item by status', function () {
-    getJson('/api/v1/redeems?status='.\Pest\Faker\fake()->randomElement(RedeemStatusEnum::cases())->value)
+    $user = User::factory()->create();
+    \Pest\Laravel\actingAs($user)->getJson('/api/v1/redeems?status='.\Pest\Faker\fake()->randomElement(RedeemStatusEnum::cases())->value)
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [
@@ -83,9 +83,12 @@ it('can display all the redeem item by status', function () {
         ]);
 });
 it('can update the status', function () {
-    $redeem = Redeem::where('status', '!=', RedeemStatusEnum::DECLINED)->where('status', '!=', RedeemStatusEnum::REDEEMED)->first();
+    $redeem = Redeem::factory()->create([
+        'status' => RedeemStatusEnum::WAITING_APPROVAL,
+    ]);
 
-    patchJson('/api/v1/redeems/'.$redeem->id, [
+    $user = User::factory()->create();
+    $resp = \Pest\Laravel\actingAs($user)->patchJson('/api/v1/redeems/'.$redeem->id, [
         'status' => RedeemStatusEnum::REDEEMED->value,
     ])
         ->assertStatus(200)
@@ -99,11 +102,12 @@ it('can update the status', function () {
         ]);
 });
 it('can cancel the redeem item from shop if still in waiting for approval', function () {
-    $user = User::first();
+    $user = User::factory()->create();
     $wallet = $user->getWallet('ninshiki-wallet');
     $wallet->deposit(400000);
     $shop = Shop::inRandomOrder()->first();
-    $reps = postJson('/api/v1/redeems/shop', [
+
+    $reps = \Pest\Laravel\actingAs($user)->postJson('/api/v1/redeems/shop', [
         'shop' => $shop?->id,
     ])
         ->assertStatus(201)

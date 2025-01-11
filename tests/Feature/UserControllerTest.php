@@ -1,9 +1,13 @@
 <?php
 
+use App\Models\User;
+
 it('can get all the user', function () {
-    \Pest\Laravel\getJson('/api/v1/users')->assertStatus(200);
+    $user = User::factory()->create();
+    \Pest\Laravel\actingAs($user)->getJson('/api/v1/users')->assertStatus(200);
 });
 
 it('can show all user', function () {
-    \Pest\Laravel\getJson('/api/v1/users')->assertStatus(200);
+    $user = User::factory()->create();
+    \Pest\Laravel\actingAs($user)->getJson('/api/v1/users')->assertStatus(200);
 });

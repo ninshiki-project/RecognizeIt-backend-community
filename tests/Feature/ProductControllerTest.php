@@ -4,16 +4,13 @@ namespace Tests\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Enum\ProductStatusEnum;
 use App\Models\Products;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
-
-use function Pest\Laravel\deleteJson;
-use function Pest\Laravel\getJson;
-use function Pest\Laravel\postJson;
-use function Pest\Laravel\putJson;
 
 it('can get all the product', function () {
 
-    getJson('/api/v1/products')
+    $user = User::factory()->create();
+    \Pest\Laravel\actingAs($user)->getJson('/api/v1/products')
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [
@@ -31,9 +28,11 @@ it('can get all the product', function () {
 });
 it('can create a new product', function () {
 
+    $user = User::factory()->create();
+
     $file = UploadedFile::fake()->image('avatar.jpg');
 
-    $resp = postJson('/api/v1/products', [
+    $resp = \Pest\Laravel\actingAs($user)->postJson('/api/v1/products', [
         'name' => 'Test Product'.random_int(1, 100),
         'description' => \Pest\Faker\fake()->text(),
         'price' => random_int(10, 100),
@@ -44,8 +43,9 @@ it('can create a new product', function () {
 it('can update the product with batch fields', function () {
 
     $file = UploadedFile::fake()->image('avatar.jpg');
+    $user = User::factory()->create();
 
-    putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
+    \Pest\Laravel\actingAs($user)->putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
         'name' => 'Fake Product'.random_int(1, 100),
         'description' => \Pest\Faker\fake()->text(),
         'price' => random_int(10, 100),
@@ -67,9 +67,9 @@ it('can update the product with batch fields', function () {
 });
 it('can update the product description only', function () {
 
-    $file = UploadedFile::fake()->image('avatar.jpg');
+    $user = User::factory()->create();
 
-    putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
+    \Pest\Laravel\actingAs($user)->putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
         'description' => \Pest\Faker\fake()->text(),
     ])
         ->assertStatus(200)
@@ -86,9 +86,9 @@ it('can update the product description only', function () {
 });
 it('can update the product stock only', function () {
 
-    $file = UploadedFile::fake()->image('avatar.jpg');
+    $user = User::factory()->create();
 
-    putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
+    \Pest\Laravel\actingAs($user)->putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
         'stock' => random_int(1, 100),
     ])
         ->assertStatus(200)
@@ -105,9 +105,9 @@ it('can update the product stock only', function () {
 });
 it('can update the product status only', function () {
 
-    $file = UploadedFile::fake()->image('avatar.jpg');
+    $user = User::factory()->create();
 
-    $resp = putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
+    $resp = \Pest\Laravel\actingAs($user)->putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
         'status' => \Pest\Faker\fake()->randomElement(ProductStatusEnum::cases())->value,
 
     ])
@@ -126,8 +126,9 @@ it('can update the product status only', function () {
 it('can update the product image only', function () {
 
     $file = UploadedFile::fake()->image('avatar.jpg');
+    $user = User::factory()->create();
 
-    putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
+    \Pest\Laravel\actingAs($user)->putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
         'image' => $file,
     ])
         ->assertStatus(200)
@@ -144,9 +145,9 @@ it('can update the product image only', function () {
 });
 it('can update the product name only', function () {
 
-    $file = UploadedFile::fake()->image('avatar.jpg');
+    $user = User::factory()->create();
 
-    putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
+    \Pest\Laravel\actingAs($user)->putJson('/api/v1/products/'.Products::inRandomOrder()->first()->id, [
         'name' => 'Fake Product'.random_int(50, 100),
     ])
         ->assertStatus(200)
@@ -162,7 +163,9 @@ it('can update the product name only', function () {
         ]);
 });
 it('it get the specific information of the product', function () {
-    getJson('/api/v1/products/'.Products::inRandomOrder()->first()->id)
+    $user = User::factory()->create();
+
+    \Pest\Laravel\actingAs($user)->getJson('/api/v1/products/'.Products::inRandomOrder()->first()->id)
         ->assertStatus(200)
         ->assertJsonStructure([
             'data' => [
@@ -178,7 +181,9 @@ it('it get the specific information of the product', function () {
 it('can delete the product that is not in use', function () {
     Products::all()->each(function ($product) {
         if (! $product->shop()->exists() && ! $product->redeems()->exists()) {
-            deleteJson('/api/v1/products/'.$product->id)
+            $user = User::factory()->create();
+
+            \Pest\Laravel\actingAs($user)->deleteJson('/api/v1/products/'.$product->id)
                 ->assertStatus(204)
                 ->assertNoContent();
         }
