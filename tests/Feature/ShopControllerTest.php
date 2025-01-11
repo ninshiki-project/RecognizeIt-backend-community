@@ -15,7 +15,7 @@ it('can get all the product that are in the shop', function () {
 });
 it('can add a product to the shop', function () {
     // get the product that doesn't exist in the shop
-    $product = Products::has('shop', '<', 1)->first();
+    $product = Products::factory()->create();
     $user = User::factory()->create();
     \Pest\Laravel\actingAs($user)->postJson('/api/v1/shop', [
         'product' => $product->id,
