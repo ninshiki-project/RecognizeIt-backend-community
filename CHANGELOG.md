@@ -4,6 +4,23 @@
 All notable changes to this project will be documented in this file.
 
 <!--- END HEADER -->
+## 0.2.0 - 2025-01-11
+
+### What's Changed
+
+* :hammer:  Refactor Authentication flow for Zoho by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/37
+* :sparkles: Feature(Admin): Shop/Store by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/34
+
+### Breaking changes :boom:
+
+* Update on migration columns for the `Products`, `Posts`.
+
+### General update
+
+* Ninshiki Backend now fully utilizes Cloudinary for storing posts and product images.
+
+**Full Changelog**: https://github.com/ninshiki-project/Ninshiki-backend/compare/0.1.3...0.2.0
+
 ## 0.1.3 - 2025-01-06
 
 ### What's Changed
