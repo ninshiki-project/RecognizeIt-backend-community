@@ -34,6 +34,8 @@ class ProductController extends Controller
 
     protected static string $cacheKey = 'products';
 
+    public function __construct(public CloudinaryEngine $cloudinary) {}
+
     /**
      * Get all product
      *
@@ -68,11 +70,12 @@ class ProductController extends Controller
     {
         // upload image to the cloudinary
         $fileName = Str::orderedUuid();
-        $this->uploadedAsset = $request->image->storeOnCloudinaryAs('product', $fileName);
+        $this->uploadedAsset = $request->image->storeOnCloudinaryAs('products', $fileName);
         $result = Products::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
+            'cloudinary_id' => $this->uploadedAsset->getPublicId(),
             'image' => $this->uploadedAsset->getSecurePath(),
             'status' => ProductStatusEnum::AVAILABLE->value,
             'stock' => $request->stock,
@@ -122,6 +125,7 @@ class ProductController extends Controller
             $this->uploadedAsset = $request->image->storeOnCloudinaryAs('posts', $fileName);
         }
         $product = Products::findOrFail($id);
+        $oldCloudinaryId = $product->cloudinary_id;
         $result = $product->update([
             ...($request->name ? [
                 'name' => $request->name,
@@ -143,6 +147,10 @@ class ProductController extends Controller
             ] : []),
         ]);
         if (! $result) {
+            if ($oldCloudinaryId) {
+                $this->cloudinary->destroy($oldCloudinaryId);
+            }
+
             return response()->json([
                 'message' => 'Product not updated',
                 'success' => false,
@@ -160,19 +168,18 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $productInUsed = false;
-
         $product = Products::findOrFail($id);
 
-        if ($product->shop()->count() > 0) {
-            $productInUsed = true;
-        }
-
-        if ($productInUsed) {
+        if ($product->shop()->exists() || $product->redeems()->exists()) {
             return response()->json([
                 'message' => 'Unable to delete product as it is still in use',
                 'success' => false,
             ], Response::HTTP_FORBIDDEN);
+        }
+
+        // Delete image file in the cloudinary
+        if ($product->cloudinary_id) {
+            $this->cloudinary->destroy($product->cloudinary_id);
         }
 
         $product->delete();

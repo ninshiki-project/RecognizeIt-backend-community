@@ -13,6 +13,7 @@
 
 namespace Database\Factories;
 
+use App\Http\Controllers\Api\Enum\ProductStatusEnum;
 use App\Models\Products;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Random\RandomException;
@@ -38,7 +39,7 @@ class ProductsFactory extends Factory
             'description' => $this->faker->text(),
             'price' => random_int(1000, 40000),
             'stock' => random_int(100, 300),
-            'status' => collect(['available', 'unavailable'])->random(1)[0],
+            'status' => $this->faker->randomElement(ProductStatusEnum::cases())->value,
         ];
     }
 }

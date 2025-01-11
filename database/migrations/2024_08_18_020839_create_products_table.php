@@ -22,14 +22,15 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('image');
+            $table->string('cloudinary_id')->nullable();
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('price');
             $table->integer('stock')->default(1);
-            $table->enum('status', ['available', 'unavailable'])->default('available');
+            $table->enum('status', ['Available', 'Unavailable'])->default('Available');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
-            $table->softDeletes();
+            $table->unsignedBigInteger('deleted_by')->nullable();
             $table->timestamps();
         });
     }

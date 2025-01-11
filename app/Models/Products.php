@@ -22,15 +22,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Wildside\Userstamps\Userstamps;
 
 class Products extends Model implements ProductInterface
 {
-    use HasFactory, HasUuids, HasWallet, SoftDeletes, Userstamps;
+    use HasFactory, HasUuids, HasWallet, Userstamps;
 
     protected $fillable = [
+        'cloudinary_id',
         'name',
         'description',
         'price',
@@ -51,8 +52,8 @@ class Products extends Model implements ProductInterface
         static::addGlobalScope(new ProductAvailableScope);
 
         static::updated(function ($product) {
-            if ($product->stock === 0 && $product->status === 'available') {
-                $product->status = 'unavailable';
+            if ($product->stock === 0 && $product->status === ProductStatusEnum::AVAILABLE) {
+                $product->status = ProductStatusEnum::UNAVAILABLE;
                 $product->save();
             }
         });
@@ -64,7 +65,7 @@ class Products extends Model implements ProductInterface
      */
     public function scopeAvailable(Builder $query): mixed
     {
-        return $query->where('status', 'available');
+        return $query->where('status', ProductStatusEnum::AVAILABLE->value);
     }
 
     /**
@@ -73,7 +74,7 @@ class Products extends Model implements ProductInterface
      */
     public function scopeUnavailable(Builder $query): mixed
     {
-        return $query->where('status', 'unavailable');
+        return $query->where('status', ProductStatusEnum::UNAVAILABLE->value);
     }
 
     /**
@@ -87,6 +88,11 @@ class Products extends Model implements ProductInterface
     public function shop(): HasOne
     {
         return $this->hasOne(Shop::class, 'product_id', 'id');
+    }
+
+    public function redeems(): HasMany
+    {
+        return $this->hasMany(Redeem::class, 'product_id', 'id');
     }
 
     /**

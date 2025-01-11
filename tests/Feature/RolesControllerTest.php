@@ -1,11 +1,15 @@
 <?php
 
+use App\Models\User;
+
 it('can get all the roles', function () {
-    \Pest\Laravel\getJson('/api/v1/roles')
+    $user = User::factory()->create();
+    \Pest\Laravel\actingAs($user)->getJson('/api/v1/roles')
         ->assertStatus(200);
 });
 it('can show specific role by ID', function () {
     $role = \App\Models\Role::all()->random(1)->value('id');
-    \Pest\Laravel\getJson('/api/v1/roles/'.$role)
+    $user = User::factory()->create();
+    \Pest\Laravel\actingAs($user)->getJson('/api/v1/roles/'.$role)
         ->assertStatus(200);
 });

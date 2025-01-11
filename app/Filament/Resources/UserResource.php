@@ -102,11 +102,14 @@ class UserResource extends Resource
                     ->label('Role')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('department')
+                Tables\Columns\TextColumn::make('departments.name')
+                    ->label('Department')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('designation')
+                    ->label('Designation')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()

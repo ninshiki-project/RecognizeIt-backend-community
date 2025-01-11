@@ -26,7 +26,7 @@ class ShopSeeder extends Seeder
     public function run(): void
     {
         if (app()->isLocal() || app()->runningUnitTests()) {
-            Shop::factory(100)->create();
+            Shop::factory(5)->create();
         }
     }
 }

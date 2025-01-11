@@ -39,7 +39,7 @@ class ProductRequest extends FormRequest
             'name' => ['required', 'string'],
             'price' => ['required', 'integer', 'min:5'],
             'description' => ['sometimes', 'string', 'max:255'],
-            'image' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'image' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:10240'],
             'stock' => ['required', 'integer', 'min:1'],
         ];
     }
@@ -50,7 +50,7 @@ class ProductRequest extends FormRequest
             'name' => ['sometimes', 'string'],
             'price' => ['sometimes', 'integer', 'min:5'],
             'description' => ['sometimes', 'string', 'max:255'],
-            'image' => ['sometimes', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'image' => ['sometimes', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:10240'],
             'stock' => ['sometimes', 'integer', 'min:1'],
             'status' => ['sometimes', Rule::enum(ProductStatusEnum::class)],
         ];

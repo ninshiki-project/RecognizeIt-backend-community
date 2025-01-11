@@ -33,7 +33,7 @@ class Departments extends Model
         return $this->hasMany(User::class, 'department');
     }
 
-    public function departmentHead(): BelongsTo
+    public function head(): BelongsTo
     {
         return $this->belongsTo(User::class, 'department_head');
     }

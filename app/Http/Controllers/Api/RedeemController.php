@@ -76,7 +76,8 @@ class RedeemController extends Controller
         /**
          * @status 402
          */
-        if (! $request->user()->safePay($product)) {
+        $userWallet = $request->user()->getWallet('ninshiki-wallet');
+        if (! $userWallet->safePay($product)) {
             return response()->json([
                 'message' => 'Payment processing failed. Please check your wallet balance and try again.',
                 'success' => false,
@@ -134,10 +135,11 @@ class RedeemController extends Controller
         $redeem->shop->product->increment('stock', 1);
 
         // refund the user
-        auth()->user()->refund($redeem->shop->product);
+        $userWallet = auth()->user()->getWallet('ninshiki-wallet');
+        $userWallet->refund($redeem->shop->product);
 
         $redeem->status = RedeemStatusEnum::CANCELED;
-        $redeem->push();
+        $redeem->save();
 
         /**
          * @status 200

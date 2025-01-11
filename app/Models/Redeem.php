@@ -29,6 +29,9 @@ class Redeem extends Model
         'status',
         'user_id',
         'shop_id',
+        'decline_reason_category',
+        'decline_reason',
+        'declined_at',
     ];
 
     protected $casts = [
