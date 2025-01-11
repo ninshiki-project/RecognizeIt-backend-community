@@ -20,7 +20,7 @@
         "doctrine/dbal": "^4.0",
         "filament/filament": "^3.2",
         "hammerstone/fast-paginate": "^1.1",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^11.31",
         "laravel/reverb": "^1.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.14",
@@ -43,10 +43,10 @@
         "laravel/sail": "^1.26",
         "mbezhanov/laravel-faker-provider-collection": "^3.1",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.0",
-        "pestphp/pest": "^2.35",
-        "pestphp/pest-plugin-faker": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.4",
+        "nunomaduro/collision": "^8.1",
+        "pestphp/pest": "^3.7",
+        "pestphp/pest-plugin-faker": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0",
         "spatie/laravel-ignition": "^2.4"
     },
     "autoload": {
