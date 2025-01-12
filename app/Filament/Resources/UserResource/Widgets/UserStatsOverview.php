@@ -19,7 +19,10 @@ class UserStatsOverview extends BaseWidget
             Stat::make('Active Employee Account', User::whereStatus(UserEnum::Active)->count())
                 ->chart([40, 10, 35, 12, 25, 4, 19])
                 ->color(Color::Purple),
-            Stat::make('Administrator Users', User::all()->filter(function (User $user) {
+            Stat::make('Deactivated Account', User::whereStatus(UserEnum::Deactivate)->count())
+                ->chart([40, 10, 35, 12, 25, 4, 19])
+                ->color(Color::Sky),
+            Stat::make('Administrator Account', User::all()->filter(function (User $user) {
                 return $user->hasRole('Administrator');
             })->count())
                 ->chart([40, 10, 35, 12, 25, 4, 19])
