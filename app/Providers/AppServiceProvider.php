@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Carbon\CarbonInterval;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
@@ -12,6 +13,7 @@ use Filament\Support\Enums\VerticalAlignment;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -68,6 +70,12 @@ class AppServiceProvider extends ServiceProvider
         // Throttle for request forgot password
         RateLimiter::for('forgotPassword', function (Request $request) {
             return Limit::perMinute(1, decayMinutes: 5)->by($request->input('email').'|'.$request->ip());
+        });
+
+
+        // Laravel Pulse disable its path to make the Filament page is only accessible
+        Gate::define('viewPulse', function (User $user) {
+            return false;
         });
 
     }
