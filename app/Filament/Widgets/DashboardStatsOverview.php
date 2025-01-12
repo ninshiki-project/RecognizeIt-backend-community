@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Models\Products;
 use App\Models\Redeem;
+use App\Models\Scopes\ProductAvailableScope;
 use App\Models\Shop;
 use App\Models\User;
 use Filament\Support\Colors\Color;
@@ -27,7 +28,7 @@ class DashboardStatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color(Color::Fuchsia),
-            Stat::make('Total Products', Products::count())
+            Stat::make('Total Products', Products::withoutGlobalScopes([new ProductAvailableScope])->count())
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color(Color::Green),
