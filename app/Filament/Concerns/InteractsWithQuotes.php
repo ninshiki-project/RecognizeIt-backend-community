@@ -21,7 +21,7 @@ trait InteractsWithQuotes
 {
     public function todayQuote()
     {
-        return Cache::remember('quotes-'.auth()->user()->id, Carbon::now()->addHours(3), function () {
+        return Cache::remember('ninskihi.quotes.'.auth()->user()->id, Carbon::now()->addHours(3), function () {
             return $this->quotes()->random();
         });
     }
