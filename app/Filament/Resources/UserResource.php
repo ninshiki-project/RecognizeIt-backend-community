@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
 use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Models\Designations;
 use App\Models\Role;
@@ -207,6 +208,13 @@ class UserResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            UserStatsOverview::class,
+        ];
     }
 
     public static function getPages(): array
