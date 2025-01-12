@@ -18,7 +18,6 @@
         "calebporzio/sushi": "^2.5",
         "cloudinary-labs/cloudinary-laravel": "^2.1",
         "dedoc/scramble": "^0.11.27",
-        "devonab/filament-easy-footer": "^1.0",
         "doctrine/dbal": "^4.0",
         "dotswan/filament-laravel-pulse": "^1.1",
         "filament/filament": "^3.2",
