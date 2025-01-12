@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Concerns\InteractsWithQuotes;
 use App\Filament\Pages\ProfilePage;
+use Devonab\FilamentEasyFooter\EasyFooterPlugin;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -69,6 +70,12 @@ class AdminPanelProvider extends PanelProvider
                     ->title(fn () => $this->todayQuote())
                     ->sort(-6)
                     ->columnSpan('full'),
+                EasyFooterPlugin::make()
+                    ->withLinks([
+                        ['title' => 'About', 'url' => 'https://ninshiki-project.github.io/Ninshiki-backend/overview.html'],
+                        ['title' => 'GNU GPLv3', 'url' => '#'],
+                    ])
+                    ->withBorder(),
             ]);
     }
 }
