@@ -73,7 +73,6 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(1, decayMinutes: 5)->by($request->input('email').'|'.$request->ip());
         });
 
-
         // Laravel Pulse disable its path to make the Filament page is only accessible
         Gate::define('viewPulse', function (User $user) {
             return false;

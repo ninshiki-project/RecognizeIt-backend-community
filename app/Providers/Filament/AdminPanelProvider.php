@@ -4,7 +4,6 @@ namespace App\Providers\Filament;
 
 use App\Filament\Concerns\InteractsWithQuotes;
 use App\Filament\Pages\ProfilePage;
-use Devonab\FilamentEasyFooter\EasyFooterPlugin;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
