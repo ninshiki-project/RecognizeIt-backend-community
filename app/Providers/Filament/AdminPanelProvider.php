@@ -3,14 +3,12 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Concerns\InteractsWithQuotes;
-use App\Filament\Pages\GeneralDashboard;
 use App\Filament\Pages\ProfilePage;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\MenuItem;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -66,9 +64,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 GreeterPlugin::make()
-                    ->timeSensitive()
-                    ->message('Welcome,')
-                    ->name(fn () => Filament::auth()->user()?->name)
+                    ->timeSensitive(morningStart: 5, afternoonStart: 13, eveningStart: 18, nightStart: 20)
                     ->avatar(size: 'w-16 h-16', url: fn () => Filament::auth()->user()?->getFilamentAvatarUrl())
                     ->title(fn () => $this->todayQuote())
                     ->sort(-6)
