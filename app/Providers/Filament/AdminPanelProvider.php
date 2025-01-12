@@ -2,7 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Concerns\InteractsWithQuotes;
 use App\Filament\Pages\ProfilePage;
+use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -11,7 +13,6 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -19,9 +20,12 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Orion\FilamentGreeter\GreeterPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
+    use InteractsWithQuotes;
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -39,7 +43,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -60,6 +63,16 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                GreeterPlugin::make()
+                    ->timeSensitive()
+                    ->message('Welcome,')
+                    ->name(fn () => Filament::auth()->user()?->name)
+                    ->avatar(size: 'w-16 h-16', url: fn () => Filament::auth()->user()?->getFilamentAvatarUrl())
+                    ->title(fn () => $this->todayQuote())
+                    ->sort(-6)
+                    ->columnSpan('full'),
             ]);
     }
 }
