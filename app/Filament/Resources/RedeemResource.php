@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Actions\RedeemDeclined;
 use App\Filament\Resources\RedeemResource\Pages;
+use App\Filament\Resources\RedeemResource\Widgets\RedeemStatOverview;
 use App\Http\Controllers\Api\Enum\RedeemDeclineReasonEnum;
 use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
 use App\Models\Redeem;
@@ -182,6 +183,13 @@ class RedeemResource extends Resource
             ->bulkActions([
                 //
             ]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            RedeemStatOverview::class,
+        ];
     }
 
     public static function getPages(): array
