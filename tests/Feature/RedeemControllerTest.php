@@ -119,8 +119,8 @@ it('can cancel the redeem item from shop if still in waiting for approval', func
                 'status',
             ],
         ]);
-    $redeem = Redeem::where('status', '=', RedeemStatusEnum::WAITING_APPROVAL)->first();
-    deleteJson('/api/v1/redeems/'.$redeem->id)
+    $data = $reps->json('data');
+    deleteJson('/api/v1/redeems/'.$data['id'])
         ->assertOk()
         ->assertJsonStructure([
             'message',
