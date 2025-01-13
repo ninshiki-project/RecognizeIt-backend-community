@@ -46,11 +46,11 @@ class AboutInfoServiceProvider extends ServiceProvider
                 fn ($user) => $user->roles->where('name', 'Administrator')->count() > 0
             )->count(),
         ]);
-        AboutCommand::add('Ninshiki Configuration', static fn () => [
+        AboutCommand::add('Ninshiki Backend Configuration', static fn () => [
             'Cloudinary' => Str::length(config('cloudinary.cloud_url')) > 0 ? self::$checked : self::$times,
             'Reverb' => Str::length(config('reverb.apps.apps[0].key')) > 0 ? self::$checked : self::$times,
             'Resend' => Str::length(config('services.resend.key')) > 0 ? self::$checked : self::$maybe,
-            'Domain Whitelist' => Str::length(config('ninshiki.allowed_email_domain')) > 0 ? self::$checked : self::$times,
+            'Domain Whitelist (optional)' => Str::length(config('ninshiki.allowed_email_domain')) > 0 ? self::$checked : self::$times,
             'Frontend' => Str::of(config('app.frontend_url'))->contains('localhost:3000') ? self::$maybe : self::$checked,
         ]);
     }
