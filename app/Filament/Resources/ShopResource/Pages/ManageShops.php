@@ -22,4 +22,9 @@ class ManageShops extends ManageRecords
                 ->createAnother(false),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return self::$resource::getWidgets();
+    }
 }
