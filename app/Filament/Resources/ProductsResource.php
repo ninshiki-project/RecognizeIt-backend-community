@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductsResource\Pages;
+use App\Filament\Resources\ProductsResource\Widgets\ProductsStatOverview;
 use App\Models\Products;
 use App\Models\Scopes\ProductAvailableScope;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
@@ -179,6 +180,13 @@ class ProductsResource extends Resource
                         })),
                 ]),
             ]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            ProductsStatOverview::class,
+        ];
     }
 
     public static function getPages(): array

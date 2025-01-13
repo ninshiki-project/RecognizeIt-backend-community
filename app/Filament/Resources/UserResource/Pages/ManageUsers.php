@@ -36,4 +36,9 @@ class ManageUsers extends ManageRecords
                 ->createAnother(false),
         ];
     }
+
+    public function getHeaderWidgets(): array
+    {
+        return self::$resource::getWidgets();
+    }
 }

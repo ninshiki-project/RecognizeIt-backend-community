@@ -20,6 +20,7 @@ use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Traits\CanPay;
 use Bavix\Wallet\Traits\HasWallets;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,7 +36,7 @@ use Overtrue\LaravelLike\Traits\Liker;
 use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy([UserObserver::class])]
-class User extends Authenticatable implements Customer, FilamentUser
+class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
 {
     use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable, SoftDeletes;
 
@@ -114,5 +115,10 @@ class User extends Authenticatable implements Customer, FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasRole('Administrator') && $this->status !== UserEnum::Deactivate;
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar ?? 'https://ui-avatars.com/api/?name='.$this->name.'&rounded=true&color=FFFFFF&background=0D8ABC';
     }
 }

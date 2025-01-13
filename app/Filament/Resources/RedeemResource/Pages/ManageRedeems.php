@@ -68,4 +68,9 @@ class ManageRedeems extends ManageRecords
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '=', RedeemStatusEnum::DECLINED)),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return self::$resource::getWidgets();
+    }
 }

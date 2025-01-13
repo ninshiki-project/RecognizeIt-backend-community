@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ShopResource\Pages;
+use App\Filament\Resources\ShopResource\Widgets\ShopStatOverview;
 use App\Models\Shop;
 use Filament\Forms;
 use Filament\Forms\Components\BaseFileUpload;
@@ -148,6 +149,13 @@ class ShopResource extends Resource
                         })),
                 ]),
             ]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            ShopStatOverview::class,
+        ];
     }
 
     public static function getPages(): array
