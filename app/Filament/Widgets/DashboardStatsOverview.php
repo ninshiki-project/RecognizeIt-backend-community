@@ -32,23 +32,10 @@ class DashboardStatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color(Color::Green),
-            Stat::make('Shop Item Available', $this->shopTotalItemAvailable())
+            Stat::make('Shop Item Available', Shop::count())
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color(Color::Amber),
         ];
-    }
-
-    protected function shopTotalItemAvailable(): int
-    {
-        $count = 0;
-        Shop::all()->each(function (Shop $shop) use ($count) {
-            if ($shop->product->isAvailable()) {
-                $count++;
-            }
-
-        });
-
-        return $count;
     }
 }
