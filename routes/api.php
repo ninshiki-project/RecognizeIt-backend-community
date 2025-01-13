@@ -37,12 +37,6 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('departments', DepartmentsController::class);
 
     // Users
-    Route::group(['prefix' => '/users'], function () {
-        Route::post('/invite', [UserController::class, 'inviteUser']);
-        Route::get('/invite', [UserController::class, 'getAllInvitations']);
-        Route::patch('/invite', [UserController::class, 'invitation']);
-        Route::post('/invite/resend', [UserController::class, 'resendInvitation']);
-    });
     Route::apiResource('users', UserController::class)->except(['store', 'update']);
 
     // Profile - Authenticated User
