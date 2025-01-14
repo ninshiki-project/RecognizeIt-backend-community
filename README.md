@@ -26,7 +26,7 @@ _Coming Soon_
 
 ## Application Screenshot (Backend-Admin Portal)
 ![Ninshiki-Dashboard.png](.github/art/Ninshiki-Dashboard.png)
-![Ninshiki-Users.png](.github/art/Ninshiki-Users.png)
+![Ninshiki-Users1.png](.github/art/Ninshiki-Users1.png)
 ![Ninshiki-Shops.png](.github/art/Ninshiki-Shops.png)
 
 
