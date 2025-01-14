@@ -143,15 +143,16 @@ class ProductsResource extends Resource
                     ->before(function (Products $record) {
                         self::$oldCloudinaryPublicId = $record->cloudinary_id;
                     })
-                    ->after(function (CloudinaryEngine $cloudinary) {
+                    ->after(function () {
                         // delete cloudinary id
+                        $cloudinary = new CloudinaryEngine;
                         $cloudinary->destroy(self::$oldCloudinaryPublicId);
                     })
                     ->modalAlignment(Alignment::Center)
                     ->modalWidth(MaxWidth::FitContent)
                     ->modalFooterActionsAlignment(Alignment::Right),
                 Tables\Actions\DeleteAction::make()
-                    ->action(function (Products $record, Tables\Actions\DeleteAction $action, CloudinaryEngine $cloudinary) {
+                    ->action(function (Products $record, Tables\Actions\DeleteAction $action) {
                         // prevent deleting if the record is being used in other model
                         if ($record->shop()->exists() || $record->redeems()->exists()) {
                             Notification::make('stop')
@@ -163,20 +164,23 @@ class ProductsResource extends Resource
                             return;
                         }
                         if ($record->cloudinary_id) {
+                            $cloudinary = new CloudinaryEngine;
                             $cloudinary->destroy($record->cloudinary_id);
-                            $record->delete();
-                            $action->success();
                         }
+                        $record->delete();
+                        $action->success();
                     }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->action(fn (Collection $records) => $records->each(function (Model $record, CloudinaryEngine $cloudinary) {
+                        ->action(fn (Collection $records, Tables\Actions\DeleteBulkAction $bulkAction) => $records->each(function (Model $record) use ($bulkAction) {
                             if ($record->cloudinary_id && (! $record->shop()->exists() || ! $record->redeems()->exists())) {
+                                $cloudinary = new CloudinaryEngine;
                                 $cloudinary->destroy($record->cloudinary_id);
-                                $record->delete();
                             }
+                            $record->delete();
+                            $bulkAction->success();
                         })),
                 ]),
             ]);
