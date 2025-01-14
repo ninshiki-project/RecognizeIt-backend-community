@@ -1,4 +1,4 @@
-# Screenshots
+# Screenshots (Admin Portal)
 
 ##### Dashboard Page
 
