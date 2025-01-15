@@ -18,7 +18,17 @@ _Coming Soon_
 
 ## Documentation
 
-### :book: [Visit Documentation](https://ninshiki-project.github.io/Ninshiki-backend/overview.html)
+##### :book: [Visit Documentation](https://ninshiki-project.github.io/Ninshiki-backend/overview.html)
+
+## Extensions
+
+##### :hammer_and_wrench: [Visit Available Extension](https://ninshiki-project.github.io/Ninshiki-backend/extensions.html)
+
+## Application Screenshot (Backend-Admin Portal)
+![Ninshiki-Dashboard.png](.github/art/Ninshiki-Dashboard.png)
+![Ninshiki-Users1.png](.github/art/Ninshiki-Users1.png)
+![Ninshiki-Shops.png](.github/art/Ninshiki-Shops.png)
+
 
 ## License
 
