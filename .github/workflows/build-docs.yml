@@ -1,8 +1,6 @@
 name: Build documentation
 
 on:
-  push:
-    branches: ["master"]
   pull_request:
     branches:
       - master
@@ -66,7 +64,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     needs: [ build, test ]
     runs-on: ubuntu-latest
-    if: ${{ github.ref_name == 'master' }}
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
