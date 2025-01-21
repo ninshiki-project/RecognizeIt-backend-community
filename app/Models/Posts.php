@@ -30,6 +30,7 @@ class Posts extends Model
         'content',
         'image',
         'type',
+        'cloudinary_id',
         'attachment_type',
         'attachment_url',
         'posted_by',
