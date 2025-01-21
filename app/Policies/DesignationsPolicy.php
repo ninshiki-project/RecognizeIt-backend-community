@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Designations;
 use App\Models\User;
+use App\Models\Designations;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class DesignationsPolicy

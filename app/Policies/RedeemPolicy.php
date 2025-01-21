@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Redeem;
 use App\Models\User;
+use App\Models\Redeem;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class RedeemPolicy

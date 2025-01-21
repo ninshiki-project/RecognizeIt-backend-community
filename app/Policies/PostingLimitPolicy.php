@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\PostingLimit;
 use App\Models\User;
+use App\Models\PostingLimit;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PostingLimitPolicy
