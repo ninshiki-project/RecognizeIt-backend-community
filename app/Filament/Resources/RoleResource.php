@@ -124,10 +124,21 @@ class RoleResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                    ->action(function ($record, Tables\Actions\Action $action) {
+                    ->action(function (Role $record, Tables\Actions\Action $action) {
                         if ($record->name === config('filament-shield.super_admin.name') || $record->name === config('filament-shield.member.name')) {
                             Notification::make('filament-shield::filament-shield.message.super_admin.deleted')
-                                ->body('Unable to delete system defined permissions.')
+                                ->body('Unable to delete system defined role.')
+                                ->warning()
+                                ->send();
+                            $action->failure();
+                            $action->close();
+
+                            return;
+                        }
+                        // prevent deletion if someone is using the role
+                        if ($record->users()->exists()) {
+                            Notification::make('filament-shield::filament-shield.message.super_admin.deleted')
+                                ->body('Unable to delete role due to it is still in used by the system.')
                                 ->warning()
                                 ->send();
                             $action->failure();
@@ -139,7 +150,6 @@ class RoleResource extends Resource implements HasShieldPermissions
                     }),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

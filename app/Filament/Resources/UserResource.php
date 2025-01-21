@@ -189,16 +189,16 @@ class UserResource extends Resource
                                     $role = Role::where('name', $get('roles'))->first();
                                     if ($role->hasPermissionTo('access panel')) {
                                         return false;
-                                    }else{
+                                    } else {
                                         return true;
                                     }
                                 })
                                 ->revealable()
-                                ->required(function (Forms\Get $get){
+                                ->required(function (Forms\Get $get) {
                                     $role = Role::where('name', $get('roles'))->first();
                                     if ($role->hasPermissionTo('access panel')) {
                                         return true;
-                                    }else{
+                                    } else {
                                         return false;
                                     }
                                 })

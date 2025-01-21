@@ -85,6 +85,7 @@ class MakeUserCommand extends Command
                 'designation' => config('ninshiki.designation')[0],
             ]);
             $this->callSilently('shield:super-admin', ['--user' => $user->id, '--panel' => 0]);
+
             return $user;
         } catch (Throwable $th) {
             info($th->getMessage());
