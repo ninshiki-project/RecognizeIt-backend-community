@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
 use Filament\Support\Facades\FilamentIcon;
@@ -9,6 +10,8 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class DashboardGroup extends Page
 {
+    use HasPageShield;
+
     protected static string $view = 'filament.pages.dashboard-group';
 
     protected static ?string $title = 'Dashboard';

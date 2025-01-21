@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfilePage extends Page
 {
+    use HasPageShield;
     use InteractsWithActions;
     use InteractsWithFormActions;
 

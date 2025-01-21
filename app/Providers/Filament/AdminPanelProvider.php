@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->authGuard('web')
             ->login()
             ->colors([
                 'primary' => Color::Teal,
@@ -74,6 +75,7 @@ class AdminPanelProvider extends PanelProvider
                     ->title(fn () => $this->todayQuote())
                     ->sort(-6)
                     ->columnSpan('full'),
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
             ]);
     }
 }
