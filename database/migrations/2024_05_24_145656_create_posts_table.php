@@ -23,6 +23,7 @@ return new class extends Migration
             $table->id();
             $table->longText('content');
             $table->enum('attachment_type', ['image', 'gif'])->nullable();
+            $table->string('cloudinary_id')->nullable();
             $table->string('attachment_url')->nullable();
             $table->enum('type', ['system', 'user']);
             $table->foreignId('posted_by');

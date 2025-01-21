@@ -30,6 +30,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use MarJose123\NinshikiEvent\Events\Post\NewPostAdded;
 use MarJose123\NinshikiEvent\Events\Post\PostToggleLike;
@@ -42,7 +43,7 @@ class PostsController extends Controller
     protected static string $cacheKey = 'posts';
 
     /**
-     *  Get All Posts
+     *  Retrieve All Post
      *
      * @param  Request  $request
      * @return AnonymousResourceCollection<LengthAwarePaginator<PostResource>>
@@ -63,6 +64,112 @@ class PostsController extends Controller
     }
 
     /**
+     * Retrieve Specific Post
+     *
+     * @param  Request  $request
+     * @param  Posts  $post
+     * @return AnonymousResourceCollection<PostResource>
+     */
+    public function show(Request $request, Posts $post)
+    {
+        return Cache::flexible(static::$cacheKey.$post->id, [5, 10], function () use ($post) {
+            return PostResource::make($post);
+        });
+
+    }
+
+    /**
+     * Delete Post
+     *
+     * @param  Request  $request
+     * @param  Posts  $post
+     * @return JsonResponse|ValidationException
+     */
+    public function destroy(Request $request, Posts $post): JsonResponse|ValidationException
+    {
+        // validation
+        if ($post->originalPoster->id !== auth()->user()->id) {
+            throw ValidationException::withMessages([
+                'email' => ['You are not allowed to delete the post that you are not the author.'],
+            ]);
+        }
+
+        if ($post->attachment_type === 'image' && $post->cloudinary_id) {
+            $cloudinary = new CloudinaryEngine;
+            $cloudinary->destroy($post->cloudinary_id);
+        }
+
+        $post->delete();
+
+        /**
+         * @status 200
+         */
+        return response()->json([
+            'success' => true,
+            'message' => 'post deleted',
+        ], Response::HTTP_OK);
+
+    }
+
+    /**
+     * Update Post Content
+     *
+     * @param  Request  $request
+     * @param  Posts  $post
+     * @return JsonResponse|ValidationException
+     */
+    public function update(Request $request, Posts $post): JsonResponse|ValidationException
+    {
+
+        // prevent updating the post if his not the author
+        if ($post->originalPoster->id !== auth()->user()->id) {
+            throw ValidationException::withMessages([
+                'email' => ['You are not allowed to update the post that you are not the author.'],
+            ]);
+        }
+        // the user can only update the content before 5 minutes after it was posted.
+        if (Carbon::parse($post->created_at)->diffInMinutes(Carbon::now()) > 5) {
+            throw ValidationException::withMessages([
+                'email' => ['You are not allowed anymore to update the post after 5 minutes it was posted.'],
+            ]);
+        }
+
+        $request->validate([
+            'post_content' => ['sometimes', 'string'],
+            'attachment_type' => [Rule::in(['gif', 'image']), 'sometimes'],
+            'gif_url' => ['required_if:attachment_type,gif', 'url', 'sometimes'],
+            'image' => ['required_if:attachment_type,image', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048', 'sometimes'],
+        ]);
+
+        // Can update only content including the attachment
+        $oldModel = $post;
+
+        if ($oldModel->cloudinary_id) {
+            $cloudinary = new CloudinaryEngine;
+            $cloudinary->destroy($post->cloudinary_id);
+        }
+        if ($request->has('image')) {
+            $uud = Str::uuid()->toString();
+            $fileName = "{$request->user()->id}-{$uud}";
+            $this->uploadedAsset = $request->image->storeOnCloudinaryAs('posts', $fileName);
+        }
+
+        $post->update([
+            'content' => $request->post_content && Str::of($request->post_content)->length() > 5 ? $request->post_content : $oldModel->content,
+            'attachment_type' => $request->attachment_type,
+            'cloudinary_id' => $request->has('image') ? $this->uploadedAsset->getSecurePath() : null,
+            'attachment_url' => $request->has('image') ? $this->uploadedAsset->getSecurePath() : $request->gif_url,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'post updated',
+            'data' => new PostResource($post),
+        ], Response::HTTP_OK);
+
+    }
+
+    /**
      * Create New Post
      *
      * @param  PostsPostRequest  $request
@@ -70,7 +177,7 @@ class PostsController extends Controller
      *
      * @throws ExceptionInterface
      */
-    public function store(PostsPostRequest $request): JsonResponse
+    public function store(PostsPostRequest $request): JsonResponse|ValidationException
     {
         /**
          * Toggle Rate Limit
@@ -99,6 +206,7 @@ class PostsController extends Controller
         $post = Posts::create([
             'content' => $request->post_content,
             'attachment_type' => $request->attachment_type,
+            'cloudinary_id' => $request->has('image') ? $this->uploadedAsset->getSecurePath() : null,
             'attachment_url' => $request->has('image') ? $this->uploadedAsset->getSecurePath() : $request->gif_url,
             'type' => $request->type,
             'posted_by' => $request->user()->id,
@@ -161,7 +269,7 @@ class PostsController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'post created',
-                'post' => $post,
+                'post' => new PostResource($post),
             ], Response::HTTP_CREATED);
         } else {
             return response()->json([

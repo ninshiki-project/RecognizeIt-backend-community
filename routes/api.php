@@ -68,7 +68,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
 
     // Post
     Route::patch('posts/{posts}/toggle/like', [PostsController::class, 'toggleLike']);
-    Route::apiResource('posts', PostsController::class)->except(['show', 'update', 'destroy']);
+    Route::apiResource('posts', PostsController::class);
 
     // Designation / Position / Job Title
     Route::get('designation', [DesignationsController::class, 'index']);
