@@ -31,4 +31,10 @@ class ViewRole extends ViewRecord
                 }),
         ];
     }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $data['guard_name'] = $this->record->guard_name;
+        return $data;
+    }
 }

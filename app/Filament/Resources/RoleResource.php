@@ -53,6 +53,7 @@ class RoleResource extends Resource implements HasShieldPermissions
 
                                 Forms\Components\Select::make('guard_name')
                                     ->label(__('filament-shield::filament-shield.field.guard_name'))
+                                    ->unique(ignoreRecord: true)
                                     ->reactive()
                                     ->native(false)
                                     ->options([
