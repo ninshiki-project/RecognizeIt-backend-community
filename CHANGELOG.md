@@ -4,6 +4,22 @@
 All notable changes to this project will be documented in this file.
 
 <!--- END HEADER -->
+## 0.3.0 - 2025-01-21
+
+### What's Changed
+
+* ✨ feat(KPI Metrics): Dashboard and other modules by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/39
+* Fix api documentation by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/40
+* Documentation by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/41
+* ✨ feat(`.github/workflows/build-docs.yml`): Add conditional to check merged PR and branch name. by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/42
+* ✨ feat(workflows): Update documentation build workflow trigger condition. by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/43
+* ✨ feat(CI): Add documentation branch to the build-docs workflow. by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/44
+* ♻️ refactor(.github/workflows/build-docs.yml): Update documentation workflow to trigger on pull requests instead of pushes to the master branch. Remove conditional deployment step. by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/45
+* fix workflow docs for documentation by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/46
+* ⏱️ chore(scheduler): Add scheduled tasks for pulse clearing. by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend/pull/47
+
+**Full Changelog**: https://github.com/ninshiki-project/Ninshiki-backend/compare/0.2.0...0.2.1
+
 ## 0.2.0 - 2025-01-11
 
 ### What's Changed
