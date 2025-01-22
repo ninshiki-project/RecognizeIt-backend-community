@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\RoleResource\Pages;
 
 use App\Filament\Resources\RoleResource;
+use App\Models\Role;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
@@ -14,7 +15,8 @@ class ViewRole extends ViewRecord
     protected function getActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()
+                ->hidden(fn (Role $record): bool => $record->name === config('filament-shield.super_admin.name') || $record->name === config('filament-shield.member.name')),
             Actions\DeleteAction::make()
                 ->action(function ($record, Actions\Action $action) {
                     if ($record->name === config('filament-shield.super_admin.name') || $record->name === config('filament-shield.member.name')) {

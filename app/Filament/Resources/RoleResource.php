@@ -17,6 +17,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -54,11 +55,9 @@ class RoleResource extends Resource implements HasShieldPermissions
 
                                 Forms\Components\Select::make('guard_name')
                                     ->label(__('filament-shield::filament-shield.field.guard_name'))
-                                    ->unique(ignoreRecord: true)
                                     ->reactive()
                                     ->native(false)
                                     ->options([
-                                        '*' => 'All',
                                         'web' => 'Web',
                                     ])
                                     ->default(Utils::getFilamentAuthGuard())
@@ -92,6 +91,7 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->orderBy('created_at', 'desc'))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->weight('font-medium')
@@ -123,7 +123,8 @@ class RoleResource extends Resource implements HasShieldPermissions
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->hidden(fn (Role $record): bool => $record->name === config('filament-shield.super_admin.name') || $record->name === config('filament-shield.member.name')),
                 Tables\Actions\DeleteAction::make()
                     ->action(function (Role $record, Tables\Actions\Action $action) {
                         if ($record->name === config('filament-shield.super_admin.name') || $record->name === config('filament-shield.member.name')) {
