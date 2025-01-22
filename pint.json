@@ -1,5 +1,8 @@
 {
     "preset": "laravel",
+    "exclude": [
+        "Policies"
+    ],
     "rules": {
         "no_superfluous_phpdoc_tags": false,
         "simplified_null_return": true,

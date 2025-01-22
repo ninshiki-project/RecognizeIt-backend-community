@@ -79,11 +79,14 @@ class MakeUserCommand extends Command
         ];
         $this->info('logging for creating user');
         try {
-            return User::factory()->create([
+            $user = User::create([
                 'name' => $this->options['name'],
                 'email' => $this->options['email'],
                 'designation' => config('ninshiki.designation')[0],
-            ])->assignRole($this->options['role']);
+            ]);
+            $this->callSilently('shield:super-admin', ['--user' => $user->id, '--panel' => 0]);
+
+            return $user;
         } catch (Throwable $th) {
             info($th->getMessage());
         }

@@ -8,12 +8,15 @@ use App\Models\Redeem;
 use App\Models\Scopes\ProductAvailableScope;
 use App\Models\Shop;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class DashboardStatsOverview extends BaseWidget
 {
+    use HasWidgetShield;
+
     protected ?string $heading = 'Analytics';
 
     protected ?string $description = 'An overview of some analytics.';
