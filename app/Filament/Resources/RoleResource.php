@@ -8,6 +8,7 @@ use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use BezhanSalleh\FilamentShield\Forms\ShieldSelectAllToggle;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use BezhanSalleh\FilamentShield\Traits\HasShieldFormComponents;
+use Filament\Clusters\Cluster;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -172,7 +173,10 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     public static function getCluster(): ?string
     {
-        return Utils::getResourceCluster() ?? static::$cluster;
+        /** @var class-string<Cluster> | null $cluster */
+        $cluster = Utils::getResourceCluster() ?? static::$cluster;
+
+        return $cluster;
     }
 
     public static function getModel(): string
