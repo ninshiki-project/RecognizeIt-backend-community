@@ -65,4 +65,16 @@ class EditRole extends EditRecord
 
         $this->record->syncPermissions($permissionModels);
     }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $data['guard_name'] = $this->record->guard_name;
+
+        return $data;
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('view', ['record' => $this->getRecord()]);
+    }
 }
