@@ -14,6 +14,8 @@ class CreateRole extends CreateRecord
 
     public Collection $permissions;
 
+    protected static bool $canCreateAnother = false;
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $this->permissions = collect($data)
