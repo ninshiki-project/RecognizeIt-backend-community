@@ -95,10 +95,7 @@ class FeatureSegmentsResource extends Resource
                     ->badge(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'ACTIVATED' => 'success',
-                        'DEACTIVATED' => 'danger',
-                    })
+                    ->color(fn (string $state): string => $state === 'ACTIVATED' ? 'success' : 'danger')
                     ->weight(FontWeight::ExtraBold)
                     ->getStateUsing(function (FeatureSegments $record) {
                         return $record->active ? 'ACTIVATED' : 'DEACTIVATED';
@@ -123,8 +120,9 @@ class FeatureSegmentsResource extends Resource
             ]);
     }
 
-    private static function createValuesFields(): array
+    protected static function createValuesFields(): array
     {
+        /** @phpstan-ignore-next-line */
         return collect(config('pennant.segments'))
             ->map(
                 function ($segment) {
@@ -139,6 +137,7 @@ class FeatureSegmentsResource extends Resource
                         ->required()
                         ->multiple()
                         ->searchable()
+                        ->preload()
                         ->columnSpanFull()
                         ->getSearchResultsUsing(
                             fn (string $search): array => $model::where($value, 'like', "%{$search}%")

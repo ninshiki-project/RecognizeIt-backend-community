@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2025.
  *
@@ -14,10 +15,12 @@ namespace App\Filament\Resources\FeatureSegmentsResource;
 
 use App\Filament\Resources\FeatureSegmentsResource;
 use App\Models\FeatureSegments;
-use Filament\Resources\Pages\ManageRecords;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Colors\Color;
+use Laravel\Pennant\Feature;
 
 class ManageFeatureSegments extends ManageRecords
 {
@@ -30,7 +33,8 @@ class ManageFeatureSegments extends ManageRecords
                 ->modalWidth('md')
                 ->color(Color::Blue)
                 ->modalHeading(__('Create Feature Segment'))
-                ->label(__('Segment Feature')),
+                ->label(__('Segment Feature'))
+                ->after(fn (FeatureSegments $record) => $this->afterCreate($record)),
 
             Actions\Action::make('activate_for_all')
                 ->label(__('Activate'))
@@ -87,4 +91,38 @@ class ManageFeatureSegments extends ManageRecords
         ];
     }
 
+    public function activateForAll(string $feature): void
+    {
+        Feature::activateForEveryone($feature);
+
+        Notification::make()->success()->title(__('Done!'))
+            ->body(__("{$feature::title()} activated for users."))->send();
+    }
+
+    private function deactivateForAll(string $feature): void
+    {
+        Feature::deactivateForEveryone($feature);
+
+        Notification::make()->success()->title(__('Done!'))
+            ->body(__("{$feature::title()} deactivated for users."))
+            ->send();
+    }
+
+    private function purgeFeatures(?string $feature): void
+    {
+        Feature::purge($feature);
+
+        $featureTitle = is_null($feature)
+            ? __('All features')
+            : $feature::title().__(' feature');
+
+        Notification::make()->success()->title(__('Done!'))
+            ->body(__("$featureTitle successfully purged from storage."))
+            ->send();
+    }
+
+    public function afterCreate(FeatureSegments $featureSegment): void
+    {
+        Feature::purge($featureSegment->feature);
+    }
 }
