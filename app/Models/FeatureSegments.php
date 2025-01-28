@@ -7,6 +7,32 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Pennant\Feature;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $feature
+ * @property string $scope
+ * @property array<array-key, mixed> $values
+ * @property bool $active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $description
+ * @property-read \App\Models\TFactory|null $use_factory
+ * @property-read mixed $title
+ * @method static \Database\Factories\FeatureSegmentsFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FeatureSegments newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FeatureSegments newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FeatureSegments query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FeatureSegments whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FeatureSegments whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FeatureSegments whereFeature($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FeatureSegments whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FeatureSegments whereScope($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FeatureSegments whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FeatureSegments whereValues($value)
+ * @mixin \Eloquent
+ */
 class FeatureSegments extends Model
 {
     use HasFactory;
@@ -63,18 +89,21 @@ class FeatureSegments extends Model
 
     public function title(): Attribute
     {
-        return Attribute::get(fn () => class_exists($this->feature) ? $this->feature::title() : '(Feature Deleted)');
+        return Attribute::make(
+            get: fn () => class_exists($this->feature) ? $this->feature::title() : '(Feature Deleted)',
+        );
     }
 
     public function description(): Attribute
     {
-        return Attribute::get(fn () => sprintf(
-            '%s %s for customers who have any of these %s — %s.',
-            $this->title,
-            $this->active ? 'activated' : 'deactivated',
-            str($this->scope)->plural(),
-            implode(', ', (array) $this->values)
-        ));
+        return Attribute::make(
+            get: fn () => sprintf(
+                '%s %s for customers who have any of these %s — %s.',
+                $this->title,
+                $this->active ? 'activated' : 'deactivated',
+                str($this->scope)->plural(),
+                implode(', ', (array) $this->values)),
+        );
     }
 
     public static function allFeatures(): array
@@ -97,7 +126,7 @@ class FeatureSegments extends Model
 
     public static function segmentOptionsList(): array
     {
-        return collect(config('filament-feature-flags.segments'))
+        return collect((array) config('pennant.segments'))
             ->pluck('column')
             ->mapWithKeys(fn ($segment) => [$segment => str($segment)->plural()->title()->toString()])
             ->toArray();

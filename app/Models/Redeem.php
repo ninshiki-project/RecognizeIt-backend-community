@@ -20,6 +20,41 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * 
+ *
+ * @property string $id
+ * @property string $shop_id
+ * @property string $product_id
+ * @property int $user_id
+ * @property RedeemStatusEnum $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $decline_reason_category
+ * @property string|null $decline_reason
+ * @property string|null $declined_at
+ * @property-read \App\Models\TFactory|null $use_factory
+ * @property-read \App\Models\Products|null $product
+ * @property-read \App\Models\Shop|null $shop
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\RedeemFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Redeem newModelQuery()
+ * @method static Builder<static>|Redeem newQuery()
+ * @method static Builder<static>|Redeem query()
+ * @method static Builder<static>|Redeem status(?string $status)
+ * @method static Builder<static>|Redeem user(array|string|null $userId)
+ * @method static Builder<static>|Redeem whereCreatedAt($value)
+ * @method static Builder<static>|Redeem whereDeclineReason($value)
+ * @method static Builder<static>|Redeem whereDeclineReasonCategory($value)
+ * @method static Builder<static>|Redeem whereDeclinedAt($value)
+ * @method static Builder<static>|Redeem whereId($value)
+ * @method static Builder<static>|Redeem whereProductId($value)
+ * @method static Builder<static>|Redeem whereShopId($value)
+ * @method static Builder<static>|Redeem whereStatus($value)
+ * @method static Builder<static>|Redeem whereUpdatedAt($value)
+ * @method static Builder<static>|Redeem whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Redeem extends Model
 {
     use HasFactory, HasUuids;

@@ -19,6 +19,34 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $name
+ * @property string|null $department_head
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\TFactory|null $use_factory
+ * @property-read \App\Models\User|null $head
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
+ * @method static \Database\Factories\DepartmentsFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments whereDepartmentHead($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Departments withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Departments extends Model
 {
     use HasFactory, SoftDeletes;

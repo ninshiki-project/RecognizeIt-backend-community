@@ -42,6 +42,7 @@
         "wildside/userstamps": "^2.4"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.5",
         "enlightn/enlightn": "^2.10",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^2.9",
@@ -89,6 +90,9 @@
         ],
         "test": [
             "@php artisan test --bail"
+        ],
+        "phpdocs": [
+            "@php artisan ide-helper:models -RW --write-eloquent-helper"
         ],
         "test-coverage": [
             "./vendor/bin/pest --coverage --bail"

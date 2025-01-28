@@ -19,6 +19,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * 
+ *
+ * @property string $id
+ * @property string $product_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\TFactory|null $use_factory
+ * @property-read \App\Models\Products|null $product
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Redeem> $redeems
+ * @property-read int|null $redeems_count
+ * @method static \Database\Factories\ShopFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shop newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shop newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shop query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shop whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shop whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shop whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shop whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Shop extends Model
 {
     use HasFactory, HasUuids;

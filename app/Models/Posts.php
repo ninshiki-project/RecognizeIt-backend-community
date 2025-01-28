@@ -22,6 +22,40 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Overtrue\LaravelLike\Traits\Likeable;
 
 #[ObservedBy([PostsObserver::class])]
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $content
+ * @property string|null $attachment_type
+ * @property string|null $cloudinary_id
+ * @property string|null $attachment_url
+ * @property string $type
+ * @property int $posted_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\TFactory|null $use_factory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $likers
+ * @property-read int|null $likers_count
+ * @property-read \App\Models\User|null $originalPoster
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Recipients> $recipients
+ * @property-read int|null $recipients_count
+ * @property-read mixed $total_likers
+ * @method static \Database\Factories\PostsFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts whereAttachmentType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts whereAttachmentUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts whereCloudinaryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts wherePostedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Posts whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Posts extends Model
 {
     use HasFactory, Likeable;
