@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Pennant\Feature;
 use Laravel\Pulse\Facades\Pulse;
 
 class AppServiceProvider extends ServiceProvider
@@ -82,6 +83,10 @@ class AppServiceProvider extends ServiceProvider
             'extra' => $user->email,
             'avatar' => $user->getFilamentAvatarUrl(),
         ]);
+
+
+        /** Laravel Feature Flag */
+        Feature::discover();
 
     }
 }

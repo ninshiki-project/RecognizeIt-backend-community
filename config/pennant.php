@@ -42,6 +42,8 @@ return [
 
     ],
 
+    'scope' => App\Models\User::class,
+
     /*
         * Column names and data source that can be used to activate or deactivate for a segment of users.
         * This columns must exist on the users table and the data source must be a model.

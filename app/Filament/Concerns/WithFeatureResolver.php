@@ -12,8 +12,8 @@ trait WithFeatureResolver
      */
     public function resolve(mixed $scope): bool
     {
-        if (! is_a($scope, config('filament-feature-flags.scope'))) {
-            return config('filament-feature-flags.default');
+        if (! is_a($scope, config('pennant.scope'))) {
+            return true;
         }
 
         /*
@@ -24,7 +24,7 @@ trait WithFeatureResolver
         return FeatureSegments::where('feature', get_class($this))
             ->get()
             ->whenEmpty(
-                fn () => config('filament-feature-flags.default'),
+                fn () => true,
                 fn ($segments) => $segments->sortBy('active')
                     ->map(fn (FeatureSegments $segment) => $segment->resolve($scope))
                     ->contains(true)

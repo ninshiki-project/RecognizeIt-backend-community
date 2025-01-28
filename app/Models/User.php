@@ -31,13 +31,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Pennant\Concerns\HasFeatures;
 use Laravel\Sanctum\HasApiTokens;
 use Overtrue\LaravelLike\Traits\Liker;
 use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy([UserObserver::class])]
 /**
- * 
+ *
  *
  * @property int $id
  * @property string|null $avatar
@@ -113,7 +114,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
 {
-    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable, SoftDeletes;
+    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable, SoftDeletes, HasFeatures;
 
     /**
      * The attributes that are mass assignable.
