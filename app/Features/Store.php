@@ -2,9 +2,15 @@
 
 namespace App\Features;
 
-use App\Filament\Concerns\WithFeatureResolver;
+use Illuminate\Support\Lottery;
 
 class Store
 {
-    use WithFeatureResolver;
+    /**
+     * Resolve the feature's initial value.
+     */
+    public function resolve(mixed $scope): mixed
+    {
+        return true;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Features\Store;
 use App\Models\User;
 use Carbon\CarbonInterval;
 use Dedoc\Scramble\Scramble;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pennant\Feature;
 use Laravel\Pulse\Facades\Pulse;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +30,11 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        Relation::morphMap([
+            'user' => AuthUser::class,
+        ]);
+
+        Feature::useMorphMap();
     }
 
     /**
@@ -86,7 +94,7 @@ class AppServiceProvider extends ServiceProvider
 
 
         /** Laravel Feature Flag */
-        Feature::discover();
+        Feature::define(Store::class);
 
     }
 }

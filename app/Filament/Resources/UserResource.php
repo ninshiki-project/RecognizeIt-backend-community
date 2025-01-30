@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers\FeatureRelationManager;
 use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
 use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Models\Designations;
@@ -238,6 +239,13 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ManageUsers::route('/'),
+            'view' => Pages\ViewUser::route('/{record}'),
+        ];
+    }
+    public static function getRelations(): array
+    {
+        return [
+            FeatureRelationManager::class,
         ];
     }
 }

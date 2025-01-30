@@ -38,8 +38,6 @@ use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy([UserObserver::class])]
 /**
- *
- *
  * @property int $id
  * @property string|null $avatar
  * @property string $name
@@ -84,6 +82,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $wallet_transactions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Bavix\Wallet\Models\Wallet> $wallets
  * @property-read int|null $wallets_count
+ *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static Builder<static>|User invitedStatus()
  * @method static Builder<static>|User newModelQuery()
@@ -110,11 +109,12 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User withoutPermission($permissions)
  * @method static Builder<static>|User withoutRole($roles, $guard = null)
  * @method static Builder<static>|User withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
 {
-    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable, SoftDeletes, HasFeatures;
+    use CanPay, HasApiTokens, HasFactory, HasFeatures, HasRoles, HasWallets, Liker, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
