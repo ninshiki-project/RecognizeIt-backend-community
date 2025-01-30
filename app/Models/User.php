@@ -159,6 +159,11 @@ class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
         ];
     }
 
+    public function featureSushi(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(FeatureSushi::class);
+    }
+
     public function providers(): HasMany
     {
         return $this->hasMany(Provider::class, 'user_id', 'id');
