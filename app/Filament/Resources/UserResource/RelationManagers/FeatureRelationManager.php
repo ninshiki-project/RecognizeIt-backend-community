@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
+use App\Models\FeaturesWrapper;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -9,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\DB;
 use Laravel\Pennant\Feature;
 
 class FeatureRelationManager extends RelationManager
@@ -33,8 +35,6 @@ class FeatureRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('features')
-            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes())
             ->columns([
                 Tables\Columns\TextColumn::make('features'),
             ])
