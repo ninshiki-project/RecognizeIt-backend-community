@@ -21,6 +21,7 @@ use App\Http\Resources\PostResource;
 use App\Jobs\PostRecognizeJob;
 use App\Models\Posts;
 use App\Models\User;
+use App\Services\Mention\MentionParser;
 use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use Illuminate\Http\JsonResponse;
@@ -33,6 +34,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use MarJose123\NinshikiEvent\Events\Post\NewPostAdded;
+use MarJose123\NinshikiEvent\Events\Post\PostMentionUser;
 use MarJose123\NinshikiEvent\Events\Post\PostToggleLike;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -288,9 +290,11 @@ class PostsController extends Controller
             $request->rateLimitIncrease();
 
             /**
-             * Parser any mention user from the post and
-             * send email notifications
+             * Parser any mention user from the post
+             * and trigger an event
              */
+            new MentionParser($post);
+            PostMentionUser::dispatch($post, $recipientsInstance);
 
             /**
              * @status 201

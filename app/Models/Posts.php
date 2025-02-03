@@ -25,7 +25,7 @@ use Xetaio\Mentions\Models\Traits\HasMentionsTrait;
 #[ObservedBy([PostsObserver::class])]
 class Posts extends Model
 {
-    use HasFactory, Likeable, HasMentionsTrait;
+    use HasFactory, HasMentionsTrait, Likeable;
 
     protected $fillable = [
         'content',
