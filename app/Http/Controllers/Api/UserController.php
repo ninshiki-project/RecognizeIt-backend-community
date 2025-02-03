@@ -52,6 +52,21 @@ class UserController extends Controller
     }
 
     /**
+     * Get User by username
+     *
+     *
+     * @param  string  $username
+     * @return JsonResponse
+     */
+    public function showByUsername(string $username)
+    {
+        return Cache::flexible(static::$cacheKey.$username, [5, 10], function () use ($username) {
+            return response()->json(User::where('username', $username)->first());
+        });
+
+    }
+
+    /**
      * Delete User
      *
      * @param  string  $id

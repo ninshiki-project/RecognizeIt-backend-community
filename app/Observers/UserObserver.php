@@ -15,6 +15,7 @@ namespace App\Observers;
 
 use App\Models\User;
 use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
+use Illuminate\Support\Str;
 
 class UserObserver
 {
@@ -27,6 +28,12 @@ class UserObserver
      */
     public function created(User $user): void
     {
+        /**
+         * Generate User username from the name
+         */
+        $user->username = Str::slug($user->name, '_');
+        $user->save();
+
         /**
          * Types of wallet
          *  1. Ninshiki Wallet - Main Wallet. It will only have a fund once being recognized by colleague
@@ -61,5 +68,14 @@ class UserObserver
                 'currency' => 'PHP',
             ],
         ]);
+    }
+
+    public function updated(User $user): void
+    {
+        /**
+         * Generate User username from the name
+         */
+        $user->username = Str::slug($user->name, '_');
+        $user->save();
     }
 }

@@ -37,6 +37,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('departments', DepartmentsController::class);
 
     // Users
+    Route::get('users/{username}', [UserController::class, 'showByUsername']);
     Route::apiResource('users', UserController::class)->except(['store', 'update']);
 
     // Profile - Authenticated User
