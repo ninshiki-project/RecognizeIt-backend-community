@@ -288,6 +288,11 @@ class PostsController extends Controller
             $request->rateLimitIncrease();
 
             /**
+             * Parser any mention user from the post and
+             * send email notifications
+             */
+
+            /**
              * @status 201
              */
             return response()->json([
