@@ -44,8 +44,9 @@ class MentionNotification extends Notification implements ShouldQueue
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
+            ->subject('You were mentioned in a post!')
+            ->greeting('Hello!')
+            ->line('You were mentioned in a new post by '.$this->model->user->name.'.')
             ->line('Thank you for using our application!');
     }
 
