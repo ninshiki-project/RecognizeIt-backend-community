@@ -109,6 +109,8 @@ class PostsController extends Controller
      * @param  Request  $request
      * @param  Posts  $post
      * @return JsonResponse|ValidationException
+     *
+     * @throws ExceptionInterface
      */
     public function destroy(Request $request, Posts $post): JsonResponse|ValidationException
     {
@@ -118,6 +120,27 @@ class PostsController extends Controller
                 'email' => ['You are not allowed to delete the post that you are not the author.'],
             ]);
         }
+
+        // refund the wallet of the user for the consumed coins
+        $amountToRefund = $post->recipients->count();
+        $wallet = $post->originalPoster->getWallet(WalletsEnum::SPEND->value);
+        $wallet->deposit($amountToRefund, [
+            'title' => 'Ninshiki Spend',
+            'description' => 'Refund funds after deleting the post.',
+            'post_created_at' => $post->created_at,
+            'date_at' => Carbon::now(),
+        ]);
+
+        $post->recipients()->each(function ($recipient) use ($post) {
+            $wallet = $recipient->getWallet(WalletsEnum::DEFAULT->value);
+            $wallet->withdraw($post->points_per_recipient, [
+                'title' => 'Ninshiki Wallet',
+                'description' => 'Deduction funds after deleting the post.',
+                'post_created_at' => $post->created_at,
+                'poster' => $post->originalPoster,
+                'date_at' => Carbon::now(),
+            ]);
+        });
 
         if ($post->attachment_type === 'image' && $post->cloudinary_id) {
             $cloudinary = new CloudinaryEngine;
