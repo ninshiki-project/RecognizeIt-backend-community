@@ -132,7 +132,7 @@ class PostsController extends Controller
         ]);
 
         $post->recipients()->each(function ($recipient) use ($post) {
-            $wallet = $recipient->getWallet(WalletsEnum::DEFAULT->value);
+            $wallet = $recipient->user->getWallet(WalletsEnum::DEFAULT->value);
             $wallet->withdraw($post->points_per_recipient, [
                 'title' => 'Ninshiki Wallet',
                 'description' => 'Deduction funds after deleting the post.',
