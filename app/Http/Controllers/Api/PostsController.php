@@ -121,6 +121,13 @@ class PostsController extends Controller
             ]);
         }
 
+        // able to delete only if the post is not more than 5 minute after posting
+        if (Carbon::parse($post->created_at)->diffInMinutes(Carbon::now()) > 5) {
+            throw ValidationException::withMessages([
+                'email' => ['You are not allowed to delete anymore the post since it was already past 5 minutes after which the post was published.'],
+            ]);
+        }
+
         // refund the wallet of the user for the consumed coins
         $amountToRefund = $post->recipients->count();
         $wallet = $post->originalPoster->getWallet(WalletsEnum::SPEND->value);
