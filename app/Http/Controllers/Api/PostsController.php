@@ -79,6 +79,29 @@ class PostsController extends Controller
     }
 
     /**
+     * Fetch all post that contains specific hashtags
+     *
+     * @param  Request  $request
+     * @param  string  $hashtags
+     * @return AnonymousResourceCollection<LengthAwarePaginator<PostResource>>
+     */
+    public function fetchHashtags(Request $request, string $hashtags)
+    {
+        if (Str::contains($hashtags, '#')) {
+            $hashtags = Str::after($hashtags, '#');
+        }
+
+        return Cache::flexible(static::$cacheKey.$hashtags, [5, 10], function () use ($hashtags) {
+            return PostResource::collection(
+                Posts::with(['recipients', 'likers'])
+                    ->orderByDesc('created_at')
+                    ->where('content', 'like', '%#'.$hashtags.'%')
+            );
+        });
+
+    }
+
+    /**
      * Delete Post
      *
      * @param  Request  $request
@@ -173,7 +196,7 @@ class PostsController extends Controller
      * Create New Post
      *
      * @param  PostsPostRequest  $request
-     * @return JsonResponse
+     * @return JsonResponse|ValidationException
      *
      * @throws ExceptionInterface
      */
