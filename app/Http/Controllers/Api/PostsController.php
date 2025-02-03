@@ -228,6 +228,7 @@ class PostsController extends Controller
         }
         $post = Posts::create([
             'content' => $request->post_content,
+            'points_per_recipient' => $request->amount,
             'attachment_type' => $request->attachment_type,
             'cloudinary_id' => $request->has('image') ? $this->uploadedAsset->getSecurePath() : null,
             'attachment_url' => $request->has('image') ? $this->uploadedAsset->getSecurePath() : $request->gif_url,

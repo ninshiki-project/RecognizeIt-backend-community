@@ -22,6 +22,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->longText('content');
+            $table->integer('points_per_recipient')->default(0);
             $table->enum('attachment_type', ['image', 'gif'])->nullable();
             $table->string('cloudinary_id')->nullable();
             $table->string('attachment_url')->nullable();
