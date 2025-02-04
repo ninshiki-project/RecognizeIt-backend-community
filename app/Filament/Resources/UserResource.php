@@ -134,6 +134,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->modalFooterActionsAlignment(Alignment::Right)
                     ->hidden(fn (User $user): bool => $user->id === auth()->id()),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('update_status')
@@ -153,9 +154,12 @@ class UserResource extends Resource
                                     if ($user->status === UserEnum::Invited) {
                                         return $value === UserEnum::Active->value;
                                     }
+
+                                    return false;
                                 })
                                 ->options(UserEnum::class),
                         ])
+                        ->modalFooterActionsAlignment(Alignment::Right)
                         ->requiresConfirmation()
                         ->action(function (User $user, array $data) {
                             $user->update([
@@ -204,6 +208,7 @@ class UserResource extends Resource
                                 })
                                 ->password(),
                         ])
+                        ->modalFooterActionsAlignment(Alignment::Right)
                         ->requiresConfirmation()
                         ->action(function (User $user, array $data) {
                             $user->update([

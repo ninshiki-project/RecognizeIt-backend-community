@@ -7,6 +7,8 @@ use App\Models\Designations;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -24,6 +26,7 @@ class DesignationsResource extends Resource
             ->columns(1)
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->autofocus(false)
                     ->unique(ignoreRecord: true)
                     ->required(),
                 Forms\Components\Select::make('departments_id')
@@ -61,7 +64,9 @@ class DesignationsResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalWidth(MaxWidth::Medium)
+                    ->modalFooterActionsAlignment(Alignment::Right),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
