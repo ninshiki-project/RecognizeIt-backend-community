@@ -68,17 +68,15 @@ class PostsController extends Controller
     /**
      * Retrieve Specific Post
      *
-     *
+     * @param  Request  $request
+     * @param  Posts  $post
+     * @return AnonymousResourceCollection<PostResource>
      */
     public function show(Request $request, Posts $post)
     {
-       /* return Cache::flexible(static::$cacheKey.$post->id, [5, 10], function () use ($post) {
-            $post = Posts::with(['recipients', 'likers'])->findOrFail($post->id);
-            return PostResource::make($post);
-        });*/
-        $post = Posts::with(['recipients', 'likers'])->findOrFail($post->id);
-        return PostResource::make($post);
-
+        return Cache::flexible(static::$cacheKey.$post->id, [5, 10], function () use ($post) {
+            return PostResource::make($post->load(['recipients', 'likers']));
+        });
     }
 
     /**
