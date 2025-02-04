@@ -15,7 +15,6 @@ namespace App\Observers;
 
 use App\Models\User;
 use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
-use Illuminate\Support\Str;
 
 class UserObserver
 {
@@ -63,14 +62,5 @@ class UserObserver
                 'currency' => 'PHP',
             ],
         ]);
-    }
-
-    public function updated(User $user): void
-    {
-        /**
-         * Generate User username from the name
-         */
-        $user->username = Str::slug($user->name, '_');
-        $user->save();
     }
 }
