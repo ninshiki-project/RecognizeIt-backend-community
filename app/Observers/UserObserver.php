@@ -28,11 +28,6 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        /**
-         * Generate User username from the name
-         */
-        $user->username = Str::slug($user->name, '_');
-        $user->save();
 
         /**
          * Types of wallet

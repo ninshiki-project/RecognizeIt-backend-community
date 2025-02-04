@@ -25,6 +25,8 @@ class PostLikeUserResource extends JsonResource
             'id' => $this->id,
             'avatar' => $this->avatar,
             'name' => $this->name,
+            'username' => $this->username,
+            'email' => $this->email,
         ];
     }
 }

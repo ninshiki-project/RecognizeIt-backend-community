@@ -73,6 +73,7 @@ class TheSeeder extends Seeder
             $this->withProgressBar(1, function () {
                 $user = User::factory()->create([
                     'name' => 'Test User',
+                    'username' => 'test_user',
                     'email' => 'test@example.com',
                     'password' => Hash::make('password'),
                     'status' => UserEnum::Active->value,

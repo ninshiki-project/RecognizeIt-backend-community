@@ -26,6 +26,7 @@ class PostUserRecipientsResource extends JsonResource
             'avatar' => $this->user->avatar,
             'name' => $this->user->name,
             'email' => $this->user->email,
+            'username' => $this->user->username,
         ];
     }
 }

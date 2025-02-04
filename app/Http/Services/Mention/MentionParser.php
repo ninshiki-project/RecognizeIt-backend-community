@@ -11,7 +11,7 @@
  *  Written By: Marjose123
  */
 
-namespace App\Services\Mention;
+namespace App\Http\Services\Mention;
 
 class MentionParser extends \Xetaio\Mentions\Parser\MentionParser
 {
