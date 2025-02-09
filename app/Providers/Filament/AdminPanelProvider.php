@@ -80,7 +80,8 @@ class AdminPanelProvider extends PanelProvider
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 GeneralSettingsPlugin::make()
                     ->setSort(PostingLimitResource::getNavigationSort() - 1)
-                    ->setTitle('General Settings')
+                    ->setTitle('API Settings')
+                    ->setNavigationLabel('API Settings')
                     ->setNavigationParentItem('Settings'),
             ]);
     }

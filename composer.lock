@@ -5652,7 +5652,7 @@
             "dist": {
                 "type": "path",
                 "url": "../packagist/general-settings",
-                "reference": "510fa14a829bb261cdf80da51721c7746a4301aa"
+                "reference": "14de1d978aa90b169c6bf37e07be5576fec4b07c"
             },
             "require": {
                 "filament/filament": "^3.0",
