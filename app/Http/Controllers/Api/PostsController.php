@@ -18,7 +18,6 @@ use App\Http\Controllers\Api\Enum\WalletsEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
 use App\Http\Resources\PostResource;
-use App\Http\Services\Mention\MentionParser;
 use App\Jobs\PostRecognizeJob;
 use App\Models\Posts;
 use App\Models\User;
@@ -322,7 +321,6 @@ class PostsController extends Controller
              * Parser any mention user from the post
              * and trigger an event
              */
-            new MentionParser($post);
             PostMentionUser::dispatch($post, $recipientsInstance);
 
             /**

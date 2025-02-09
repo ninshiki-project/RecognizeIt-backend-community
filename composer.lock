@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "671b0301e028bd2e71a00d5d6af00e41",
+    "content-hash": "52f84a5f000dbbcecce060ad4b3c5cd0",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -74,16 +74,16 @@
         },
         {
             "name": "aymanalhattami/filament-slim-scrollbar",
-            "version": "2.0.1",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aymanalhattami/filament-slim-scrollbar.git",
-                "reference": "16d4f8ca45ad80739dea7a77f7173665653839ce"
+                "reference": "306e32e28e9506e5667c248d1f6a876339a7b4be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aymanalhattami/filament-slim-scrollbar/zipball/16d4f8ca45ad80739dea7a77f7173665653839ce",
-                "reference": "16d4f8ca45ad80739dea7a77f7173665653839ce",
+                "url": "https://api.github.com/repos/aymanalhattami/filament-slim-scrollbar/zipball/306e32e28e9506e5667c248d1f6a876339a7b4be",
+                "reference": "306e32e28e9506e5667c248d1f6a876339a7b4be",
                 "shasum": ""
             },
             "require": {
@@ -134,9 +134,9 @@
             ],
             "support": {
                 "issues": "https://github.com/aymanalhattami/filament-slim-scrollbar/issues",
-                "source": "https://github.com/aymanalhattami/filament-slim-scrollbar/tree/2.0.1"
+                "source": "https://github.com/aymanalhattami/filament-slim-scrollbar/tree/2.1.0"
             },
-            "time": "2024-09-22T14:25:47+00:00"
+            "time": "2025-02-03T14:21:04+00:00"
         },
         {
             "name": "bavix/laravel-wallet",
@@ -2202,16 +2202,16 @@
         },
         {
             "name": "filament/actions",
-            "version": "v3.2.136",
+            "version": "v3.2.137",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/actions.git",
-                "reference": "cdefacc18993050cdd37e8e980ec66ca4109ae9a"
+                "reference": "0eee8f8eeea4422c279c2622442b2a9a101d558c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/actions/zipball/cdefacc18993050cdd37e8e980ec66ca4109ae9a",
-                "reference": "cdefacc18993050cdd37e8e980ec66ca4109ae9a",
+                "url": "https://api.github.com/repos/filamentphp/actions/zipball/0eee8f8eeea4422c279c2622442b2a9a101d558c",
+                "reference": "0eee8f8eeea4422c279c2622442b2a9a101d558c",
                 "shasum": ""
             },
             "require": {
@@ -2251,20 +2251,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-01-31T11:08:24+00:00"
+            "time": "2025-02-06T11:47:20+00:00"
         },
         {
             "name": "filament/filament",
-            "version": "v3.2.136",
+            "version": "v3.2.137",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/panels.git",
-                "reference": "c92daf4b6e4b478be5d32d5e1b404ba92bb45414"
+                "reference": "407b52ee57feed6f67706af2a18bc81d32aea3f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/panels/zipball/c92daf4b6e4b478be5d32d5e1b404ba92bb45414",
-                "reference": "c92daf4b6e4b478be5d32d5e1b404ba92bb45414",
+                "url": "https://api.github.com/repos/filamentphp/panels/zipball/407b52ee57feed6f67706af2a18bc81d32aea3f1",
+                "reference": "407b52ee57feed6f67706af2a18bc81d32aea3f1",
                 "shasum": ""
             },
             "require": {
@@ -2316,20 +2316,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-01-31T11:08:29+00:00"
+            "time": "2025-02-06T11:47:25+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v3.2.136",
+            "version": "v3.2.137",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
-                "reference": "8856b3b3714a0efae65d9f817fcc1934b6f34fda"
+                "reference": "6ab0419fd3599aacdd7b2a8f69641cab6f158674"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/forms/zipball/8856b3b3714a0efae65d9f817fcc1934b6f34fda",
-                "reference": "8856b3b3714a0efae65d9f817fcc1934b6f34fda",
+                "url": "https://api.github.com/repos/filamentphp/forms/zipball/6ab0419fd3599aacdd7b2a8f69641cab6f158674",
+                "reference": "6ab0419fd3599aacdd7b2a8f69641cab6f158674",
                 "shasum": ""
             },
             "require": {
@@ -2372,11 +2372,11 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-01-31T11:08:23+00:00"
+            "time": "2025-02-06T11:47:21+00:00"
         },
         {
             "name": "filament/infolists",
-            "version": "v3.2.136",
+            "version": "v3.2.137",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/infolists.git",
@@ -2427,7 +2427,7 @@
         },
         {
             "name": "filament/notifications",
-            "version": "v3.2.136",
+            "version": "v3.2.137",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/notifications.git",
@@ -2479,7 +2479,7 @@
         },
         {
             "name": "filament/support",
-            "version": "v3.2.136",
+            "version": "v3.2.137",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/support.git",
@@ -2538,16 +2538,16 @@
         },
         {
             "name": "filament/tables",
-            "version": "v3.2.136",
+            "version": "v3.2.137",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",
-                "reference": "1b1d9c3b837c11408ad28240dc9e3e33340d870b"
+                "reference": "d420b0b0cbe605c712ab054a43d51baf5095dc87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/tables/zipball/1b1d9c3b837c11408ad28240dc9e3e33340d870b",
-                "reference": "1b1d9c3b837c11408ad28240dc9e3e33340d870b",
+                "url": "https://api.github.com/repos/filamentphp/tables/zipball/d420b0b0cbe605c712ab054a43d51baf5095dc87",
+                "reference": "d420b0b0cbe605c712ab054a43d51baf5095dc87",
                 "shasum": ""
             },
             "require": {
@@ -2586,11 +2586,11 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-01-31T11:08:58+00:00"
+            "time": "2025-02-06T11:47:34+00:00"
         },
         {
             "name": "filament/widgets",
-            "version": "v3.2.136",
+            "version": "v3.2.137",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/widgets.git",
@@ -8724,27 +8724,27 @@
         },
         {
             "name": "spatie/laravel-package-tools",
-            "version": "1.18.3",
+            "version": "1.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-package-tools.git",
-                "reference": "ba67eee37d86ed775dab7dad58a7cbaf9a6cfe78"
+                "reference": "1c9c30ac6a6576b8d15c6c37b6cf23d748df2faa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/ba67eee37d86ed775dab7dad58a7cbaf9a6cfe78",
-                "reference": "ba67eee37d86ed775dab7dad58a7cbaf9a6cfe78",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/1c9c30ac6a6576b8d15c6c37b6cf23d748df2faa",
+                "reference": "1c9c30ac6a6576b8d15c6c37b6cf23d748df2faa",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^9.28|^10.0|^11.0",
+                "illuminate/contracts": "^9.28|^10.0|^11.0|^12.0",
                 "php": "^8.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.5",
-                "orchestra/testbench": "^7.7|^8.0|^9.0",
-                "pestphp/pest": "^1.22|^2",
-                "phpunit/phpunit": "^9.5.24|^10.5",
+                "orchestra/testbench": "^7.7|^8.0|^9.0|^10.0",
+                "pestphp/pest": "^1.23|^2.1|^3.1",
+                "phpunit/phpunit": "^9.5.24|^10.5|^11.5",
                 "spatie/pest-plugin-test-time": "^1.1|^2.2"
             },
             "type": "library",
@@ -8772,7 +8772,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-package-tools/issues",
-                "source": "https://github.com/spatie/laravel-package-tools/tree/1.18.3"
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.19.0"
             },
             "funding": [
                 {
@@ -8780,20 +8780,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-22T08:51:18+00:00"
+            "time": "2025-02-06T14:58:20+00:00"
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "6.12.0",
+            "version": "6.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "420ea2a49db480302813d444834baaf7c8674782"
+                "reference": "bb3ad222d65ec804c219cc52a8b54f5af2e1636a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/420ea2a49db480302813d444834baaf7c8674782",
-                "reference": "420ea2a49db480302813d444834baaf7c8674782",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/bb3ad222d65ec804c219cc52a8b54f5af2e1636a",
+                "reference": "bb3ad222d65ec804c219cc52a8b54f5af2e1636a",
                 "shasum": ""
             },
             "require": {
@@ -8855,7 +8855,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/6.12.0"
+                "source": "https://github.com/spatie/laravel-permission/tree/6.13.0"
             },
             "funding": [
                 {
@@ -8863,7 +8863,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-31T01:07:40+00:00"
+            "time": "2025-02-05T15:42:48+00:00"
         },
         {
             "name": "symfony/clock",
@@ -11554,121 +11554,6 @@
                 "source": "https://github.com/WildsideUK/Laravel-Userstamps/tree/2.4.0"
             },
             "time": "2024-03-13T08:55:57+00:00"
-        },
-        {
-            "name": "xetaio/xetaravel-mentions",
-            "version": "11.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/XetaIO/Xetaravel-Mentions.git",
-                "reference": "da8458c7077f7b68537a094367109626b27413d7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/XetaIO/Xetaravel-Mentions/zipball/da8458c7077f7b68537a094367109626b27413d7",
-                "reference": "da8458c7077f7b68537a094367109626b27413d7",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/database": "^10.0|^11.0",
-                "illuminate/support": "^10.0|^11.0",
-                "php": ">=8.1",
-                "xety/configurator": "^1.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^8.0|^9.0",
-                "phpunit/phpunit": "^9.5|^10.5",
-                "squizlabs/php_codesniffer": "^3.2"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Xetaio\\Mentions\\Providers\\MentionServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Xetaio\\Mentions\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Xety",
-                    "email": "zoro.fmt@gmail.com",
-                    "homepage": "https://github.com/Xety"
-                }
-            ],
-            "description": "A package to parse a @mention from a text and mention the user with a notification.",
-            "homepage": "https://github.com/XetaIO/Xetaravel-Mentions",
-            "keywords": [
-                "Users",
-                "laravel",
-                "laravel-5-package",
-                "mentions",
-                "notifications"
-            ],
-            "support": {
-                "issues": "https://github.com/XetaIO/Xetaravel-Mentions/issues",
-                "source": "https://github.com/XetaIO/Xetaravel-Mentions"
-            },
-            "time": "2024-05-18T10:29:38+00:00"
-        },
-        {
-            "name": "xety/configurator",
-            "version": "v1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Xety/Configurator.git",
-                "reference": "cf3f7f5d81faf755722acc8458e90878c54253af"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Xety/Configurator/zipball/cf3f7f5d81faf755722acc8458e90878c54253af",
-                "reference": "cf3f7f5d81faf755722acc8458e90878c54253af",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6.0",
-                "squizlabs/php_codesniffer": "~3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Xety\\Configurator\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Xety",
-                    "email": "emeric@xeta.io",
-                    "homepage": "https://github.com/Xety"
-                }
-            ],
-            "description": "A simple configuration class without dependencies that use the Fluent pattern.",
-            "homepage": "https://github.com/Xety/Configurator",
-            "keywords": [
-                "config",
-                "configuration",
-                "fluent"
-            ],
-            "support": {
-                "issues": "https://github.com/Xety/Configurator/issues",
-                "source": "https://github.com/Xety/Configurator"
-            },
-            "time": "2017-06-02T21:50:50+00:00"
         }
     ],
     "packages-dev": [
@@ -12162,16 +12047,16 @@
         },
         {
             "name": "larastan/larastan",
-            "version": "v2.9.12",
+            "version": "v2.9.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larastan/larastan.git",
-                "reference": "19012b39fbe4dede43dbe0c126d9681827a5e908"
+                "reference": "78f7f8da613e54edb2ab4afa5bede045228fb843"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larastan/larastan/zipball/19012b39fbe4dede43dbe0c126d9681827a5e908",
-                "reference": "19012b39fbe4dede43dbe0c126d9681827a5e908",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/78f7f8da613e54edb2ab4afa5bede045228fb843",
+                "reference": "78f7f8da613e54edb2ab4afa5bede045228fb843",
                 "shasum": ""
             },
             "require": {
@@ -12185,7 +12070,7 @@
                 "illuminate/support": "^9.52.16 || ^10.28.0 || ^11.16",
                 "php": "^8.0.2",
                 "phpmyadmin/sql-parser": "^5.9.0",
-                "phpstan/phpstan": "^1.12.11"
+                "phpstan/phpstan": "^1.12.17"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^12.0",
@@ -12243,7 +12128,7 @@
             ],
             "support": {
                 "issues": "https://github.com/larastan/larastan/issues",
-                "source": "https://github.com/larastan/larastan/tree/v2.9.12"
+                "source": "https://github.com/larastan/larastan/tree/v2.9.14"
             },
             "funding": [
                 {
@@ -12251,7 +12136,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-26T23:09:02+00:00"
+            "time": "2025-02-06T21:03:14+00:00"
         },
         {
             "name": "laravel/pint",
@@ -13461,16 +13346,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.16",
+            "version": "1.12.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "e0bb5cb78545aae631220735aa706eac633a6be9"
+                "reference": "7027b3b0270bf392de0cfba12825979768d728bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e0bb5cb78545aae631220735aa706eac633a6be9",
-                "reference": "e0bb5cb78545aae631220735aa706eac633a6be9",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7027b3b0270bf392de0cfba12825979768d728bf",
+                "reference": "7027b3b0270bf392de0cfba12825979768d728bf",
                 "shasum": ""
             },
             "require": {
@@ -13515,7 +13400,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-21T14:50:05+00:00"
+            "time": "2025-02-07T15:01:57+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",

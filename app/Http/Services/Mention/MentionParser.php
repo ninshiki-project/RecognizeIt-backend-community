@@ -13,10 +13,49 @@
 
 namespace App\Http\Services\Mention;
 
-class MentionParser extends \Xetaio\Mentions\Parser\MentionParser
+use App\Models\User;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+
+class MentionParser
 {
-    protected function replace(array $match): string
+    protected ?Collection $mentions = null;
+
+    protected string $content;
+
+    public function parse(\Closure|string $content = ''): static
     {
-        return $match[0];
+        $content = is_callable($content) ? $content() : $content;
+        $this->mentions = Str::of($content)->trim()->matchAll('/\B@\w+/');
+
+        return $this;
+    }
+
+    /**
+     * Return the mentioned users that has been parsed in the
+     * content
+     *
+     * @return array|Collection|null
+     */
+    public function mentions(): array|Collection|null
+    {
+        return $this->mentions;
+    }
+
+    /**
+     * Return mention as Collection of Eloquent
+     *
+     * @return Collection
+     */
+    public function toCollection(): Collection
+    {
+        $collection = collect();
+        $this->mentions?->each(function ($mention) use ($collection) {
+            $collection->push(
+                User::where('username', Str::of($mention)->after('@'))->firstOrFail()
+            );
+        });
+
+        return $collection;
     }
 }
