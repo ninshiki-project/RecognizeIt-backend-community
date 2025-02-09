@@ -37,6 +37,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('departments', DepartmentsController::class);
 
     // Users
+    Route::get('users/{username}', [UserController::class, 'showByUsername']);
     Route::apiResource('users', UserController::class)->except(['store', 'update']);
 
     // Profile - Authenticated User
@@ -68,6 +69,7 @@ Route::prefix('/v1')->middleware('auth:sanctum')->group(function () {
 
     // Post
     Route::patch('posts/{posts}/toggle/like', [PostsController::class, 'toggleLike']);
+    Route::get('posts/hashtags/{hashtags}', [PostsController::class, 'fetchHashtags']);
     Route::apiResource('posts', PostsController::class);
 
     // Designation / Position / Job Title

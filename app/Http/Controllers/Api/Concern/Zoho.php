@@ -19,6 +19,7 @@ use Composer\InstalledVersions;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 trait Zoho
@@ -80,6 +81,7 @@ trait Zoho
 
         // @phpstan-ignore-next-line
         $user->name = $userProvider->name;
+        $user->username = Str::slug($userProvider->name, '_');
         if (! $user->avatar) {
             $user->avatar = ! is_null($userProvider->avatar) ? $userProvider->avatar : $avatar ?? null;
         }

@@ -33,6 +33,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use MarJose123\NinshikiEvent\Events\Post\NewPostAdded;
+use MarJose123\NinshikiEvent\Events\Post\PostMentionUser;
 use MarJose123\NinshikiEvent\Events\Post\PostToggleLike;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -73,7 +74,29 @@ class PostsController extends Controller
     public function show(Request $request, Posts $post)
     {
         return Cache::flexible(static::$cacheKey.$post->id, [5, 10], function () use ($post) {
-            return PostResource::make($post);
+            return PostResource::make($post->load(['recipients', 'likers']));
+        });
+    }
+
+    /**
+     * Fetch all post that contains specific hashtags
+     *
+     * @param  Request  $request
+     * @param  string  $hashtags
+     * @return AnonymousResourceCollection<LengthAwarePaginator<PostResource>>
+     */
+    public function fetchHashtags(Request $request, string $hashtags)
+    {
+        if (Str::contains($hashtags, '#')) {
+            $hashtags = Str::after($hashtags, '#');
+        }
+
+        return Cache::flexible(static::$cacheKey.$hashtags, [5, 10], function () use ($hashtags) {
+            return PostResource::collection(
+                Posts::with(['recipients', 'likers'])
+                    ->orderByDesc('created_at')
+                    ->where('content', 'like', '%#'.$hashtags.'%')
+            );
         });
 
     }
@@ -84,6 +107,8 @@ class PostsController extends Controller
      * @param  Request  $request
      * @param  Posts  $post
      * @return JsonResponse|ValidationException
+     *
+     * @throws ExceptionInterface
      */
     public function destroy(Request $request, Posts $post): JsonResponse|ValidationException
     {
@@ -93,6 +118,34 @@ class PostsController extends Controller
                 'email' => ['You are not allowed to delete the post that you are not the author.'],
             ]);
         }
+
+        // able to delete only if the post is not more than 5 minute after posting
+        if (Carbon::parse($post->created_at)->diffInMinutes(Carbon::now()) > 5) {
+            throw ValidationException::withMessages([
+                'email' => ['You are not allowed to delete anymore the post since it was already past 5 minutes after which the post was published.'],
+            ]);
+        }
+
+        // refund the wallet of the user for the consumed coins
+        $amountToRefund = $post->recipients->count();
+        $wallet = $post->originalPoster->getWallet(WalletsEnum::SPEND->value);
+        $wallet->deposit($amountToRefund, [
+            'title' => 'Ninshiki Spend',
+            'description' => 'Refund funds after deleting the post.',
+            'post_created_at' => $post->created_at,
+            'date_at' => Carbon::now(),
+        ]);
+
+        $post->recipients()->each(function ($recipient) use ($post) {
+            $wallet = $recipient->user->getWallet(WalletsEnum::DEFAULT->value);
+            $wallet->withdraw($post->points_per_recipient, [
+                'title' => 'Ninshiki Wallet',
+                'description' => 'Deduction funds after deleting the post.',
+                'post_created_at' => $post->created_at,
+                'poster' => $post->originalPoster,
+                'date_at' => Carbon::now(),
+            ]);
+        });
 
         if ($post->attachment_type === 'image' && $post->cloudinary_id) {
             $cloudinary = new CloudinaryEngine;
@@ -173,7 +226,7 @@ class PostsController extends Controller
      * Create New Post
      *
      * @param  PostsPostRequest  $request
-     * @return JsonResponse
+     * @return JsonResponse|ValidationException
      *
      * @throws ExceptionInterface
      */
@@ -205,6 +258,7 @@ class PostsController extends Controller
         }
         $post = Posts::create([
             'content' => $request->post_content,
+            'points_per_recipient' => $request->amount,
             'attachment_type' => $request->attachment_type,
             'cloudinary_id' => $request->has('image') ? $this->uploadedAsset->getSecurePath() : null,
             'attachment_url' => $request->has('image') ? $this->uploadedAsset->getSecurePath() : $request->gif_url,
@@ -262,6 +316,12 @@ class PostsController extends Controller
              * Increment the Rate Limit
              */
             $request->rateLimitIncrease();
+
+            /**
+             * Parser any mention user from the post
+             * and trigger an event
+             */
+            PostMentionUser::dispatch($post, $recipientsInstance);
 
             /**
              * @status 201
