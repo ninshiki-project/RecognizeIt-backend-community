@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Overtrue\LaravelLike\Traits\Likeable;
-use Xetaio\Mentions\Models\Traits\HasMentionsTrait;
 
 #[ObservedBy([PostsObserver::class])]
 class Posts extends Model
