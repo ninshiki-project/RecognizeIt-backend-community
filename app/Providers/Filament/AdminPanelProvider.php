@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Concerns\InteractsWithQuotes;
 use App\Filament\Pages\ProfilePage;
+use App\Filament\Resources\PostingLimitResource;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -78,7 +79,7 @@ class AdminPanelProvider extends PanelProvider
                     ->columnSpan('full'),
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 GeneralSettingsPlugin::make()
-                    ->setSort(1)
+                    ->setSort(PostingLimitResource::getNavigationSort() - 1)
                     ->setTitle('General Settings')
                     ->setNavigationParentItem('Settings'),
             ]);
