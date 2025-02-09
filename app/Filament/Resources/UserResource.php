@@ -154,8 +154,6 @@ class UserResource extends Resource
                                     if ($user->status === UserEnum::Invited) {
                                         return $value === UserEnum::Active->value;
                                     }
-
-                                    return false;
                                 })
                                 ->options(UserEnum::class),
                         ])
