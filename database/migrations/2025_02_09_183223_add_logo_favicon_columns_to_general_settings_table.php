@@ -24,5 +24,4 @@ return new class extends Migration
             $table->dropColumn('site_favicon');
         });
     }
-
 };
