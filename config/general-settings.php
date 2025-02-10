@@ -26,5 +26,16 @@ return [
                 ],
             ],
         ],
+        'maintenance' => [
+            'label' => 'Maintenance',
+            'icon' => 'heroicon-o-wrench-screwdriver',
+            'columns' => 1,
+            'fields' => [
+                'maintenance_mode' => [
+                    'type' => TypeFieldEnum::Toggle,
+                    'label' => 'Maintenance Mode',
+                ],
+            ],
+        ],
     ],
 ];
