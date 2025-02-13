@@ -14,7 +14,7 @@ class ApiSettingsSeeder extends Seeder
      */
     public function run(): void
     {
-        GeneralSetting::delete();
+        GeneralSetting::truncate();
 
         GeneralSetting::create([
             'site_name' => config('app.name'),
