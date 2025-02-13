@@ -11,6 +11,7 @@
  *  Written By: Marjose123
  */
 
+use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\DesignationsController;
@@ -106,6 +107,11 @@ Route::middleware([
             Route::get('/default/balance', [WalletController::class, 'defaultWalletBalance']);
             Route::get('/spend/balance', [WalletController::class, 'spendWalletBalance']);
             Route::get('/currency/balance', [WalletController::class, 'currencyWalletBalance']);
+        });
+
+        // Application
+        Route::prefix('application')->group(function () {
+            Route::get('/', [ApplicationController::class, 'index']);
         });
 
     });
