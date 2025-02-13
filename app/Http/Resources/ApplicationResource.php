@@ -26,6 +26,9 @@ class ApplicationResource extends JsonResource
             ],
 
             'settings' => $settings->except('maintenance'),
+            'maintenance' => [
+                'enabled' => $this->more_configs['maintenance']['maintenance_mode'] ?? false,
+            ],
         ];
     }
 }

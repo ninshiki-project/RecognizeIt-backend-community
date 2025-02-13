@@ -110,9 +110,11 @@ Route::middleware([
         });
 
         // Application
-        Route::prefix('application')->group(function () {
-            Route::get('/', [ApplicationController::class, 'index']);
-        });
+        Route::prefix('application')
+            ->withoutMiddleware(ApiMaintenanceModeMiddleware::class)
+            ->group(function () {
+                Route::get('/', [ApplicationController::class, 'index']);
+            });
 
     });
 });
