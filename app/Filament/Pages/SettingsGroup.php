@@ -2,9 +2,9 @@
 
 namespace App\Filament\Pages;
 
-use App\Filament\Resources\PostingLimitResource;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
+use ninshikiProject\GeneralSettings\Pages\GeneralSettingsPage;
 
 class SettingsGroup extends Page
 {
@@ -23,6 +23,6 @@ class SettingsGroup extends Page
 
     public function mount(): void
     {
-        $this->redirect(PostingLimitResource::getUrl());
+        $this->redirect(GeneralSettingsPage::getUrl());
     }
 }

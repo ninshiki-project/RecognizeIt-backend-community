@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Concerns\InteractsWithQuotes;
 use App\Filament\Pages\ProfilePage;
+use App\Filament\Resources\PostingLimitResource;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -20,6 +21,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use ninshikiProject\GeneralSettings\GeneralSettingsPlugin;
 use Orion\FilamentGreeter\GreeterPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -76,6 +78,11 @@ class AdminPanelProvider extends PanelProvider
                     ->sort(-6)
                     ->columnSpan('full'),
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                GeneralSettingsPlugin::make()
+                    ->setSort(PostingLimitResource::getNavigationSort() - 1)
+                    ->setTitle('API Settings')
+                    ->setNavigationLabel('API Settings')
+                    ->setNavigationParentItem('Settings'),
             ]);
     }
 }
