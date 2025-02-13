@@ -24,9 +24,10 @@ class ApplicationResource extends JsonResource
                 'site_name' => $this->site_name,
                 'site_description' => $this->site_description,
             ],
-
+            /* @var object $settings */
             'settings' => $settings->except('maintenance'),
             'maintenance' => [
+                /* @var boolean $enabled */
                 'enabled' => $this->more_configs['maintenance']['maintenance_mode'] ?? false,
             ],
         ];
