@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "06c93b03ff9e6004983053f4c7e63c6d",
+    "content-hash": "bc4e80761521b5aeda7b345fc41c8f4d",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -5648,11 +5648,17 @@
         },
         {
             "name": "ninshiki-project/general-settings",
-            "version": "dev-main",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ninshiki-project/general-settings.git",
+                "reference": "c8e81649223492d9954a95a36ac08b7beef55498"
+            },
             "dist": {
-                "type": "path",
-                "url": "../packagist/general-settings",
-                "reference": "14de1d978aa90b169c6bf37e07be5576fec4b07c"
+                "type": "zip",
+                "url": "https://api.github.com/repos/ninshiki-project/general-settings/zipball/c8e81649223492d9954a95a36ac08b7beef55498",
+                "reference": "c8e81649223492d9954a95a36ac08b7beef55498",
+                "shasum": ""
             },
             "require": {
                 "filament/filament": "^3.0",
@@ -5675,12 +5681,12 @@
             "type": "library",
             "extra": {
                 "laravel": {
-                    "providers": [
-                        "ninshikiProject\\GeneralSettings\\GeneralSettingsServiceProvider"
-                    ],
                     "aliases": {
                         "FilamentGeneralSettings": "ninshikiProject\\GeneralSettings\\Facades\\FilamentGeneralSettings"
-                    }
+                    },
+                    "providers": [
+                        "ninshikiProject\\GeneralSettings\\GeneralSettingsServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -5689,28 +5695,7 @@
                     "ninshikiProject\\GeneralSettings\\Database\\Factories\\": "database/factories/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "ninshikiProject\\GeneralSettings\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "post-autoload-dump": [
-                    "@php ./vendor/bin/testbench package:discover --ansi"
-                ],
-                "analyse": [
-                    "vendor/bin/phpstan analyse"
-                ],
-                "test": [
-                    "vendor/bin/pest"
-                ],
-                "test-coverage": [
-                    "vendor/bin/pest --coverage"
-                ],
-                "format": [
-                    "vendor/bin/pint"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5721,9 +5706,10 @@
                 "laravel",
                 "ninshiki-project"
             ],
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/ninshiki-project/general-settings/tree/1.0.4"
+            },
+            "time": "2025-02-10T04:53:38+00:00"
         },
         {
             "name": "ninshiki-project/ninshiki-event",
