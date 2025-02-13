@@ -114,6 +114,8 @@ Route::middleware([
             ->withoutMiddleware(ApiMaintenanceModeMiddleware::class)
             ->group(function () {
                 Route::get('/', [ApplicationController::class, 'index']);
+                Route::get('/maintenance', [ApplicationController::class, 'isMaintenance'])
+                    ->withoutMiddleware(['auth:sanctum']);
             });
 
     });
