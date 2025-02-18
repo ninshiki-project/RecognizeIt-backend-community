@@ -30,7 +30,7 @@ class PostsPostRequest extends FormRequest
             'recipient_id' => ['required', 'array'],
             'recipient_id.*' => ['required', 'exists:users,id'],
             'post_content' => ['required', 'string'],
-            'amount' => ['required_if:type,user', 'integer', 'in:3,5,10'],
+            'amount' => ['required_if:type,user', 'integer', 'in:5,15,20'],
             'attachment_type' => [Rule::in(['gif', 'image']), 'sometimes'],
             'gif_url' => ['required_if:attachment_type,gif', 'url', 'sometimes'],
             'image' => ['required_if:attachment_type,image', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048', 'sometimes'],
