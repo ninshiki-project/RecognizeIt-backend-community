@@ -53,7 +53,7 @@ it('can create a new post', function () {
     ]);
     $resp = \Pest\Laravel\actingAs($user)->postJson('/api/v1/posts', [
         'post_content' => fake()->paragraph(10),
-        'amount' => 3,
+        'amount' => 5,
         'attachment_type' => 'gif',
         'gif_url' => fake()->imageUrl(word: 'ninshiki-testing'),
         'type' => 'user',
