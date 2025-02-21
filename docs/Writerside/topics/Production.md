@@ -3,7 +3,7 @@
 ## Pre-requisite
 
 ### PHP Extension
-* PHP >= 8.2
+* PHP >= 8.3
 * Ctype PHP Extension
 * cURL PHP Extension
 * DOM PHP Extension
