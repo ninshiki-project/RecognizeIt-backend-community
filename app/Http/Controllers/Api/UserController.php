@@ -18,6 +18,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use MarJose123\NinshikiEvent\Events\User\UserDeleted;
 
 class UserController extends Controller
@@ -47,6 +48,25 @@ class UserController extends Controller
     {
         return Cache::flexible(static::$cacheKey.$id, [5, 10], function () use ($id) {
             return response()->json(User::findOrFail($id));
+        });
+
+    }
+
+    /**
+     * Get User by username
+     *
+     *
+     * @param  string  $username
+     * @return JsonResponse
+     */
+    public function showByUsername(string $username)
+    {
+        return Cache::flexible(static::$cacheKey.$username, [5, 10], function () use ($username) {
+            if (Str::contains($username, '@')) {
+                $username = Str::after($username, '@');
+            }
+
+            return response()->json(User::where('username', $username)->first());
         });
 
     }

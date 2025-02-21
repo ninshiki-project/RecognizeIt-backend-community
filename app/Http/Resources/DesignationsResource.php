@@ -31,8 +31,7 @@ class DesignationsResource extends JsonResource
             'name' => $this->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-
-            'departments_id' => $this->departments_id, //
+            'departments_id' => $this->departments_id,
         ];
     }
 }

@@ -16,13 +16,12 @@ namespace Database\Seeders;
 use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Models\Departments;
 use App\Models\Designations;
+use App\Models\Permission;
 use App\Models\User;
 use Closure;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Symfony\Component\Console\Helper\ProgressBar;
 
@@ -35,40 +34,16 @@ class TheSeeder extends Seeder
 
         // create permissions
 
-        $userModelPermission = [
-            // User Model
-            'invite user',
-            'view user',
-            'update user',
-            'delete user',
-            'restore user',
-            'force delete user',
+        $customPermissions = [
+            ['name' => 'access panel', 'guard_name' => 'web'],
         ];
-
-        $departmentModelPermission = [
-            // Department Model
-            'create department',
-            'view department',
-            'update department',
-            'delete department',
-            'restore department',
-            'force delete department',
-        ];
-
-        $allPermissionNames = [
-            ...$userModelPermission,
-            ...$departmentModelPermission,
-        ];
-
-        $permissions = collect($allPermissionNames)->map(function ($permission) {
-            return ['name' => $permission, 'guard_name' => 'web'];
-        });
 
         /**
          * Create Permissions
          */
         $this->command->warn(PHP_EOL.'Creating permissions...');
-        $this->withProgressBar(1, fn () => Permission::insert($permissions->toArray()));
+        $this->command->call('shield:generate', ['--all' => true, '--panel' => 'admin']);
+        $this->withProgressBar(1, fn () => Permission::insert($customPermissions));
         $this->command->info('Permissions has been created.');
 
         /**
@@ -76,26 +51,17 @@ class TheSeeder extends Seeder
          */
         $this->command->warn(PHP_EOL.'Creating Admin roles...');
         $this->withProgressBar(1, function () {
-            $role = Role::create(['name' => 'Administrator', 'guard_name' => 'web']);
+            $role = Role::where('name', 'Administrator')->first();
+            if (! $role) {
+                $role = Role::create(['name' => 'Administrator', 'guard_name' => 'web']);
+            }
             $role->givePermissionTo(Permission::all());
         });
         $this->command->info('Roles has been created.');
 
         $this->command->warn(PHP_EOL.'Creating member roles...');
         $this->withProgressBar(1, function () {
-            $role = Role::create(['name' => 'Member', 'guard_name' => 'web']);
-            $roles = collect(Permission::all())->filter(function ($permission) {
-                return ! Str::of($permission->name)->contains([
-                    'invite user',
-                    'delete user',
-                    'restore user',
-                    'force delete user',
-                    'department',
-                    'delete',
-                    'edit',
-                ]);
-            });
-            $role->givePermissionTo($roles);
+            Role::create(['name' => 'Member', 'guard_name' => 'web']);
         });
         $this->command->info('Roles has been created.');
 
@@ -107,13 +73,14 @@ class TheSeeder extends Seeder
             $this->withProgressBar(1, function () {
                 $user = User::factory()->create([
                     'name' => 'Test User',
+                    'username' => 'test_user',
                     'email' => 'test@example.com',
                     'password' => Hash::make('password'),
                     'status' => UserEnum::Active->value,
                     'designation' => Designations::inRandomOrder()->first()->name,
                     'department' => Departments::inRandomOrder()->first()->id,
-                ])
-                    ->assignRole('Administrator');
+                ]);
+                $this->command->callSilently('shield:super-admin', ['--user' => $user->id, '--panel' => 0]);
                 $this->command->info(PHP_EOL.'Points created and associated...');
             });
             $this->command->info('Administrator user created.');

@@ -10,7 +10,9 @@ Schedule::command(ResetSpendWalletCommand::class)
     ->lastDayOfMonth('23:59')
     ->runInBackground();
 Schedule::command('auth:clear-resets')
-    ->everyFifteenMinutes()
-    ->runInBackground();
+    ->everyFifteenMinutes();
 Schedule::call(fn () => \App\Events\Broadcast\SessionHealthCheckEvent::dispatch())
     ->everyThreeMinutes();
+Schedule::command('pulse:clear --force')
+    ->at('23:59')
+    ->sundays();

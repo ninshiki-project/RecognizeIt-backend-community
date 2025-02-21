@@ -3,10 +3,13 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Resources\ShopResource;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
 
 class ShopGroup extends Page
 {
+    use HasPageShield;
+
     /**
      * This page will be used only to group other settings pages/resources
      */

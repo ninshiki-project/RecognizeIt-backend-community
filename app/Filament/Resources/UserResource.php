@@ -134,6 +134,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->modalFooterActionsAlignment(Alignment::Right)
                     ->hidden(fn (User $user): bool => $user->id === auth()->id()),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('update_status')
@@ -156,6 +157,7 @@ class UserResource extends Resource
                                 })
                                 ->options(UserEnum::class),
                         ])
+                        ->modalFooterActionsAlignment(Alignment::Right)
                         ->requiresConfirmation()
                         ->action(function (User $user, array $data) {
                             $user->update([
@@ -182,11 +184,29 @@ class UserResource extends Resource
                             Forms\Components\TextInput::make('password')
                                 ->label('Set Temporary Password:')
                                 ->reactive()
-                                ->hidden(fn (Forms\Get $get): bool => ! $get('roles') || $get('roles') === 'Member')
+                                ->hidden(function (Forms\Get $get) {
+                                    if (is_null($get('roles'))) {
+                                        return true;
+                                    }
+                                    $role = Role::where('name', $get('roles'))->first();
+                                    if ($role->hasPermissionTo('access panel')) {
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                })
                                 ->revealable()
-                                ->required(fn (Forms\Get $get): bool => ! $get('roles') || $get('roles') === 'Administrator')
+                                ->required(function (Forms\Get $get) {
+                                    $role = Role::where('name', $get('roles'))->first();
+                                    if ($role->hasPermissionTo('access panel')) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                })
                                 ->password(),
                         ])
+                        ->modalFooterActionsAlignment(Alignment::Right)
                         ->requiresConfirmation()
                         ->action(function (User $user, array $data) {
                             $user->update([

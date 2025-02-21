@@ -28,8 +28,10 @@ class Posts extends Model
 
     protected $fillable = [
         'content',
+        'points_per_recipient',
         'image',
         'type',
+        'cloudinary_id',
         'attachment_type',
         'attachment_url',
         'posted_by',

@@ -11,6 +11,13 @@ if (\Composer\InstalledVersions::isInstalled('ninshiki-project/ninshiki')) {
             'php_version' => PHP_VERSION,
         ]);
     });
+    Route::get('/', function () {
+        return response()->json([
+            'environment' => app()->environment(),
+            'laravel' => app()->version(),
+            'php_version' => PHP_VERSION,
+        ]);
+    });
 
 } else {
     Route::get('/', function () {

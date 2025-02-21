@@ -10,6 +10,7 @@ use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 
 class ManageUsers extends ManageRecords
 {
@@ -23,7 +24,8 @@ class ManageUsers extends ManageRecords
                 ->modalAlignment(Alignment::Center)
                 ->mutateFormDataUsing(function (array $data) {
                     $data['added_by'] = auth()->id();
-                    $data['status'] = UserEnum::Invited->value;
+                    $data['status'] = UserEnum::Invited;
+                    $data['username'] = Str::slug($data['username'], '_');
 
                     return $data;
                 })

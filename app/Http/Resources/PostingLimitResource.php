@@ -31,9 +31,7 @@ class PostingLimitResource extends JsonResource
             'limit' => $this->limit,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-
             'designations_id' => $this->designations_id,
-
             'designations' => new DesignationsResource($this->whenLoaded('designations')),
         ];
     }

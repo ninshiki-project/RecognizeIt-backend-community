@@ -2,10 +2,14 @@
 
 namespace App\Filament\Pages;
 
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
+use ninshikiProject\GeneralSettings\Pages\GeneralSettingsPage;
 
 class SettingsGroup extends Page
 {
+    use HasPageShield;
+
     /**
      * This page will be used only to group other settings pages/resources
      */
@@ -16,4 +20,9 @@ class SettingsGroup extends Page
     protected static string $view = 'filament.pages.settings-group';
 
     protected static ?int $navigationSort = 5;
+
+    public function mount(): void
+    {
+        $this->redirect(GeneralSettingsPage::getUrl());
+    }
 }

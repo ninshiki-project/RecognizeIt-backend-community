@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             ShopSeeder::class,
             ReedemSeeder::class,
             PostSeeder::class,
+            ApiSettingsSeeder::class,
         ]);
 
     }

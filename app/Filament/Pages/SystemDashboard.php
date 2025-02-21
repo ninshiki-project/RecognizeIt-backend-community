@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Dotswan\FilamentLaravelPulse\Widgets\PulseCache;
 use Dotswan\FilamentLaravelPulse\Widgets\PulseExceptions;
 use Dotswan\FilamentLaravelPulse\Widgets\PulseQueues;
@@ -20,6 +21,7 @@ use Filament\Support\Enums\ActionSize;
 class SystemDashboard extends Dashboard
 {
     use HasFiltersAction;
+    use HasPageShield;
 
     protected static string $routePath = 'system-dashboard';
 

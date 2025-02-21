@@ -27,6 +27,7 @@ class UserObserver
      */
     public function created(User $user): void
     {
+
         /**
          * Types of wallet
          *  1. Ninshiki Wallet - Main Wallet. It will only have a fund once being recognized by colleague
