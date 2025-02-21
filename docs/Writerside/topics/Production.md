@@ -25,8 +25,19 @@
 
 ### Installation of pre-requisite
 ```bash
-sudo apt install composer nginx
-sudo apt install php8.3-common php8.3-cli php8.3-fpm php8.3-{curl,bz2,mbstring,intl,xml,gd}
+sudo apt install php8.3-common php8.3-cli php8.3-fpm php8.3-{curl,bz2,mbstring,intl,xml,gd,sqlite3,zip}
+sudo apt install nginx
+```
+
+### install composer
+```Bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+```
+Put the composer.phar into a directory on your PATH, so you can simply call composer from any directory (Global install)
+```bash
+sudo mv composer.phar /usr/local/bin/composer
 ```
 
 ### Firewall
