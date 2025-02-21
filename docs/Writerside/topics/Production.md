@@ -20,7 +20,7 @@
 * Intl PHP Extension
 
 ```bash
-sudo apt install php8.3 php8.3-cli php8.3-{bz2,curl,mbstring,intl,sqlite3,zip,pdo_mysql,openssl,gd,fileinfo,exif,pdo_pgsql,pdo_sqlite,pgsql}
+sudo apt install php8.3-common php8.3-cli php8.3-fpm php8.3-{curl,bz2,mbstring,intl}
 ```
 
 ### Email Notification
