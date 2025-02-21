@@ -20,12 +20,25 @@
 * Intl PHP Extension
 * GD PHP Extension
 
+
+## Server Configuration
+
+### Installation of pre-requisite
 ```bash
 sudo apt install composer nginx
 sudo apt install php8.3-common php8.3-cli php8.3-fpm php8.3-{curl,bz2,mbstring,intl,xml,gd}
 ```
 
-### Ngix
+### Firewall
+Enable nginx in firewall by running this command
+```bash
+ufw allow 'Nginx HTTP'
+ufw allow 'Nginx HTTPS'
+ufw enable
+ufw status
+```
+
+### Ngix Sites
 ```nginx
 server {
     listen 80;
@@ -59,6 +72,40 @@ server {
     location ~ /\.(?!well-known).* {
         deny all;
     }
+}
+```
+
+### Server Certificates
+As root , to install the tool to install certificate, run:
+```bash
+apt-get install certbot python3-certbot-nginx
+```
+If you need to install a certificate for hostname host.mydomain.com:
+```bash
+certbot --nginx -d host.mydomain.com
+```
+
+
+
+## Laravel Reverb (Real-time Notification/Broadcast)
+```NGINX
+server {
+    ...
+ 
+    location / {
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header Scheme $scheme;
+        proxy_set_header SERVER_PORT $server_port;
+        proxy_set_header REMOTE_ADDR $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+ 
+        proxy_pass http://0.0.0.0:8080;
+    }
+ 
+    ...
 }
 ```
 
