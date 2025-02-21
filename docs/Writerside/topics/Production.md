@@ -19,6 +19,10 @@
 * XML PHP Extension
 * Intl PHP Extension
 
+```bash
+sudo apt install php8.3 php8.3-cli php8.3-{bz2,curl,mbstring,intl,sqlite3,zip,pdo_mysql,openssl,gd,fileinfo,exif,pdo_pgsql,pdo_sqlite,pgsql}
+```
+
 ### Email Notification
 Create an account in [RESEND](https://resend.com/) for email services.
 
