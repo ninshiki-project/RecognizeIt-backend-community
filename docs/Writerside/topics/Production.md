@@ -20,6 +20,7 @@
 * Intl PHP Extension
 
 ```bash
+sudo apt install composer nginx
 sudo apt install php8.3-common php8.3-cli php8.3-fpm php8.3-{curl,bz2,mbstring,intl}
 ```
 
