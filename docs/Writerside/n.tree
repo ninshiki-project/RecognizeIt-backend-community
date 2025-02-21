@@ -34,4 +34,7 @@
     <toc-element topic="Extensions.md"/>
     <toc-element topic="Admin-Configuration.md">
     </toc-element>
+    <toc-element topic="Extras.md">
+        <toc-element topic="Proposal-Template.md"/>
+    </toc-element>
 </instance-profile>
