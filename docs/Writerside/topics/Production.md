@@ -99,11 +99,13 @@ ufw status
 ```
 
 ### Ngix Sites
+Create a new site `sudo nano /etc/nginx/sites-available/ninshiki-backend` 
+
 ```nginx
 server {
     listen 80;
     listen [::]:80;
-    server_name example.com;
+    server_name ninshiki.example.com;
     root /var/www/ninshiki-backend/public;
  
     add_header X-Frame-Options "SAMEORIGIN";
@@ -134,6 +136,7 @@ server {
     }
 }
 ```
+Once you're done, then create a symlink `sudo ln -s /etc/nginx/sites-available/ninshiki-backend /etc/nginx/sites-enabled/`
 
 ### Server Certificates
 As root , to install the tool to install certificate, run:
