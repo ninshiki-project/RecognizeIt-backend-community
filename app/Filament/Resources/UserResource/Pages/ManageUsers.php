@@ -25,7 +25,7 @@ class ManageUsers extends ManageRecords
                 ->mutateFormDataUsing(function (array $data) {
                     $data['added_by'] = auth()->id();
                     $data['status'] = UserEnum::Invited;
-                    $data['username'] = Str::slug($data['username'], '_');
+                    $data['username'] = Str::slug($data['name'], '_');
 
                     return $data;
                 })
