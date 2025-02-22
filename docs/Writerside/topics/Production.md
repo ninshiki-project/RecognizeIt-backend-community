@@ -175,6 +175,15 @@ server {
     ...
 }
 ```
+Your `.env` file for the reverb should look like this.
+```bash
+REVERB_APP_ID=xxxx
+REVERB_APP_KEY=xxxxx
+REVERB_APP_SECRET=xxxxx
+REVERB_HOST=ninshiki.example.com
+REVERB_PORT=8080
+REVERB_SCHEME=https #or 'http' if you are not in SSL
+```
 
 
 ## Supervisor
