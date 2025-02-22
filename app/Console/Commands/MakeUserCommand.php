@@ -28,15 +28,12 @@ class MakeUserCommand extends Command
                             {--role= : A valid role}
                             {--password= : The password for the user (min. 8 characters)}';
 
-    protected $description = 'Create a new Ninshiki user with an Owner Role and Permissions';
+    protected $description = 'Create a new Ninshiki Admin User with an Owner Role and Permissions';
 
-    /**
-     * @var array{'name': string | null, 'email': string | null, 'password': string | null, 'role': string | int | null, 'department': string | null, 'designation': string | null}
-     */
     protected array $options;
 
     /**
-     * @return array{'name': string | null, 'email': string | null, 'password': string | null, 'role': string | int | null, 'department': string, 'designation': string}
+     * @return array{'name': string | null, 'email': string | null, 'password': string | null, 'role': string | int | null, 'department': string | int | null, 'designation': string | int | null}
      */
     protected function getUserData(): array
     {
@@ -58,7 +55,7 @@ class MakeUserCommand extends Command
             ),
 
             'department' => $this->options['department'] ?? select(
-                label: 'What role should the user have?',
+                label: 'What Department should the user have?',
                 options: Departments::pluck('name', 'id')->toArray(),
             ),
 
