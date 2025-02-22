@@ -38,7 +38,7 @@ use Spatie\Permission\Traits\HasRoles;
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
 {
-    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable, SoftDeletes;
+    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable;
 
     /**
      * The attributes that are mass assignable.
