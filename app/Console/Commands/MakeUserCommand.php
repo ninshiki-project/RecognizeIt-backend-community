@@ -57,7 +57,7 @@ class MakeUserCommand extends Command
 
             'role' => $this->options['role'] ?? select(
                 label: 'What role should the user have?',
-                options: Role::pluck('id', 'name')->toArray(),
+                options: Role::pluck('name', 'name')->toArray(),
                 default: 'Member',
                 scroll: 1,
                 validate: fn (string $value) => Role::where('name', '=', $value)->doesntExist()
@@ -82,6 +82,7 @@ class MakeUserCommand extends Command
         try {
             $user = User::create([
                 'name' => $this->options['name'],
+                'password' => $this->options['password'],
                 'email' => $this->options['email'],
                 'designation' => Designations::first()->id,
             ]);
