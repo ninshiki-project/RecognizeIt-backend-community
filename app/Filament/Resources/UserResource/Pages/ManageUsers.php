@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Jobs\NewUserJob;
 use App\Notifications\User\Invitation\InvitationNotification;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
@@ -31,9 +32,9 @@ class ManageUsers extends ManageRecords
                 })
                 ->after(function ($record) {
                     // send invitation email
-                    /** @phpstan-ignore-next-line  */
-                    Notification::route('mail', $record->email)
-                        ->notify(new InvitationNotification);
+                    NewUserJob::dispatch($record)
+                        ->afterCommit()
+                        ->afterResponse();
                 })
                 ->createAnother(false),
         ];
