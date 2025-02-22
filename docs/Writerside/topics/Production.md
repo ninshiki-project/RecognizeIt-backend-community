@@ -99,11 +99,13 @@ ufw status
 ```
 
 ### Ngix Sites
+Create a new site `sudo nano /etc/nginx/sites-available/ninshiki-backend.example.com` 
+
 ```nginx
 server {
     listen 80;
     listen [::]:80;
-    server_name example.com;
+    server_name ninshiki.example.com;
     root /var/www/ninshiki-backend/public;
  
     add_header X-Frame-Options "SAMEORIGIN";
@@ -134,6 +136,7 @@ server {
     }
 }
 ```
+Once you're done, then create a symlink `sudo ln -s /etc/nginx/sites-available/ninshiki-backend.example.com /etc/nginx/sites-enabled/`
 
 ### Server Certificates
 As root , to install the tool to install certificate, run:
@@ -143,7 +146,11 @@ apt-get install certbot python3-certbot-nginx
 If you need to install a certificate for hostname host.mydomain.com:
 ```bash
 certbot --nginx -d host.mydomain.com
+sudo ufw allow 'Nginx Full'
+sudo ufw delete allow 'Nginx HTTP'
 ```
+Once the Certbot run successfully, restart your nginx services `sudo systemctl reload nginx`
+
 
 
 
