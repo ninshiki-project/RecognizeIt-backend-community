@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\Api\Concern\AllowedDomain;
+use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Models\Designations;
 use App\Models\Role;
 use App\Models\User;
@@ -85,6 +86,7 @@ class MakeUserCommand extends Command
                 'password' => $this->options['password'],
                 'email' => $this->options['email'],
                 'designation' => Designations::first()->id,
+                'status' => UserEnum::Active,
             ]);
             $this->callSilently('shield:super-admin', ['--user' => $user->id, '--panel' => 0]);
 
