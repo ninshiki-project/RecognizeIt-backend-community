@@ -21,12 +21,61 @@
 * GD PHP Extension
 
 
+
+### Email Notification
+Create an account in [RESEND](https://resend.com/) for email services.
+
+### CDN
+Create an account in [Cloudinary](https://cloudinary.com/) for Image CDN.
+
+## Installation
+1. Clone the repository
+```Bash
+git clone git@github.com:MarJose123/Ninshiki-backend.git
+```
+2. Copy the `.env.example` to `.env`
+3. Update the Laravel Reverb Key by providing a unique key and App Key.
+```Bash
+php artisan reverb:key
+```
+4. Update your Cloudinary `CLOUDINARY_URL` and `RESEND_KEY`.
+5. Install dependencies
+```Bash
+composer install
+```
+6. Generate App Key
+```Bash
+php artisan generate:key
+```
+7. Run Database Migration and Seeder
+```Bash
+php artisan migrate
+```
+8. Create a user with a permission of an Owner/Administrator
+```Bash
+php artisan make:ninshiki-user
+```
+9. Generate Reverb Key
+```Bash
+php artisan reverb:key
+```
+10. Now your backend is ready for integration with your frontend.
+
+
 ## Server Configuration
 
 ### Installation of pre-requisite
 ```bash
-sudo apt install php8.3-common php8.3-cli php8.3-fpm php8.3-{curl,bz2,mbstring,intl,xml,gd,sqlite3,zip}
+sudo apt install php8.3-common php8.3-cli php8.3-fpm php8.3-{curl,bz2,mbstring,intl,xml,gd,sqlite3,zip,mysql}
 sudo apt install nginx
+```
+
+## Folder Permissions
+```bash
+sudo chown -R $USER:www-data /var/www/ninshiki-backend/storage
+sudo chown -R $USER:www-data /var/www/ninshiki-backend/bootstrap/cache
+sudo chmod -R 775 /var/www/ninshiki-backend/storage
+sudo chmod -R 775 /var/www/ninshiki-backend/bootstrap/cache
 ```
 
 ### install composer
@@ -55,7 +104,7 @@ server {
     listen 80;
     listen [::]:80;
     server_name example.com;
-    root /srv/example.com/public;
+    root /var/www/ninshiki-backend/public;
  
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
@@ -99,65 +148,26 @@ certbot --nginx -d host.mydomain.com
 
 
 ## Laravel Reverb (Real-time Notification/Broadcast)
-```NGINX
+```diff
 server {
     ...
  
     location / {
-        proxy_http_version 1.1;
-        proxy_set_header Host $http_host;
-        proxy_set_header Scheme $scheme;
-        proxy_set_header SERVER_PORT $server_port;
-        proxy_set_header REMOTE_ADDR $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
++        proxy_http_version 1.1;
++        proxy_set_header Host $http_host;
++        proxy_set_header Scheme $scheme;
++        proxy_set_header SERVER_PORT $server_port;
++        proxy_set_header REMOTE_ADDR $remote_addr;
++        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
++        proxy_set_header Upgrade $http_upgrade;
++        proxy_set_header Connection "Upgrade";
  
-        proxy_pass http://0.0.0.0:8080;
++        proxy_pass http://0.0.0.0:8080;
     }
  
     ...
 }
 ```
-
-### Email Notification
-Create an account in [RESEND](https://resend.com/) for email services.
-
-### CDN
-Create an account in [Cloudinary](https://cloudinary.com/) for Image CDN.
-
-## Installation
-1. Clone the repository
-```Bash
-git clone git@github.com:MarJose123/Ninshiki-backend.git
-```
-2. Copy the `.env.example` to `.env`
-3. Update the Laravel Reverb Key by providing a unique key and App Key.
-```Bash
-php artisan reverb:key
-```
-4. Update your Cloudinary `CLOUDINARY_URL` and `RESEND_KEY`.
-5. Install dependencies
-```Bash
-composer install
-```
-6. Generate App Key
-```Bash
-php artisan generate:key
-```
-7. Run Database Migration and Seeder
-```Bash
-php artisan migrate
-```
-8. Create a user with a permission of an Owner/Administrator
-```Bash
-php artisan make:ninshiki-user
-```
-9. Generate Reverb Key
-```Bash
-php artisan reverb:key
-```
-10. Now your backend is ready for integration with your frontend.
 
 
 ## Supervisor

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\Api\Concern\AllowedDomain;
+use App\Models\Designations;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -49,14 +50,14 @@ class MakeUserCommand extends Command
                 validate: fn (string $email): ?string => match (true) {
                     ! filter_var($email, FILTER_VALIDATE_EMAIL) => 'The email address must be valid.',
                     User::where('email', $email)->exists() => 'A user with this email address already exists',
-                    $this->isWhitelistedDomain($email) => 'Unauthorized email domain, please use your organization domain',
+                    ! $this->isWhitelistedDomain($email) => 'Unauthorized email domain, please use your organization domain',
                     default => null,
                 },
             ),
 
             'role' => $this->options['role'] ?? select(
                 label: 'What role should the user have?',
-                options: Role::pluck('id', 'name'),
+                options: Role::pluck('id', 'name')->toArray(),
                 default: 'Member',
                 scroll: 1,
                 validate: fn (string $value) => Role::where('name', '=', $value)->doesntExist()
@@ -82,7 +83,7 @@ class MakeUserCommand extends Command
             $user = User::create([
                 'name' => $this->options['name'],
                 'email' => $this->options['email'],
-                'designation' => config('ninshiki.designation')[0],
+                'designation' => Designations::first()->id,
             ]);
             $this->callSilently('shield:super-admin', ['--user' => $user->id, '--panel' => 0]);
 
