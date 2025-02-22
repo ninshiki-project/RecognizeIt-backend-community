@@ -5,12 +5,10 @@ namespace App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource;
 use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Jobs\NewUserJob;
-use App\Notifications\User\Invitation\InvitationNotification;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
 class ManageUsers extends ManageRecords
