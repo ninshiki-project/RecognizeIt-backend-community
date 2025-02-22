@@ -4,12 +4,11 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Http\Controllers\Api\Enum\UserEnum;
-use App\Notifications\User\Invitation\InvitationNotification;
+use App\Jobs\NewUserJob;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\MaxWidth;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
 class ManageUsers extends ManageRecords
@@ -25,15 +24,15 @@ class ManageUsers extends ManageRecords
                 ->mutateFormDataUsing(function (array $data) {
                     $data['added_by'] = auth()->id();
                     $data['status'] = UserEnum::Invited;
-                    $data['username'] = Str::slug($data['username'], '_');
+                    $data['username'] = Str::slug($data['name'], '_');
 
                     return $data;
                 })
-                ->after(function () {
+                ->after(function ($record) {
                     // send invitation email
-                    /** @phpstan-ignore-next-line  */
-                    Notification::route('mail', $this->record->email)
-                        ->notify(new InvitationNotification);
+                    NewUserJob::dispatch($record)
+                        ->afterCommit()
+                        ->afterResponse();
                 })
                 ->createAnother(false),
         ];

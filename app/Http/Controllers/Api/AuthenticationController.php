@@ -82,6 +82,8 @@ class AuthenticationController extends Controller
         try {
             if ($provider === 'zoho' && $this->isZohoSocialiteInstalled()) {
                 $this->payload = $this->performZohoAuthentication($request);
+            } else {
+                throw new \Exception('Invalid Provider');
             }
 
             if (! is_array($this->payload)) {

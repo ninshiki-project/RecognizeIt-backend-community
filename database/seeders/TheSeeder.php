@@ -76,7 +76,7 @@ class TheSeeder extends Seeder
                     'username' => 'test_user',
                     'email' => 'test@example.com',
                     'password' => Hash::make('password'),
-                    'status' => UserEnum::Active->value,
+                    'status' => UserEnum::Active,
                     'designation' => Designations::inRandomOrder()->first()->name,
                     'department' => Departments::inRandomOrder()->first()->id,
                 ]);
@@ -93,7 +93,7 @@ class TheSeeder extends Seeder
             $this->command->warn(PHP_EOL.'Creating Normal user and assigning roles...');
             $this->withProgressBar(5, function () {
                 $user = User::factory()->create([
-                    'status' => UserEnum::Active->value,
+                    'status' => UserEnum::Active,
                     'designation' => Designations::inRandomOrder()->first()->name,
                     'department' => Departments::inRandomOrder()->first()->id,
                 ])
