@@ -82,6 +82,7 @@ class MakeUserCommand extends Command
         try {
             $user = User::create([
                 'name' => $this->options['name'],
+                'password' => $this->options['password'],
                 'email' => $this->options['email'],
                 'designation' => Designations::first()->id,
             ]);
