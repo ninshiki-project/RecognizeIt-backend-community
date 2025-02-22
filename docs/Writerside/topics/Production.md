@@ -159,18 +159,18 @@ Once the Certbot run successfully, restart your nginx services `sudo systemctl r
 server {
     ...
  
-    location / {
-+        proxy_http_version 1.1;
-+        proxy_set_header Host $http_host;
-+        proxy_set_header Scheme $scheme;
-+        proxy_set_header SERVER_PORT $server_port;
-+        proxy_set_header REMOTE_ADDR $remote_addr;
-+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-+        proxy_set_header Upgrade $http_upgrade;
-+        proxy_set_header Connection "Upgrade";
- 
-+        proxy_pass http://0.0.0.0:8080;
-    }
++  location /app {
++       proxy_http_version 1.1;
++       proxy_set_header Host $http_host;
++       proxy_set_header Scheme $scheme;
++       proxy_set_header SERVER_PORT $server_port;
++       proxy_set_header REMOTE_ADDR $remote_addr;
++       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
++       proxy_set_header Upgrade $http_upgrade;
++       proxy_set_header Connection "Upgrade";
+
++       proxy_pass http://0.0.0.0:8080;
++   }
  
     ...
 }
@@ -189,11 +189,26 @@ you may create any number of configuration files that instruct supervisor how yo
 Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
 ```bash
 sudo supervisorctl reread
- 
 sudo supervisorctl update
  
-sudo supervisorctl start "ninshiki-worker-*"
 ```
+
+###### Websocket
+Let's create a `ninshiki-worker-websocket.conf` file that starts and monitors `reverb:start` processes:
+```bash
+[program:ninshiki-worker-websocket]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/backend-ninshiki.com/artisan reverb:start --host=127.0.0.1 --port=8080 --no-interaction
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=1
+redirect_stderr=true
+stopwaitsecs=3600
+```
+
 
 ###### Queues
 
@@ -202,15 +217,14 @@ Let's create a `ninshiki-worker-queue.conf` file that starts and monitors `queue
 ```bash
 [program:ninshiki-worker-queue]
 process_name=%(program_name)s_%(process_num)02d
-command=php /www/backend-ninshiki.com/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+command=php /var/www/backend-ninshiki.com/artisan queue:work --sleep=3 --tries=3 --max-time=3600
 autostart=true
 autorestart=true
 stopasgroup=true
 killasgroup=true
 user=www-data
-numprocs=8
+numprocs=3
 redirect_stderr=true
-stdout_logfile=/home/ninshiki/worker-queue.log
 stopwaitsecs=3600
 ```
 
@@ -221,7 +235,7 @@ Let's create a `ninshiki-worker-pulse.conf` file that starts and monitors `pulse
 ```bash
 [program:ninshiki-worker-pulse]
 process_name=%(program_name)s_%(process_num)02d
-command=php /www/backend-ninshiki.com/artisan pulse:check
+command=php /var/www/backend-ninshiki.com/artisan pulse:check
 autostart=true
 autorestart=true
 stopasgroup=true
@@ -229,7 +243,6 @@ killasgroup=true
 user=www-data
 numprocs=1
 redirect_stderr=true
-stdout_logfile=/home/ninshiki/worker-pulse.log
 ```
 
 
