@@ -109,7 +109,7 @@ class UserResource extends Resource
                     ->label('Department')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('designation')
+                Tables\Columns\TextColumn::make('designation.name')
                     ->label('Designation')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
