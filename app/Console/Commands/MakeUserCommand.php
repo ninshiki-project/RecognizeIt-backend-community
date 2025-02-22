@@ -49,7 +49,7 @@ class MakeUserCommand extends Command
                 validate: fn (string $email): ?string => match (true) {
                     ! filter_var($email, FILTER_VALIDATE_EMAIL) => 'The email address must be valid.',
                     User::where('email', $email)->exists() => 'A user with this email address already exists',
-                    $this->isWhitelistedDomain($email) => 'Unauthorized email domain, please use your organization domain',
+                    ! $this->isWhitelistedDomain($email) => 'Unauthorized email domain, please use your organization domain',
                     default => null,
                 },
             ),
