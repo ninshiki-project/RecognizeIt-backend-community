@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\Api\Concern\AllowedDomain;
+use App\Models\Designations;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -82,7 +83,7 @@ class MakeUserCommand extends Command
             $user = User::create([
                 'name' => $this->options['name'],
                 'email' => $this->options['email'],
-                'designation' => config('ninshiki.designation')[0],
+                'designation' => Designations::first()->id,
             ]);
             $this->callSilently('shield:super-admin', ['--user' => $user->id, '--panel' => 0]);
 
