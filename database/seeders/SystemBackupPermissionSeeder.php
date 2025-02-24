@@ -16,8 +16,8 @@ class SystemBackupPermissionSeeder extends Seeder
     public function run(): void
     {
         $permission1 = Permission::findOrCreate('system backup', 'web');
-        $permission2 = Permission::findOrCreate('download system backup', 'web');
-        $permission3 = Permission::findOrCreate('delete system backup', 'web');
+        $permission2 = Permission::findOrCreate('delete-backup', 'web');
+        $permission3 = Permission::findOrCreate('download-backup', 'web');
         $role = Role::findByName('Administrator');
         $role->givePermissionTo([$permission1, $permission2, $permission3]);
     }
