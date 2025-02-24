@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Concerns\InteractsWithQuotes;
+use App\Filament\Pages\Backups;
 use App\Filament\Pages\ProfilePage;
 use App\Filament\Resources\PostingLimitResource;
 use Filament\Facades\Filament;
@@ -23,6 +24,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use ninshikiProject\GeneralSettings\GeneralSettingsPlugin;
 use Orion\FilamentGreeter\GreeterPlugin;
+use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -77,12 +79,20 @@ class AdminPanelProvider extends PanelProvider
                     ->title(fn () => $this->todayQuote())
                     ->sort(-6)
                     ->columnSpan('full'),
+
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+
                 GeneralSettingsPlugin::make()
                     ->setSort(PostingLimitResource::getNavigationSort() - 1)
                     ->setTitle('API Settings')
                     ->setNavigationLabel('API Settings')
                     ->setNavigationParentItem('Settings'),
+
+                FilamentSpatieLaravelBackupPlugin::make()
+                    ->usingPolingInterval('10s')
+                    ->usingQueue('default')
+                    ->authorize(fn (): bool => auth()->user()->hasPermissionTo('system backup'))
+                    ->usingPage(Backups::class),
             ]);
     }
 }

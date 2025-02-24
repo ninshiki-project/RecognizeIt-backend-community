@@ -36,6 +36,7 @@ class TheSeeder extends Seeder
 
         $customPermissions = [
             ['name' => 'access panel', 'guard_name' => 'web'],
+            ['name' => 'system backup', 'guard_name' => 'web'],
         ];
 
         /**
