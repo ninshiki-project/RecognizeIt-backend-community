@@ -13,12 +13,16 @@
 
 namespace App\Notifications\User\Invitation;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 
-class InvitationNotification extends Notification
+class InvitationNotification extends Notification implements ShouldQueue
 {
+    use Queueable;
+
     public string $frontEndUri;
 
     public function __construct()
