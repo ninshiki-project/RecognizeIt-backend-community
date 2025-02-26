@@ -114,7 +114,7 @@ class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole('Administrator') && $this->status !== UserEnum::Deactivate;
+        return $this->hasPermissionTo('access panel', 'web') && $this->status !== UserEnum::Deactivate;
     }
 
     public function getFilamentAvatarUrl(): ?string
