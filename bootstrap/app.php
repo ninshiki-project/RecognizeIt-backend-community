@@ -26,7 +26,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->expectsJson() || $request->ajax());
-        $exceptions->stopIgnoring(HttpException::class);
         $exceptions->render(function (Throwable $exception, Request $request) {
             if ($request->is('api/*') && $request->wantsJson()) {
                 return app(\App\Exceptions\ApiException::class)->renderApiException($exception);
