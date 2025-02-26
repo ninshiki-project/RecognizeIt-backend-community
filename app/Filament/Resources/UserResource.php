@@ -66,7 +66,7 @@ class UserResource extends Resource
                     })
                     ->reactive()
                     ->revealable()
-                    ->required()
+                    ->nullable()
                     ->password(),
                 Forms\Components\Select::make('department')
                     ->required()

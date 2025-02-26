@@ -35,7 +35,7 @@ class ResetUserCredentialForAdminAccessNotification extends Notification impleme
     public function __construct(private readonly string $tempPassword)
     {
         $this->appName = config('app.name');
-        $this->appUrl = config('app.url').'/'.Filament::getDefaultPanel()->getLoginUrl();
+        $this->appUrl = Filament::getDefaultPanel()->getLoginUrl();
     }
 
     /**
@@ -62,9 +62,8 @@ class ResetUserCredentialForAdminAccessNotification extends Notification impleme
             ->line(new HtmlString("<strong>Email:</strong> {$notifiable->email}"))
             ->line(new HtmlString("<strong>Temporary Password:</strong> {$this->tempPassword}"))
             ->line('')
-            ->line('')
             ->line('For security reasons, we recommend that you change your password as soon as possible after logging in. You can do so by navigating to the "Account Settings" section once you\'re logged in.')
-            ->action('Login to Ninshiki Server', url('/account/settings'))
+            ->action('Login to Ninshiki Server', $this->appUrl)
             ->line('Thank you for joining us, and we look forward to providing you with an amazing experience!')
             ->success();
     }
