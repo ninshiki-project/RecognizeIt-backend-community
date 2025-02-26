@@ -4,7 +4,9 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Jobs\NewAdminUserJob;
 use App\Jobs\NewUserJob;
+use App\Models\Role;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Enums\Alignment;
@@ -25,14 +27,26 @@ class ManageUsers extends ManageRecords
                     $data['added_by'] = auth()->id();
                     $data['status'] = UserEnum::Invited;
                     $data['username'] = Str::slug($data['name'], '_');
+                    if (filled($data['roles'])) {
+                        $role = Role::findById($data['roles'], 'web');
+                        /** @var $role Role */
+                        if ($role->hasPermissionTo('access panel', 'web')) {
+                            $data['password'] = Str::random(12);
+                        }
+                    }
 
                     return $data;
                 })
                 ->after(function ($record) {
-                    // send invitation email
+                    // send invitation email as system user
                     NewUserJob::dispatch($record)
                         ->afterCommit()
                         ->afterResponse();
+                    // send email for the temporary credentials
+                    NewAdminUserJob::dispatch($record)
+                        ->afterCommit()
+                        ->afterResponse();
+
                 })
                 ->createAnother(false),
         ];

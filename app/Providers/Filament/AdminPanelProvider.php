@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Concerns\InteractsWithQuotes;
 use App\Filament\Pages\Backups;
+use App\Filament\Pages\Login;
 use App\Filament\Pages\ProfilePage;
 use App\Filament\Resources\PostingLimitResource;
 use Filament\Facades\Filament;
@@ -37,7 +38,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->authGuard('web')
-            ->login()
+            ->login(Login::class)
             ->colors([
                 'primary' => Color::Teal,
             ])

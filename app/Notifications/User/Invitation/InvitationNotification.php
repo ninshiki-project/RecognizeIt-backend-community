@@ -40,14 +40,14 @@ class InvitationNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * @param  object  $notifiable
+     * @param  mixed  $notifiable
      * @return MailMessage
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject('You are invited to join '.config('app.name').' - Join Our Recognition System Today!')
-            ->greeting('Hello!')
+            ->greeting("Hello $notifiable->name!")
             ->line('We are thrilled to extend to you an invitation to join our cutting-edge Recognition System! 🌟')
             ->line('We believe in celebrating the exceptional contributions of every member of our team. Our Recognition System is designed to shine a spotlight on your hard work, dedication, and achievements within our community.')
             ->line(new HtmlString('<strong>Key Features of Our Ninshiki System:</strong>'))
@@ -69,7 +69,8 @@ class InvitationNotification extends Notification implements ShouldQueue
             ->line('Joining our Recognition System is simple! Just click the button below to get started:')
             ->action('Visit', $this->frontEndUri)
             ->line("By joining, you'll not only be part of a culture of appreciation and support but also contribute to fostering a positive work environment where everyone's efforts are acknowledged and valued.")
-            ->line('Thank you for using our application!');
+            ->line('Thank you for using our application!')
+            ->success();
     }
 
     /**
