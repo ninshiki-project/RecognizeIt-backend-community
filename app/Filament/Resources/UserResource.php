@@ -183,7 +183,7 @@ class UserResource extends Resource
                         ->modalAlignment(Alignment::Center)
                         ->icon('heroicon-o-user-circle')
                         ->label('Update Status'),
-                    Tables\Actions\Action::make('resend_password')
+                    Tables\Actions\Action::make('resend_invitation')
                         ->action(function (User $user) {
                             if ($user->hasPermissionTo('access panel')) {
                                 NewAdminUserJob::dispatch($user)
@@ -193,6 +193,12 @@ class UserResource extends Resource
                             NewUserJob::dispatch($user)
                                 ->afterCommit()
                                 ->afterResponse();
+
+                            Notification::make('resend_invitation')
+                                ->icon('heroicon-o-paper-airplane')
+                                ->body('Email Invitation email has been sent.')
+                                ->success()
+                                ->send();
                         })
                         ->visible(fn (User $user): bool => $user->status === UserEnum::Invited)
                         ->requiresConfirmation()
