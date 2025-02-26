@@ -21,7 +21,6 @@ use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 
 class UserResource extends Resource
 {
@@ -57,7 +56,8 @@ class UserResource extends Resource
                     ->hidden(function (Forms\Get $get): bool {
                         if (! is_null($get('roles'))) {
                             $role = Role::findById($get('roles'), 'web');
-                            if (filled($get('roles')) && Str::of($role->name)->lower()->contains('administrator')) {
+                            /** @var $role Role */
+                            if ($role->hasPermissionTo('access panel', 'web')) {
                                 return false;
                             }
                         }
@@ -66,7 +66,7 @@ class UserResource extends Resource
                     })
                     ->reactive()
                     ->revealable()
-                    ->required(fn (Forms\Get $get): bool => $get('roles') && $get('roles') === 'Administrator')
+                    ->required()
                     ->password(),
                 Forms\Components\Select::make('department')
                     ->required()

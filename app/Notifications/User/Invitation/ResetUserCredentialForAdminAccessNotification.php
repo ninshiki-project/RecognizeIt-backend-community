@@ -38,11 +38,19 @@ class ResetUserCredentialForAdminAccessNotification extends Notification impleme
         $this->appUrl = config('app.url').'/'.Filament::getDefaultPanel()->getLoginUrl();
     }
 
+    /**
+     * @param  mixed  $notifiable
+     * @return string[]
+     */
     public function via($notifiable): array
     {
         return ['mail'];
     }
 
+    /**
+     * @param  mixed  $notifiable
+     * @return MailMessage
+     */
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
@@ -59,10 +67,5 @@ class ResetUserCredentialForAdminAccessNotification extends Notification impleme
             ->action('Login to Ninshiki Server', url('/account/settings'))
             ->line('Thank you for joining us, and we look forward to providing you with an amazing experience!')
             ->success();
-    }
-
-    public function toArray($notifiable): array
-    {
-        return [];
     }
 }
