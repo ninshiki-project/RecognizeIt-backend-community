@@ -5,11 +5,15 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
 use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Jobs\AdminPasswordResetRequestJob;
+use App\Jobs\NewAdminUserJob;
+use App\Jobs\NewUserJob;
 use App\Models\Designations;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Alignment;
@@ -17,6 +21,7 @@ use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class UserResource extends Resource
 {
@@ -41,18 +46,27 @@ class UserResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('roles')
                     ->required()
-                    ->live()
-                    ->reactive()
+                    ->live(onBlur: true)
                     ->native(false)
                     ->visibleOn('create')
                     ->preload()
                     ->relationship('roles', 'name'),
                 Forms\Components\TextInput::make('password')
-                    ->reactive()
+                    ->hintIcon('heroicon-o-exclamation-circle', tooltip: 'If password field is leave blank, then the system will generate a random password.')
                     ->visibleOn('create')
-                    ->hidden(fn (Forms\Get $get): bool => ! $get('roles') || $get('roles') === 'Member')
+                    ->hidden(function (Forms\Get $get): bool {
+                        if (! is_null($get('roles'))) {
+                            $role = Role::findById($get('roles'), 'web');
+                            if (filled($get('roles')) && Str::of($role->name)->lower()->contains('administrator')) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    })
+                    ->reactive()
                     ->revealable()
-                    ->required(fn (Forms\Get $get): bool => ! $get('roles') || $get('roles') === 'Administrator')
+                    ->required(fn (Forms\Get $get): bool => $get('roles') && $get('roles') === 'Administrator')
                     ->password(),
                 Forms\Components\Select::make('department')
                     ->required()
@@ -93,8 +107,8 @@ class UserResource extends Resource
                 Tables\Columns\IconColumn::make('status')
                     ->tooltip(function (User $user): string {
                         return match ($user->status) {
-                            UserEnum::Invited => 'User is Invited',
-                            UserEnum::Active => 'User is Active',
+                            UserEnum::Invited => 'Invited',
+                            UserEnum::Active => 'Active',
                             UserEnum::Deactivate => 'User has been Deactivated by the administrator',
                             default => '',
                         };
@@ -103,6 +117,7 @@ class UserResource extends Resource
                     ->label('Role')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->copyable()
                     ->label('Email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('departments.name')
@@ -168,6 +183,38 @@ class UserResource extends Resource
                         ->modalAlignment(Alignment::Center)
                         ->icon('heroicon-o-user-circle')
                         ->label('Update Status'),
+                    Tables\Actions\Action::make('resend_password')
+                        ->action(function (User $user) {
+                            if ($user->hasPermissionTo('access panel')) {
+                                NewAdminUserJob::dispatch($user)
+                                    ->afterResponse()
+                                    ->afterCommit();
+                            }
+                            NewUserJob::dispatch($user)
+                                ->afterCommit()
+                                ->afterResponse();
+                        })
+                        ->visible(fn (User $user): bool => $user->status === UserEnum::Invited)
+                        ->requiresConfirmation()
+                        ->modalFooterActionsAlignment(Alignment::Right)
+                        ->icon('heroicon-o-arrow-path')
+                        ->label('Resend Invitation Email'),
+                    Tables\Actions\Action::make('password_reset')
+                        ->action(function (User $user) {
+                            AdminPasswordResetRequestJob::dispatch($user)
+                                ->afterResponse()
+                                ->afterCommit();
+                            Notification::make('password_reset')
+                                ->icon('heroicon-o-paper-airplane')
+                                ->body('Password reset email has been sent.')
+                                ->success()
+                                ->send();
+                        })
+                        ->visible(fn (User $user): bool => $user->hasPermissionTo('access panel'))
+                        ->requiresConfirmation()
+                        ->modalFooterActionsAlignment(Alignment::Right)
+                        ->icon('heroicon-o-finger-print')
+                        ->label('Request Password Reset'),
                     Tables\Actions\Action::make('update_role')
                         ->form([
                             Forms\Components\Select::make('roles')

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Jobs\NewAdminUserJob;
 use App\Jobs\NewUserJob;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
@@ -29,10 +30,15 @@ class ManageUsers extends ManageRecords
                     return $data;
                 })
                 ->after(function ($record) {
-                    // send invitation email
+                    // send invitation email as system user
                     NewUserJob::dispatch($record)
                         ->afterCommit()
                         ->afterResponse();
+                    // send email for the temporary credentials
+                    NewAdminUserJob::dispatch($record)
+                        ->afterCommit()
+                        ->afterResponse();
+
                 })
                 ->createAnother(false),
         ];

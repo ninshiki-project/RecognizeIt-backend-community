@@ -69,7 +69,8 @@ class InvitationNotification extends Notification implements ShouldQueue
             ->line('Joining our Recognition System is simple! Just click the button below to get started:')
             ->action('Visit', $this->frontEndUri)
             ->line("By joining, you'll not only be part of a culture of appreciation and support but also contribute to fostering a positive work environment where everyone's efforts are acknowledged and valued.")
-            ->line('Thank you for using our application!');
+            ->line('Thank you for using our application!')
+            ->success();
     }
 
     /**
