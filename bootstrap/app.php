@@ -18,11 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ['prefix' => 'api', 'middleware' => ['api', 'auth:sanctum']],
     )
     ->withSchedule(function (Schedule $schedule) {})
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->remove([
-            \Illuminate\Http\Middleware\TrustProxies::class,
-        ]);
-    })
+    ->withMiddleware(function (Middleware $middleware) {})
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->expectsJson() || $request->ajax());
         $exceptions->render(function (Throwable $exception, Request $request) {
