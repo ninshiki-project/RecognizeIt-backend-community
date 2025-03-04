@@ -71,7 +71,7 @@ class GeoIPAPI extends AbstractService
             'iso_code' => $json->continentCode,
             'country' => $json->countryName,
             'city' => $json->cityName,
-            'state' => $json->continent,
+            'state' => $json->countryName,
             'state_name' => $json->countryName,
             'postal_code' => $json->zipCode,
             'lat' => $json->latitude,
