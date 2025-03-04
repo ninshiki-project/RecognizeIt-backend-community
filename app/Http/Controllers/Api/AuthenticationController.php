@@ -21,6 +21,7 @@ use App\Http\Resources\ProfileResource;
 use App\Http\Services\Facades\ZohoFacade;
 use App\Http\Services\Zoho\Zoho;
 use App\Models\User;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -164,6 +165,7 @@ class AuthenticationController extends Controller
          * Dispatch event for user logout
          */
         UserLogout::dispatch($request->user());
+        event(new Logout('web', $request->user()));
 
         return response()->json('', Response::HTTP_ACCEPTED);
     }

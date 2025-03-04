@@ -16,3 +16,4 @@ Schedule::call(fn () => \App\Events\Broadcast\SessionHealthCheckEvent::dispatch(
 Schedule::command('pulse:clear --force')
     ->at('23:59')
     ->sundays();
+Schedule::command('authentication-log:purge')->monthly();

@@ -19,6 +19,7 @@ use Filament\Facades\Filament;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Pages\Auth\Login as LoginBase;
+use MarJose123\NinshikiEvent\Events\Session\UserLogin;
 
 class Login extends LoginBase
 {
@@ -53,6 +54,8 @@ class Login extends LoginBase
         $user->save();
 
         session()->regenerate();
+
+        UserLogin::dispatch($user);
 
         return app(LoginResponse::class);
     }

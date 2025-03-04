@@ -32,12 +32,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Overtrue\LaravelLike\Traits\Liker;
+use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
 {
-    use CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable;
+    use AuthenticationLoggable, CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable;
 
     /**
      * The attributes that are mass assignable.
