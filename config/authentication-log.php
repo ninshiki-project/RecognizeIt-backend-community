@@ -52,10 +52,10 @@ return [
 
     // If you are behind an CDN proxy, set 'behind_cdn.http_header_field' to the corresponding http header field of your cdn
     // For cloudflare you can have look at: https://developers.cloudflare.com/fundamentals/get-started/reference/http-request-headers/
-//    'behind_cdn' => [
-//        'http_header_field' => 'X-Forwarded-For', // used by Cloudflare
-//    ],
+    //    'behind_cdn' => [
+    //        'http_header_field' => 'X-Forwarded-For', // used by Cloudflare
+    //    ],
 
     // If you are not a cdn user, use false
-        'behind_cdn' => true,
+    'behind_cdn' => false,
 ];

@@ -19,7 +19,24 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withSchedule(function (Schedule $schedule) {})
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->trustProxies(headers: Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST);
+        $environment = env('APP_ENV');
+
+        switch ($environment) {
+            case 'production':
+                $middleware->trustProxies(
+                    at: '*',
+                    headers: Request::HEADER_X_FORWARDED_FOR
+                );
+                break;
+
+            default:
+                // Local/Development Configuration
+                $middleware->trustProxies(
+                    at: ['127.0.0.1', '::1'],
+                    headers: Request::HEADER_X_FORWARDED_FOR |
+                    Request::HEADER_X_FORWARDED_PROTO
+                );
+        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->expectsJson() || $request->ajax());
