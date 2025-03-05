@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\Api\Concern\AllowedDomain;
 use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Models\Departments;
 use App\Models\Designations;
@@ -20,8 +19,6 @@ use function Laravel\Prompts\text;
 #[AsCommand(name: 'make:ninshiki-user')]
 class MakeUserCommand extends Command
 {
-    use AllowedDomain;
-
     protected $signature = 'make:ninshiki-user
                             {--name= : The name of the user}
                             {--email= : A valid and unique email address}
@@ -49,7 +46,6 @@ class MakeUserCommand extends Command
                 validate: fn (string $email): ?string => match (true) {
                     ! filter_var($email, FILTER_VALIDATE_EMAIL) => 'The email address must be valid.',
                     User::where('email', $email)->exists() => 'A user with this email address already exists',
-                    ! $this->isWhitelistedDomain($email) => 'Unauthorized email domain, please use your organization domain',
                     default => null,
                 },
             ),

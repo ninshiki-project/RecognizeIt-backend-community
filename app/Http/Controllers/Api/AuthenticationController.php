@@ -13,7 +13,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Concern\AllowedDomain;
 use App\Http\Controllers\Api\Enum\UserEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginViaEmailRequest;
@@ -34,7 +33,6 @@ use Throwable;
 
 class AuthenticationController extends Controller
 {
-    use AllowedDomain;
     use Concern\Zoho;
 
     public string $url;

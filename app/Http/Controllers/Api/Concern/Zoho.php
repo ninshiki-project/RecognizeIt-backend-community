@@ -24,8 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 trait Zoho
 {
-    use AllowedDomain;
-
     public function isZohoSocialiteInstalled(): bool
     {
         return InstalledVersions::isInstalled('socialiteproviders/zoho');
@@ -43,14 +41,6 @@ trait Zoho
         $accessToken = Arr::get($tokenRequest, 'access_token');
         // @phpstan-ignore-next-line
         $userProvider = ZohoFacade::setAccessToken($accessToken)->getUserInfo();
-
-        // @phpstan-ignore-next-line
-        if (! $this->isWhitelistedDomain($userProvider->email)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized email domain, please try again later.',
-            ], Response::HTTP_UNAUTHORIZED);
-        }
 
         // @phpstan-ignore-next-line
         $user = User::where('email', $userProvider->email)->first();
