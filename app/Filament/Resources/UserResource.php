@@ -48,13 +48,12 @@ class UserResource extends Resource
                     ->live(onBlur: true)
                     ->native(false)
                     ->visibleOn('create')
-                    ->preload()
                     ->relationship('roles', 'name'),
                 Forms\Components\TextInput::make('password')
                     ->hintIcon('heroicon-o-exclamation-circle', tooltip: 'If password field is leave blank, then the system will generate a random password.')
                     ->visibleOn('create')
-                    ->hidden(function (Forms\Get $get): bool {
-                        if (! is_null($get('roles'))) {
+                    ->hidden(function (Forms\Get $get, $operation): bool {
+                        if (! is_null($get('roles')) && $operation === 'create') {
                             $role = Role::findById($get('roles'), 'web');
                             /** @var $role Role */
                             if ($role->hasPermissionTo('access panel', 'web')) {
