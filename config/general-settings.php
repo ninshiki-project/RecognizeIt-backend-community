@@ -26,6 +26,35 @@ return [
                 ],
             ],
         ],
+        'Gifting' => [
+            'label' => 'Gifting',
+            'icon' => 'heroicon-o-gift',
+            'columns' => 4,
+            'fields' => [
+                'enabled' => [
+                    'type' => TypeFieldEnum::Toggle,
+                    'label' => 'Enabled',
+                ],
+                'count_limit' => [
+                    'type' => TypeFieldEnum::Text,
+                    'label' => 'Limit Count',
+                    'placeholder' => '10',
+                    'required' => true,
+                    'rules' => 'required|numeric|min:1',
+                ],
+                'frequency' => [
+                    'type' => TypeFieldEnum::Select,
+                    'label' => 'Frequency',
+                    'placeholder' => 'Select Frequency',
+                    'required' => true,
+                    'options' => [
+                        'monthly' => 'Monthly',
+                        'weekly' => 'Weekly',
+                        'yearly' => 'Yearly',
+                    ],
+                ],
+            ],
+        ],
         'maintenance' => [
             'label' => 'Maintenance',
             'icon' => 'heroicon-o-wrench-screwdriver',
