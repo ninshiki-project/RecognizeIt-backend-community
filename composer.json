@@ -11,6 +11,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "aaronfrancis/fast-paginate": "^2.0",
         "aymanalhattami/filament-slim-scrollbar": "^2.0",
         "bavix/laravel-wallet": "^11.2",
         "bavix/laravel-wallet-uuid": "^3.0",
@@ -22,7 +23,6 @@
         "doctrine/dbal": "^4.0",
         "dotswan/filament-laravel-pulse": "^1.1",
         "filament/filament": "^3.2",
-        "hammerstone/fast-paginate": "^1.1",
         "laravel/framework": "^11.31",
         "laravel/pulse": "^1.3",
         "laravel/reverb": "^1.0",
@@ -45,6 +45,7 @@
         "wildside/userstamps": "^2.4"
     },
     "require-dev": {
+        "buggregator/trap": "^1.13",
         "enlightn/enlightn": "^2.10",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^2.9",
@@ -110,9 +111,17 @@
             "Composer\\Config::disableProcessTimeout",
             ".bin/mailpit"
         ],
-        "dev": [
+        "debugger": [
+            "Composer\\Config::disableProcessTimeout",
+            "./vendor/bin/trap --ui"
+        ],
+        "dev:unix": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"php artisan reverb:start --hostname=ninshiki-backend.test --port=8080\" --names=server,queue,logs,reverb"
+        ],
+        "dev:windows": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan reverb:start --hostname=ninshiki-backend.test --port=8080\" --names=server,queue,reverb"
         ]
     },
     "scripts-descriptions": {
