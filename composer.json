@@ -122,7 +122,7 @@
         ],
         "dev:windows": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan reverb:start --hostname=ninshiki-backend.test --port=8080\" --names=server,queue,reverb"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan reverb:start --hostname=ninshiki-backend.test --port=8080\" --names=server,queue,reverb"
         ]
     },
     "scripts-descriptions": {
