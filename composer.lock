@@ -5662,16 +5662,16 @@
         },
         {
             "name": "ninshiki-project/general-settings",
-            "version": "1.0.6",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ninshiki-project/general-settings.git",
-                "reference": "92d03e3d0f400eb885bffc51d3db199c4b98078a"
+                "reference": "9c6be0938134e405424bc043ab08a93125e6b765"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ninshiki-project/general-settings/zipball/92d03e3d0f400eb885bffc51d3db199c4b98078a",
-                "reference": "92d03e3d0f400eb885bffc51d3db199c4b98078a",
+                "url": "https://api.github.com/repos/ninshiki-project/general-settings/zipball/9c6be0938134e405424bc043ab08a93125e6b765",
+                "reference": "9c6be0938134e405424bc043ab08a93125e6b765",
                 "shasum": ""
             },
             "require": {
@@ -5721,9 +5721,9 @@
                 "ninshiki-project"
             ],
             "support": {
-                "source": "https://github.com/ninshiki-project/general-settings/tree/1.0.6"
+                "source": "https://github.com/ninshiki-project/general-settings/tree/1.0.7"
             },
-            "time": "2025-03-13T03:23:32+00:00"
+            "time": "2025-03-13T08:29:51+00:00"
         },
         {
             "name": "ninshiki-project/ninshiki-event",

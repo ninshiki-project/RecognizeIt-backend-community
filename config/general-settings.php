@@ -56,6 +56,7 @@ return [
                 'exchange_rate' => [
                     'type' => TypeFieldEnum::Text,
                     'label' => 'Coins Conversion Rate',
+                    'help' => 'This will be used when converting the gift coins to wallet.',
                     'placeholder' => '.50',
                     'required' => true,
                     'rules' => 'required|numeric',
