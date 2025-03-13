@@ -53,6 +53,13 @@ return [
                         'yearly' => 'Yearly',
                     ],
                 ],
+                'exchange_rate' => [
+                    'type' => TypeFieldEnum::Text,
+                    'label' => 'Coins Conversion Rate',
+                    'placeholder' => '.50',
+                    'required' => true,
+                    'rules' => 'required|numeric',
+                ],
             ],
         ],
         'maintenance' => [
