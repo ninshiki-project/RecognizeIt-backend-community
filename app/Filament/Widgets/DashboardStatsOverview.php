@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Enum\UserEnum;
 use App\Models\Products;
 use App\Models\Redeem;
 use App\Models\Scopes\ProductAvailableScope;

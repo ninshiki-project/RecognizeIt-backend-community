@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\RedeemResource\Pages;
 
 use App\Filament\Resources\RedeemResource;
-use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
+use App\Enum\RedeemStatusEnum;
 use App\Models\Redeem;
 use Filament\Resources\Components;
 use Filament\Resources\Pages\ManageRecords;

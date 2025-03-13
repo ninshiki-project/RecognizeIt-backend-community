@@ -14,7 +14,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Enum\UserEnum;
 use App\Observers\UserObserver;
 use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Traits\CanPay;

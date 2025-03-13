@@ -13,7 +13,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Controllers\Api\Enum\ProductStatusEnum;
+use App\Enum\ProductStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

@@ -13,7 +13,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Enum\ProductStatusEnum;
+use App\Enum\ProductStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetProductRequest;
 use App\Http\Requests\ProductRequest;

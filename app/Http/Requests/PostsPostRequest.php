@@ -13,7 +13,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Controllers\Api\Enum\PostTypeEnum;
+use App\Enum\PostTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\ProductsResource\Widgets;
 
-use App\Http\Controllers\Api\Enum\ProductStatusEnum;
+use App\Enum\ProductStatusEnum;
 use App\Models\Products;
 use App\Models\Scopes\ProductAvailableScope;
 use Filament\Support\Colors\Color;

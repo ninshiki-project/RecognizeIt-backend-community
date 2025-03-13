@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\UserResource\Widgets;
 
-use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Enum\UserEnum;
 use App\Models\User;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;

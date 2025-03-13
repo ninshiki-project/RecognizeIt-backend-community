@@ -13,7 +13,7 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\Api\Enum\ProductStatusEnum;
+use App\Enum\ProductStatusEnum;
 use App\Models\Scopes\ProductAvailableScope;
 use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Interfaces\ProductInterface;

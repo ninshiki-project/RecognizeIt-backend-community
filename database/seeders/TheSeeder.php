@@ -13,7 +13,7 @@
 
 namespace Database\Seeders;
 
-use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Enum\UserEnum;
 use App\Models\Departments;
 use App\Models\Designations;
 use App\Models\Permission;

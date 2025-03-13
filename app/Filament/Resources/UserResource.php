@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
-use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Enum\UserEnum;
 use App\Jobs\AdminPasswordResetRequestJob;
 use App\Jobs\NewAdminUserJob;
 use App\Jobs\NewUserJob;
