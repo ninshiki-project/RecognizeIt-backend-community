@@ -3368,16 +3368,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.44.1",
+            "version": "v11.44.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "0883d4175f4e2b5c299e7087ad3c74f2ce195c6d"
+                "reference": "f85216c82cbd38b66d67ebd20ea762cb3751a4b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/0883d4175f4e2b5c299e7087ad3c74f2ce195c6d",
-                "reference": "0883d4175f4e2b5c299e7087ad3c74f2ce195c6d",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/f85216c82cbd38b66d67ebd20ea762cb3751a4b4",
+                "reference": "f85216c82cbd38b66d67ebd20ea762cb3751a4b4",
                 "shasum": ""
             },
             "require": {
@@ -3579,7 +3579,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-03-05T15:34:10+00:00"
+            "time": "2025-03-12T14:34:30+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -3729,16 +3729,16 @@
         },
         {
             "name": "laravel/reverb",
-            "version": "v1.4.6",
+            "version": "v1.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/reverb.git",
-                "reference": "e3aaca3a721526767071cb0607458a86b2ad0732"
+                "reference": "fc74de95c55e71b1ddbcf10d18d7c54226b7a535"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/reverb/zipball/e3aaca3a721526767071cb0607458a86b2ad0732",
-                "reference": "e3aaca3a721526767071cb0607458a86b2ad0732",
+                "url": "https://api.github.com/repos/laravel/reverb/zipball/fc74de95c55e71b1ddbcf10d18d7c54226b7a535",
+                "reference": "fc74de95c55e71b1ddbcf10d18d7c54226b7a535",
                 "shasum": ""
             },
             "require": {
@@ -3805,9 +3805,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/reverb/issues",
-                "source": "https://github.com/laravel/reverb/tree/v1.4.6"
+                "source": "https://github.com/laravel/reverb/tree/v1.4.7"
             },
-            "time": "2025-01-28T15:14:46+00:00"
+            "time": "2025-03-06T14:39:07+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -4792,16 +4792,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.6.1",
+            "version": "v3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "0df0a762698176d714e42e2dfed92b6b9e24b8e4"
+                "reference": "8f8914731f5eb43b6bb145d87c8d5a9edfc89313"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/0df0a762698176d714e42e2dfed92b6b9e24b8e4",
-                "reference": "0df0a762698176d714e42e2dfed92b6b9e24b8e4",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/8f8914731f5eb43b6bb145d87c8d5a9edfc89313",
+                "reference": "8f8914731f5eb43b6bb145d87c8d5a9edfc89313",
                 "shasum": ""
             },
             "require": {
@@ -4856,7 +4856,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.6.1"
+                "source": "https://github.com/livewire/livewire/tree/v3.6.2"
             },
             "funding": [
                 {
@@ -4864,7 +4864,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-04T21:48:52+00:00"
+            "time": "2025-03-12T20:24:15+00:00"
         },
         {
             "name": "mailersend/laravel-driver",
@@ -5662,16 +5662,16 @@
         },
         {
             "name": "ninshiki-project/general-settings",
-            "version": "1.0.5",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ninshiki-project/general-settings.git",
-                "reference": "e8c7bbe549b2ba08cc2915727ccc081c6347b8c8"
+                "reference": "92d03e3d0f400eb885bffc51d3db199c4b98078a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ninshiki-project/general-settings/zipball/e8c7bbe549b2ba08cc2915727ccc081c6347b8c8",
-                "reference": "e8c7bbe549b2ba08cc2915727ccc081c6347b8c8",
+                "url": "https://api.github.com/repos/ninshiki-project/general-settings/zipball/92d03e3d0f400eb885bffc51d3db199c4b98078a",
+                "reference": "92d03e3d0f400eb885bffc51d3db199c4b98078a",
                 "shasum": ""
             },
             "require": {
@@ -5721,9 +5721,9 @@
                 "ninshiki-project"
             ],
             "support": {
-                "source": "https://github.com/ninshiki-project/general-settings/tree/1.0.5"
+                "source": "https://github.com/ninshiki-project/general-settings/tree/1.0.6"
             },
-            "time": "2025-03-12T06:43:48+00:00"
+            "time": "2025-03-13T03:23:32+00:00"
         },
         {
             "name": "ninshiki-project/ninshiki-event",
