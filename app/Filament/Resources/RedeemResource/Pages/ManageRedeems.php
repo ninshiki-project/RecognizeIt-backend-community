@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\RedeemResource\Pages;
 
-use App\Filament\Resources\RedeemResource;
 use App\Enum\RedeemStatusEnum;
+use App\Filament\Resources\RedeemResource;
 use App\Models\Redeem;
 use Filament\Resources\Components;
 use Filament\Resources\Pages\ManageRecords;

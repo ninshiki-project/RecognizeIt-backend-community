@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
-use App\Filament\Resources\UserResource;
 use App\Enum\UserEnum;
+use App\Filament\Resources\UserResource;
 use App\Jobs\NewAdminUserJob;
 use App\Jobs\NewUserJob;
 use App\Models\User;
