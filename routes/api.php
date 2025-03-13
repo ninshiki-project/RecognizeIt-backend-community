@@ -122,6 +122,7 @@ Route::middleware([
         // Gift
         Route::prefix('gifts')->group(function () {
             Route::get('/', [GiftController::class, 'index']);
+            Route::post('/send', [GiftController::class, 'store']);
             // feature
             Route::post('/enable', [GiftController::class, 'enable']);
         });
