@@ -27,7 +27,7 @@ return [
             ],
         ],
         'gift' => [
-            'label' => 'Gifting',
+            'label' => 'Gift',
             'icon' => 'heroicon-o-gift',
             'columns' => 4,
             'fields' => [
