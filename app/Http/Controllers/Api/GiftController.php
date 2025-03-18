@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enum\GiftEnum;
+use App\Enum\GiftFrequencyEnum;
 use App\Enum\WalletsEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GiftRequest;
 use App\Http\Resources\GiftResource;
+use App\Http\Resources\UserPostedByResource;
 use App\Models\Application;
 use App\Models\Gift;
 use App\Models\User;
@@ -91,12 +93,15 @@ class GiftController extends Controller
      */
     public function store(GiftRequest $request)
     {
+
         // check if the feature is enabled or not.
-        if (! Application::first()->more_configs['gift']['enable']) {
+        $giftFeature = Application::first()->more_configs['gift'];
+        if (! $giftFeature['enable']) {
             throw ValidationException::withMessages([
                 'error' => 'Gift feature is not enable in the system.',
             ]);
         }
+
         // Temporary disable the shop gifting
         if ($request->type === GiftEnum::SHOP) {
             throw ValidationException::withMessages([
@@ -104,14 +109,63 @@ class GiftController extends Controller
             ]);
         }
 
-        $exchangeRate = Application::first()->more_configs['gift']['exchange_rate'] ?? 1;
+        $sender = $request->has('by') ? User::find($request->by)->first() : auth()->user();
+
+        if ($sender->id === $request->to) {
+            throw ValidationException::withMessages([
+                'by' => 'You can\'t send gift to yourself.',
+            ]);
+        }
+
+        // validate the sending of gift based on the frequency allowed
+        $giftingFrequency = $giftFeature['frequency'];
+        $giftingLimitCount = $giftFeature['count_limit'];
+
+        if ($giftingFrequency === GiftFrequencyEnum::MONTHLY) {
+            $sentGiftThisMonth = Gift::sentGiftInAMonth(auth()->user());
+            if ($giftingLimitCount > $sentGiftThisMonth) {
+                throw ValidationException::withMessages([
+                    'by' => sprintf('You are not allowed to send gift for more than %s in a month.', $giftingLimitCount),
+                ]);
+            }
+        }
+
+        if ($giftingFrequency === GiftFrequencyEnum::WEEKLY) {
+            $sentGiftThisWeek = Gift::sentGiftInAWeek(auth()->user());
+            if ($giftingLimitCount > $sentGiftThisWeek) {
+                throw ValidationException::withMessages([
+                    'by' => sprintf('You are not allowed to send gift for more than %s in a week.', $giftingLimitCount),
+                ]);
+            }
+        }
+
+        if ($giftingFrequency === GiftFrequencyEnum::YEARLY) {
+            $sentGiftThisYear = Gift::sentGiftInAYear(auth()->user());
+            if ($giftingLimitCount > $sentGiftThisYear) {
+                throw ValidationException::withMessages([
+                    'by' => sprintf('You are not allowed to send gift for more than %s in a year.', $giftingLimitCount),
+                ]);
+            }
+        }
+
+        $exchangeRate = $giftFeature['exchange_rate'] ?? 1;
         $convertedAmount = $request->amount * $exchangeRate;
 
         $giftRecord = Gift::create([
             'type' => $request->type,
             'amount' => $request->amount,
             'to' => $request->to,
-            'by' => $request->by,
+            'by' => $sender->id,
+            'gift' => [
+                'type' => $request->type,
+                'exchange_rate' => $exchangeRate,
+                'converted_amount' => $convertedAmount,
+                'amount' => $request->amount,
+                'users' => [
+                    'sender' => UserPostedByResource::make($sender),
+                    'receiver' => UserPostedByResource::make(User::find($request->to)->first()),
+                ],
+            ],
         ]);
 
         $recipientUser = User::find($request->to)->first();

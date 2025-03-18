@@ -47,11 +47,7 @@ return [
                     'label' => 'Frequency',
                     'placeholder' => 'Select Frequency',
                     'required' => true,
-                    'options' => [
-                        'monthly' => 'Monthly',
-                        'weekly' => 'Weekly',
-                        'yearly' => 'Yearly',
-                    ],
+                    'options' => \App\Enum\GiftFrequencyEnum::class,
                 ],
                 'exchange_rate' => [
                     'type' => TypeFieldEnum::Text,
