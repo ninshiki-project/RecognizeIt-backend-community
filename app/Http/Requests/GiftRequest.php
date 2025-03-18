@@ -23,9 +23,9 @@ class GiftRequest extends FormRequest
     {
         return [
             // User ID
-            'by' => ['required', 'exists:users'],
+            'by' => ['required', 'exists:users', 'different:to'],
             // User ID
-            'to' => ['required', 'exists:users'],
+            'to' => ['required', 'exists:users', 'different:by'],
             'type' => ['required', Rule::enum(GiftEnum::class)->only([GiftEnum::SHOP, GiftEnum::COINS])],
             // This only required if the type is shop
             'shop' => ['nullable', 'exists:shops,id', 'required_if:type,'.GiftEnum::SHOP->value],

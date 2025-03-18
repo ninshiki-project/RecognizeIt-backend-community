@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enum\GiftEnum;
+use App\Enum\WalletsEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GiftRequest;
 use App\Http\Resources\GiftResource;
 use App\Models\Application;
 use App\Models\Gift;
+use App\Models\User;
+use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 
@@ -75,10 +80,14 @@ class GiftController extends Controller
     }
 
     /**
-     * Send Gift to other Employee
+     * Send Gift to Employee/User
+     *
+     * This transaction is not reversible
      *
      * @param  GiftRequest  $request
-     * @return void
+     * @return JsonResponse
+     *
+     * @throws ExceptionInterface
      */
     public function store(GiftRequest $request)
     {
@@ -88,6 +97,51 @@ class GiftController extends Controller
                 'error' => 'Gift feature is not enable in the system.',
             ]);
         }
+        // Temporary disable the shop gifting
+        if ($request->type === GiftEnum::SHOP) {
+            throw ValidationException::withMessages([
+                'type' => 'Gifting shop item is temporarily disabled.',
+            ]);
+        }
+
+        $exchangeRate = Application::first()->more_configs['gift']['exchange_rate'] ?? 1;
+        $convertedAmount = $request->amount * $exchangeRate;
+
+        $giftRecord = Gift::create([
+            'type' => $request->type,
+            'amount' => $request->amount,
+            'to' => $request->to,
+            'by' => $request->by,
+        ]);
+
+        $recipientUser = User::find($request->to)->first();
+        $recipientWallet = $recipientUser->getWallet(WalletsEnum::DEFAULT->value);
+        $recipientWallet->deposit($convertedAmount, [
+            'title' => 'Ninshiki Wallet',
+            'model' => [
+                'model' => Gift::class,
+                'record' => $giftRecord,
+            ],
+            'description' => 'One of your colleague sent you a coins as a gift.',
+            'date_at' => Carbon::now(),
+        ]);
+
+        $senderUser = User::find($request->by)->first();
+        $senderWallet = $senderUser->getWallet(WalletsEnum::SPEND->value);
+        $senderWallet->withdraw($request->amount, [
+            'title' => 'Spend Wallet',
+            'model' => [
+                'model' => Gift::class,
+                'record' => $giftRecord,
+            ],
+            'description' => 'You sent a coins to your colleague as a gift.',
+            'date_at' => Carbon::now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Gift has been sent successfully.',
+        ]);
 
     }
 }
