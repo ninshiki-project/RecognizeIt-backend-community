@@ -13,6 +13,8 @@
 
 namespace App\Models;
 
+use App\Enum\GiftEnum;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Gift extends Model
 {
-    use HasFactory, HasUuids;
+    use Compoships, HasFactory, HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -44,6 +46,11 @@ class Gift extends Model
         return $this->belongsTo(User::class, 'to');
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, ['by', 'to'], ['id', 'id']);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -54,7 +61,7 @@ class Gift extends Model
         return [
             'id' => 'string',
             'gift' => 'array',
-            'type' => Gift::class,
+            'type' => GiftEnum::class,
         ];
     }
 }

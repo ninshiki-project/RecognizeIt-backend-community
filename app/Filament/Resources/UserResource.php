@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enum\UserEnum;
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers\GiftsRelationManager;
 use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
 use App\Jobs\AdminPasswordResetRequestJob;
 use App\Jobs\NewAdminUserJob;
@@ -14,6 +15,7 @@ use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
+use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Alignment;
@@ -21,6 +23,7 @@ use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Tapp\FilamentAuthenticationLog\RelationManagers\AuthenticationLogsRelationManager;
 
 class UserResource extends Resource
 {
@@ -293,6 +296,20 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ManageUsers::route('/'),
+            'view' => Pages\ViewUser::route('/{record}'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationGroup::make('Gifts', [
+                GiftsRelationManager::class,
+            ]),
+            RelationGroup::make('Access Logs', [
+                AuthenticationLogsRelationManager::class,
+            ]),
+
         ];
     }
 }
