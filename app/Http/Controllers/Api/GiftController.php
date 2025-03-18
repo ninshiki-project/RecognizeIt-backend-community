@@ -109,7 +109,7 @@ class GiftController extends Controller
             ]);
         }
 
-        $sender = $request->has('by') ? User::find($request->by)->first() : auth()->user();
+        $sender = $request->has('sender') ? User::find($request->sender)->first() : auth()->user();
 
         if ($sender->id === $request->to) {
             throw ValidationException::withMessages([
@@ -154,7 +154,7 @@ class GiftController extends Controller
         $giftRecord = Gift::create([
             'type' => $request->type,
             'amount' => $request->amount,
-            'to' => $request->to,
+            'to' => $request->receiver,
             'by' => $sender->id,
             'gift' => [
                 'type' => $request->type,
