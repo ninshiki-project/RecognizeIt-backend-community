@@ -109,6 +109,15 @@ class GiftController extends Controller
             ]);
         }
 
+        // validate to make sure that the sender has enough Spend Wallet balance
+        $senderUser = User::find($request->by)->first();
+        $senderWallet = $senderUser->getWallet(WalletsEnum::SPEND->value);
+        if ($request->amount > $senderWallet->balance) {
+            throw ValidationException::withMessages([
+                'amount' => 'You don\'t have enough balance to send this gift.',
+            ]);
+        }
+
         $sender = $request->has('sender') ? User::find($request->sender)->first() : auth()->user();
 
         if ($sender->id === $request->to) {
@@ -182,8 +191,6 @@ class GiftController extends Controller
             'date_at' => Carbon::now(),
         ]);
 
-        $senderUser = User::find($request->by)->first();
-        $senderWallet = $senderUser->getWallet(WalletsEnum::SPEND->value);
         $senderWallet->withdraw($request->amount, [
             'title' => 'Spend Wallet',
             'model' => [
