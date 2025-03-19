@@ -51,12 +51,12 @@ class Gift extends Model
         ];
     }
 
-    public function by(): BelongsTo
+    public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'by');
     }
 
-    public function to(): BelongsTo
+    public function receiver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'to');
     }
