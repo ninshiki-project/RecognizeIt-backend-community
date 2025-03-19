@@ -21,10 +21,10 @@ return new class extends Migration
     {
         Schema::create('gifts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('by');
+            $table->foreignId('by')->nullable();
             $table->foreignId('to');
             $table->string('type');
-            $table->json('gift');
+            $table->json('gift')->nullable();
             $table->timestamps();
         });
     }

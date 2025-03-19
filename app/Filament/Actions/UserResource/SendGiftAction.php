@@ -50,6 +50,10 @@ class SendGiftAction
                     ->numeric()
                     ->visible(fn (Forms\Get $get): bool => filled($get('type')) && $get('type') === GiftEnum::COINS->value)
                     ->required(fn (Forms\Get $get): bool => filled($get('type')) && $get('type') === GiftEnum::COINS->value),
+                Forms\Components\Checkbox::make('use_exchange_rate')
+                    ->visible(fn (Forms\Get $get): bool => filled($get('type')) && $get('type') === GiftEnum::COINS->value)
+                    ->label('Convert Amount using Exchange Rate'),
+
                 Forms\Components\Textarea::make('message')
                     ->label('Please provide a reason on why you are sending a gift to this employee.')
                     ->minLength(25)
@@ -59,18 +63,17 @@ class SendGiftAction
                 ->action(function (User $user, array $data): void {
                     $giftFeature = Application::first()->more_configs['gift'];
                     $exchangeRate = $giftFeature['exchange_rate'] ?? 1;
-                    $convertedAmount = $data['amount'] * $exchangeRate;
+                    $amount = $data['use_exchange_rate'] ? $data['amount'] * $exchangeRate : $data['amount'];
 
                     $giftRecord = Gift::create([
                         'type' => $data['type'],
                         'amount' => $data['amount'],
                         'to' => $user->id,
-                        'by' => auth()->user()->id,
                         'gift' => [
                             'fromOrg' => true, // this means that the gift was on behalf of the org/company
                             'type' => $data['type'],
                             'exchange_rate' => $exchangeRate,
-                            'converted_amount' => $convertedAmount,
+                            'converted_amount' => $amount,
                             'amount' => $data['amount'],
                             'users' => [
                                 'sender' => null,
@@ -80,7 +83,7 @@ class SendGiftAction
                     ]);
 
                     $recipientWallet = $user->getWallet(WalletsEnum::DEFAULT->value);
-                    $recipientWallet->deposit($convertedAmount, [
+                    $recipientWallet->deposit($amount, [
                         'title' => 'Ninshiki Wallet',
                         'model' => [
                             'model' => Gift::class,
