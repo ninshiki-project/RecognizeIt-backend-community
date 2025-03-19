@@ -157,6 +157,7 @@ class GiftController extends Controller
             'to' => $request->receiver,
             'by' => $sender->id,
             'gift' => [
+                'fromOrg' => false,
                 'type' => $request->type,
                 'exchange_rate' => $exchangeRate,
                 'converted_amount' => $convertedAmount,
