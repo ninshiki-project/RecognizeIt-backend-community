@@ -202,11 +202,17 @@ class GiftController extends Controller
     }
 
     /**
+     * Gift Meta
+     *
+     * This includes, Enums and other meta.
+     *
+     *
      * @return JsonResponse
      */
     public function meta()
     {
         return response()->json([
+            /** @var GiftEnum */
             'gift_type' => GiftEnum::cases(),
         ]);
 
