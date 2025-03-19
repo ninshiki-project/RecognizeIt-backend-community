@@ -31,7 +31,7 @@ return [
             'icon' => 'heroicon-o-gift',
             'columns' => 4,
             'fields' => [
-                'enabled' => [
+                'enable' => [
                     'type' => TypeFieldEnum::Toggle,
                     'label' => 'Enabled',
                 ],
