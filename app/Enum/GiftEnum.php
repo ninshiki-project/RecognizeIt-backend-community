@@ -23,8 +23,8 @@ enum GiftEnum: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::SHOP => self::SHOP->name,
-            self::COINS => self::COINS->name,
+            self::SHOP => 'Shop',
+            self::COINS => 'Coins',
         };
     }
 }
