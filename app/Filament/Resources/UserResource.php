@@ -3,23 +3,22 @@
 namespace App\Filament\Resources;
 
 use App\Enum\UserEnum;
+use App\Filament\Actions\UserResource\PasswordResetRequestAction;
+use App\Filament\Actions\UserResource\ResendInvitationAction;
+use App\Filament\Actions\UserResource\UpdateRoleAction;
+use App\Filament\Actions\UserResource\UpdateStatusAction;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers\GiftsRelationManager;
 use App\Filament\Resources\UserResource\Widgets\UserStatsOverview;
-use App\Jobs\AdminPasswordResetRequestJob;
-use App\Jobs\NewAdminUserJob;
-use App\Jobs\NewUserJob;
 use App\Models\Designations;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Alignment;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -154,126 +153,10 @@ class UserResource extends Resource
                     ->modalFooterActionsAlignment(Alignment::Right)
                     ->hidden(fn (User $user): bool => $user->id === auth()->id()),
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('update_status')
-                        ->form([
-                            Forms\Components\Select::make('status')
-                                ->label('Change User Account Status')
-                                ->required()
-                                ->default(function (User $record) {
-                                    return $record->status;
-                                })
-                                ->native(false)
-                                ->preload()
-                                ->disableOptionWhen(function (string $value, User $user): bool {
-                                    if ($user->status !== UserEnum::Invited) {
-                                        return $value === UserEnum::Invited->value;
-                                    }
-                                    if ($user->status === UserEnum::Invited) {
-                                        return $value === UserEnum::Active->value;
-                                    }
-                                })
-                                ->options(UserEnum::class),
-                        ])
-                        ->modalFooterActionsAlignment(Alignment::Right)
-                        ->requiresConfirmation()
-                        ->action(function (User $user, array $data) {
-                            $user->update([
-                                'status' => $data['status'],
-                            ]);
-                        })
-                        ->modalWidth(MaxWidth::Small)
-                        ->modalAlignment(Alignment::Center)
-                        ->icon('heroicon-o-user-circle')
-                        ->label('Update Status'),
-                    Tables\Actions\Action::make('resend_invitation')
-                        ->action(function (User $user) {
-                            if ($user->hasPermissionTo('access panel')) {
-                                NewAdminUserJob::dispatch($user)
-                                    ->afterResponse()
-                                    ->afterCommit();
-                            }
-                            NewUserJob::dispatch($user)
-                                ->afterCommit()
-                                ->afterResponse();
-
-                            Notification::make('resend_invitation')
-                                ->icon('heroicon-o-paper-airplane')
-                                ->body('Email Invitation email has been sent.')
-                                ->success()
-                                ->send();
-                        })
-                        ->visible(fn (User $user): bool => $user->status === UserEnum::Invited)
-                        ->requiresConfirmation()
-                        ->modalFooterActionsAlignment(Alignment::Right)
-                        ->icon('heroicon-o-arrow-path')
-                        ->label('Resend Invitation Email'),
-                    Tables\Actions\Action::make('password_reset')
-                        ->action(function (User $user) {
-                            AdminPasswordResetRequestJob::dispatch($user)
-                                ->afterResponse()
-                                ->afterCommit();
-                            Notification::make('password_reset')
-                                ->icon('heroicon-o-paper-airplane')
-                                ->body('Password reset email has been sent.')
-                                ->success()
-                                ->send();
-                        })
-                        ->visible(fn (User $user): bool => $user->hasPermissionTo('access panel'))
-                        ->requiresConfirmation()
-                        ->modalFooterActionsAlignment(Alignment::Right)
-                        ->icon('heroicon-o-finger-print')
-                        ->label('Request Password Reset'),
-                    Tables\Actions\Action::make('update_role')
-                        ->form([
-                            Forms\Components\Select::make('roles')
-                                ->label('Change User Role to:')
-                                ->required()
-                                ->live()
-                                ->reactive()
-                                ->native(false)
-                                ->preload()
-                                ->default(function (User $record) {
-                                    return $record->getRoleNames()[0] ?? null;
-                                })
-                                ->options(Role::all()->pluck('name', 'name')),
-                            Forms\Components\TextInput::make('password')
-                                ->label('Set Temporary Password:')
-                                ->reactive()
-                                ->hidden(function (Forms\Get $get) {
-                                    if (is_null($get('roles'))) {
-                                        return true;
-                                    }
-                                    $role = Role::where('name', $get('roles'))->first();
-                                    if ($role->hasPermissionTo('access panel')) {
-                                        return false;
-                                    } else {
-                                        return true;
-                                    }
-                                })
-                                ->revealable()
-                                ->required(function (Forms\Get $get) {
-                                    $role = Role::where('name', $get('roles'))->first();
-                                    if ($role->hasPermissionTo('access panel')) {
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                })
-                                ->password(),
-                        ])
-                        ->modalFooterActionsAlignment(Alignment::Right)
-                        ->requiresConfirmation()
-                        ->action(function (User $user, array $data) {
-                            $user->update([
-                                'password' => $data['password'] ?? null,
-                            ]);
-                            $user->syncRoles($data['roles']);
-                        })
-                        ->modalWidth(MaxWidth::Small)
-                        ->modalAlignment(Alignment::Center)
-                        ->icon('heroicon-o-shield-check')
-                        ->label('Update Role'),
-                    Tables\Actions\DeleteAction::make(),
+                    (new UpdateStatusAction)->handle(Tables\Actions\Action::make('update_status')),
+                    (new ResendInvitationAction)->handle(Tables\Actions\Action::make('resend_invitation')),
+                    (new PasswordResetRequestAction)->handle(Tables\Actions\Action::make('resend_invitation')),
+                    (new UpdateRoleAction)->handle(Tables\Actions\Action::make('update_role')),
                 ])
                     ->hidden(fn (User $user): bool => $user->id === auth()->id())
                     ->icon('heroicon-o-ellipsis-horizontal-circle'),
