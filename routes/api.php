@@ -125,6 +125,7 @@ Route::middleware([
             Route::post('/send', [GiftController::class, 'store']);
             // feature
             Route::post('/enable', [GiftController::class, 'enable']);
+            Route::get('/meta', [GiftController::class, 'meta']);
         });
 
     });

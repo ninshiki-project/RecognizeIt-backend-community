@@ -200,4 +200,15 @@ class GiftController extends Controller
         ]);
 
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function meta()
+    {
+        return response()->json([
+            'gift_type' => GiftEnum::cases(),
+        ]);
+
+    }
 }
