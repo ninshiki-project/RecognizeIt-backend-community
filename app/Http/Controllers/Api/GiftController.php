@@ -177,6 +177,7 @@ class GiftController extends Controller
                 'model' => Gift::class,
                 'record' => $giftRecord,
             ],
+            'fromOrg' => false,
             'description' => 'One of your colleague sent you a coins as a gift.',
             'date_at' => Carbon::now(),
         ]);
