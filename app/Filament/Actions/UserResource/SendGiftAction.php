@@ -51,7 +51,7 @@ class SendGiftAction
                     ->visible(fn (Forms\Get $get): bool => filled($get('type')) && $get('type') === GiftEnum::COINS->value)
                     ->required(fn (Forms\Get $get): bool => filled($get('type')) && $get('type') === GiftEnum::COINS->value),
                 Forms\Components\Textarea::make('message')
-                    ->label('Please provide a message on why you are sending a gift to this employee.')
+                    ->label('Please provide a reason on why you are sending a gift to this employee.')
                     ->minLength(25)
                     ->rows(5)
                     ->required(),
