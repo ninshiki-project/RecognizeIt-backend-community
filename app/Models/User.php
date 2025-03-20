@@ -19,6 +19,7 @@ use App\Observers\UserObserver;
 use Awobaz\Compoships\Compoships;
 use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Traits\CanPay;
+use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Traits\HasWallets;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
@@ -39,7 +40,7 @@ use Spatie\Permission\Traits\HasRoles;
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
 {
-    use AuthenticationLoggable, CanPay, Compoships, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable;
+    use AuthenticationLoggable, CanPay, Compoships, HasApiTokens, HasFactory, HasRoles, HasWalletFloat, HasWallets, Liker, Notifiable;
 
     /**
      * The attributes that are mass assignable.

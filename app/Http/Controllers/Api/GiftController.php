@@ -109,16 +109,15 @@ class GiftController extends Controller
             ]);
         }
 
+        $sender = $request->has('sender') ? User::find($request->sender) : auth()->user();
         // validate to make sure that the sender has enough Spend Wallet balance
-        $senderUser = User::find($request->by)->first();
-        $senderWallet = $senderUser->getWallet(WalletsEnum::SPEND->value);
+        /** @phpstan-ignore-next-line */
+        $senderWallet = $sender->getWallet(WalletsEnum::SPEND->value);
         if ($request->amount > $senderWallet->balance) {
             throw ValidationException::withMessages([
                 'amount' => 'You don\'t have enough balance to send this gift.',
             ]);
         }
-
-        $sender = $request->has('sender') ? User::find($request->sender)->first() : auth()->user();
 
         if ($sender->id === $request->to) {
             throw ValidationException::withMessages([
@@ -173,14 +172,15 @@ class GiftController extends Controller
                 'amount' => $request->amount,
                 'users' => [
                     'sender' => UserPostedByResource::make($sender),
-                    'receiver' => UserPostedByResource::make(User::find($request->to)->first()),
+                    'receiver' => UserPostedByResource::make(User::find($request->receiver)),
                 ],
             ],
         ]);
 
-        $recipientUser = User::find($request->to)->first();
+        $recipientUser = User::find($request->receiver);
+        /** @phpstan-ignore-next-line */
         $recipientWallet = $recipientUser->getWallet(WalletsEnum::DEFAULT->value);
-        $recipientWallet->deposit($convertedAmount, [
+        $resp = $recipientWallet->depositFloat((string) $convertedAmount, [
             'title' => 'Ninshiki Wallet',
             'model' => [
                 'model' => Gift::class,
@@ -190,6 +190,7 @@ class GiftController extends Controller
             'description' => 'One of your colleague sent you a coins as a gift.',
             'date_at' => Carbon::now(),
         ]);
+        \Log::debug($resp);
 
         $senderWallet->withdraw($request->amount, [
             'title' => 'Spend Wallet',

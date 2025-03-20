@@ -466,7 +466,9 @@ return [
          *
          * @var array<string, mixed>
          */
-        'creating' => [],
+        'creating' => [
+            'decimal_places' => 18,
+        ],
 
         /**
          * The default configuration for wallets.
