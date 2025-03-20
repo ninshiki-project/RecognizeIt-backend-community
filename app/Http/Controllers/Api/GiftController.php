@@ -214,13 +214,15 @@ class GiftController extends Controller
      * This includes, Enums and other meta.
      *
      *
+     * @response array{gift_type: GiftEnum, exchange_rate: float  }
+     *
      * @return JsonResponse
      */
     public function meta()
     {
         return response()->json([
-            /** @var GiftEnum */
             'gift_type' => GiftEnum::cases(),
+            'exchange_rate' => Application::first()->more_configs['gift']['exchange_rate'],
         ]);
 
     }
