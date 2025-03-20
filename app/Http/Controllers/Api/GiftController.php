@@ -180,7 +180,7 @@ class GiftController extends Controller
         $recipientUser = User::find($request->receiver);
         /** @phpstan-ignore-next-line */
         $recipientWallet = $recipientUser->getWallet(WalletsEnum::DEFAULT->value);
-        $resp = $recipientWallet->depositFloat((string) $convertedAmount, [
+        $resp = $recipientWallet->depositFloat($convertedAmount, [
             'title' => 'Ninshiki Wallet',
             'model' => [
                 'model' => Gift::class,
@@ -190,6 +190,7 @@ class GiftController extends Controller
             'description' => 'One of your colleague sent you a coins as a gift.',
             'date_at' => Carbon::now(),
         ]);
+        \Log::debug($convertedAmount);
         \Log::debug($resp);
 
         $senderWallet->withdraw($request->amount, [
