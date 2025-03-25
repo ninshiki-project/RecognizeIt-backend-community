@@ -190,8 +190,6 @@ class GiftController extends Controller
             'description' => 'One of your colleague sent you a coins as a gift.',
             'date_at' => Carbon::now(),
         ]);
-        \Log::debug($convertedAmount);
-        \Log::debug($resp);
 
         $senderWallet->withdraw($request->amount, [
             'title' => 'Spend Wallet',

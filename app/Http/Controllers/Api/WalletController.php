@@ -43,7 +43,7 @@ class WalletController extends Controller
              *
              * @var int
              */
-            'balance' => $wallet->balanceInt,
+            'balance' => $wallet->balance_float,
         ]);
     }
 
