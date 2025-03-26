@@ -18,6 +18,7 @@ use App\Enum\UserEnum;
 use App\Observers\UserObserver;
 use Awobaz\Compoships\Compoships;
 use Bavix\Wallet\Interfaces\Customer;
+use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Traits\CanPay;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Traits\HasWallets;
@@ -38,7 +39,7 @@ use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy([UserObserver::class])]
-class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
+class User extends Authenticatable implements Customer, FilamentUser, HasAvatar, WalletFloat
 {
     use AuthenticationLoggable, CanPay, Compoships, HasApiTokens, HasFactory, HasRoles, HasWalletFloat, HasWallets, Liker, Notifiable;
 
