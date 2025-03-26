@@ -183,7 +183,7 @@ class GiftController extends Controller
         $resp = $recipientWallet->depositFloat($convertedAmount, [
             'title' => 'Ninshiki Wallet',
             'model' => [
-                'model' => Gift::class,
+                'model' => get_class($giftRecord),
                 'record' => $giftRecord,
             ],
             'fromOrg' => false,
@@ -194,7 +194,7 @@ class GiftController extends Controller
         $senderWallet->withdraw($request->amount, [
             'title' => 'Spend Wallet',
             'model' => [
-                'model' => Gift::class,
+                'model' => get_class($giftRecord),
                 'record' => $giftRecord,
             ],
             'description' => 'You sent a coins to your colleague as a gift.',
