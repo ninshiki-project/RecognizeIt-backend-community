@@ -40,7 +40,7 @@ class GiftController extends Controller
         $application->forceFill([
             'more_configs->gift' => [
                 'enable' => $request->enable,
-                'limit_count' => $request->limit_count,
+                'count_limit' => $request->limit_count,
                 'frequency' => $request->frequency,
             ],
         ])->update();
@@ -222,7 +222,7 @@ class GiftController extends Controller
     {
         return response()->json([
             'gift_type' => GiftEnum::cases(),
-            'exchange_rate' => Application::first()->more_configs['gift']['exchange_rate'],
+            'exchange_rate' => Application::first()->more_configs['gift']['exchange_rate'] ?? 1,
         ]);
 
     }
