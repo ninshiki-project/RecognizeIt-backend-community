@@ -157,8 +157,8 @@ Once the Certbot run successfully, restart your nginx services `sudo systemctl r
 ## Laravel Reverb (Real-time Notification/Broadcast)
 ```diff
 server {
-    ...
- 
+    
++  # The Websocket Client/Laravel Echo would connect and listen to this
 +  location /app {
 +       proxy_http_version 1.1;
 +       proxy_set_header Host $http_host;
@@ -172,7 +172,15 @@ server {
 +       proxy_pass http://0.0.0.0:8080;
 +   }
  
-    ...
++   # The Laravel Backend would broadcast to this
++   location ~ ^/apps/(?<reverbid>[^/]+)/events$ { # variable reverbid
++   	proxy_set_header Host $host;
++       proxy_set_header X-Real-IP $remote_addr;
++       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
++       proxy_set_header X-Forwarded-Proto $scheme;
+		
++       proxy_pass http://127.0.0.1:8080/apps/$reverbid/events$is_args$args;
+	}
 }
 ```
 Your `.env` file for the reverb should look like this.
