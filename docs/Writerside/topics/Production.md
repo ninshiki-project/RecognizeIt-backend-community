@@ -187,7 +187,7 @@ server {
 +    }
 }
 ```
-Your `.env` file for the reverb should look like this.
+Your `.env` file for the reverb should look like this. Make sure your `REVERB_PORT` and the port in your nginx proxy is the same.
 ```bash
 REVERB_APP_ID=xxxx
 REVERB_APP_KEY=xxxxx
