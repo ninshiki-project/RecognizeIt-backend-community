@@ -187,13 +187,16 @@ server {
 +    }
 }
 ```
-Your `.env` file for the reverb should look like this. Make sure your `REVERB_PORT` and the port in your nginx proxy is the same.
+Your `.env` file for the reverb should look like this. Make sure your `REVERB_SERVER_PORT` and the port in your nginx proxy is the same.
 ```bash
+REVERB_SERVER_HOST=127.0.0.1 # dont change this
+REVERB_SERVER_PORT=8080 # dont change this
+
 REVERB_APP_ID=xxxx
 REVERB_APP_KEY=xxxxx
 REVERB_APP_SECRET=xxxxx
 REVERB_HOST=ninshiki.example.com
-REVERB_PORT=8080
+REVERB_PORT=443 #or 80 if you are not in SSL
 REVERB_SCHEME=https #or 'http' if you are not in SSL
 ```
 
