@@ -188,6 +188,8 @@ server {
 }
 ```
 Your `.env` file for the reverb should look like this. Make sure your `REVERB_SERVER_PORT` and the port in your nginx proxy is the same.
+
+Reference: [#117](https://github.com/laravel/reverb/issues/117#issuecomment-2022571567)
 ```bash
 REVERB_SERVER_HOST=127.0.0.1 # dont change this
 REVERB_SERVER_PORT=8080 # dont change this
