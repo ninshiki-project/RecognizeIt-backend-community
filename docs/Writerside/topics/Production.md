@@ -172,24 +172,33 @@ server {
 +       proxy_pass http://0.0.0.0:8080;
 +   }
  
-+   # The Laravel Backend would broadcast to this
-+   location ~ ^/apps/(?<reverbid>[^/]+)/events$ { # variable reverbid
-+   	proxy_set_header Host $host;
-+       proxy_set_header X-Real-IP $remote_addr;
+   # The Laravel Backend would broadcast to this
++   location /apps {
++       proxy_http_version 1.1;
++       proxy_set_header Host $http_host;
++       proxy_set_header Scheme $scheme;
++       proxy_set_header SERVER_PORT $server_port;
++       proxy_set_header REMOTE_ADDR $remote_addr;
 +       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-+       proxy_set_header X-Forwarded-Proto $scheme;
-		
-+       proxy_pass http://127.0.0.1:8080/apps/$reverbid/events$is_args$args;
-	}
++       proxy_set_header Upgrade $http_upgrade;
++       proxy_set_header Connection "Upgrade";
+   
++        proxy_pass http://0.0.0.0:8080;
++    }
 }
 ```
-Your `.env` file for the reverb should look like this.
+Your `.env` file for the reverb should look like this. Make sure your `REVERB_SERVER_PORT` and the port in your nginx proxy is the same.
+
+Reference: [#117](https://github.com/laravel/reverb/issues/117#issuecomment-2022571567)
 ```bash
+REVERB_SERVER_HOST=127.0.0.1 # dont change this
+REVERB_SERVER_PORT=8080 # dont change this
+
 REVERB_APP_ID=xxxx
 REVERB_APP_KEY=xxxxx
 REVERB_APP_SECRET=xxxxx
 REVERB_HOST=ninshiki.example.com
-REVERB_PORT=8080
+REVERB_PORT=443 #or 80 if you are not in SSL
 REVERB_SCHEME=https #or 'http' if you are not in SSL
 ```
 
