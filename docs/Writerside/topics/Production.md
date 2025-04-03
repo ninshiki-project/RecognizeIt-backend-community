@@ -155,6 +155,8 @@ Once the Certbot run successfully, restart your nginx services `sudo systemctl r
 
 
 ## Laravel Reverb (Real-time Notification/Broadcast)
+
+### NGINX
 ```diff
 server {
     
@@ -187,6 +189,21 @@ server {
 +    }
 }
 ```
+
+### Apache
+```diff
++ ProxyPreserveHost On
++ <Location /app>
++        ProxyPass ws://0.0.0.0:8080/app
++        ProxyPassReverse ws://0.0.0.0:8080/app
++ </Location>
++ <Location /apps>
++        ProxyPass http://0.0.0.0:8080/apps
++        ProxyPassReverse http://0.0.0.0:8080/apps
++ </Location>
+```
+
+
 Your `.env` file for the reverb should look like this. Make sure your `REVERB_SERVER_PORT` and the port in your nginx proxy is the same.
 
 Reference: [#117](https://github.com/laravel/reverb/issues/117#issuecomment-2022571567)
