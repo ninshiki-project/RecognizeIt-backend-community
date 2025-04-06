@@ -13,7 +13,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Enum\UserEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginViaEmailRequest;
 use App\Http\Resources\ProfileResource;

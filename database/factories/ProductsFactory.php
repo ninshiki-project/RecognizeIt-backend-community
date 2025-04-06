@@ -13,7 +13,7 @@
 
 namespace Database\Factories;
 
-use App\Http\Controllers\Api\Enum\ProductStatusEnum;
+use App\Enum\ProductStatusEnum;
 use App\Models\Products;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Random\RandomException;

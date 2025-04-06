@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\RedeemResource\Widgets;
 
-use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
+use App\Enum\RedeemStatusEnum;
 use App\Models\Redeem;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;

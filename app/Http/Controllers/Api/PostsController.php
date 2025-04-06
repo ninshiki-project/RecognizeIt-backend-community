@@ -13,8 +13,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Enum\PostTypeEnum;
-use App\Http\Controllers\Api\Enum\WalletsEnum;
+use App\Enum\PostTypeEnum;
+use App\Enum\WalletsEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostsPostRequest;
 use App\Http\Resources\PostResource;

@@ -13,7 +13,7 @@
 
 namespace Database\Factories;
 
-use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Enum\UserEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 

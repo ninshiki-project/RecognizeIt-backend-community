@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\RedeemDeclineReasonEnum;
+use App\Enum\RedeemStatusEnum;
 use App\Filament\Actions\RedeemDeclined;
 use App\Filament\Resources\RedeemResource\Pages;
 use App\Filament\Resources\RedeemResource\Widgets\RedeemStatOverview;
-use App\Http\Controllers\Api\Enum\RedeemDeclineReasonEnum;
-use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
 use App\Models\Redeem;
 use Filament\Forms;
 use Filament\Forms\Form;

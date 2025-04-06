@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Http\Controllers\Api\Enum\RedeemDeclineReasonEnum;
+use App\Enum\RedeemDeclineReasonEnum;
 use App\Models\Redeem;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
