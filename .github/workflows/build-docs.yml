@@ -21,7 +21,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if:  github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'documentation'
+    if:  github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'documentation' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
