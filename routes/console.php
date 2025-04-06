@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Schedule;
  * Scheduled Command
  */
 Schedule::command(ResetSpendWalletCommand::class)
-    ->lastDayOfMonth('23:59')
-    ->runInBackground();
+    ->lastDayOfMonth('23:59');
 Schedule::command('auth:clear-resets')
     ->everyFifteenMinutes();
 Schedule::call(fn () => \App\Events\Broadcast\SessionHealthCheckEvent::dispatch())

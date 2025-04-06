@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 2024.
  *
- * Filename: ProductStatusEnum.php
+ * Filename: WalletsEnum.php
  * Project Name: ninshiki-backend
  * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
  *  License: MIT
@@ -11,10 +11,11 @@
  *  Written By: Marjose123
  */
 
-namespace App\Http\Controllers\Api\Enum;
+namespace App\Enum;
 
-enum ProductStatusEnum: string
+enum WalletsEnum: string
 {
-    case AVAILABLE = 'Available';
-    case UNAVAILABLE = 'Unavailable';
+    case DEFAULT = 'ninshiki-wallet';
+    case SPEND = 'spend-wallet';
+    case CURRENCY = 'currency-wallet';
 }

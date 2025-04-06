@@ -13,7 +13,7 @@
 
 namespace App\Filament\Pages;
 
-use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Enum\UserEnum;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;

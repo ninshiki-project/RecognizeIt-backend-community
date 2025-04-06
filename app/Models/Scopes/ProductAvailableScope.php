@@ -13,7 +13,7 @@
 
 namespace App\Models\Scopes;
 
-use App\Http\Controllers\Api\Enum\ProductStatusEnum;
+use App\Enum\ProductStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;

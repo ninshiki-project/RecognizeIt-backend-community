@@ -3,7 +3,7 @@
 /*
  * Copyright (c) 2024.
  *
- * Filename: PostTypeEnum.php
+ * Filename: ProductStatusEnum.php
  * Project Name: ninshiki-backend
  * Project Repository: https://github.com/ninshiki-project/Ninshiki-backend
  *  License: MIT
@@ -11,10 +11,10 @@
  *  Written By: Marjose123
  */
 
-namespace App\Http\Controllers\Api\Enum;
+namespace App\Enum;
 
-enum PostTypeEnum: string
+enum ProductStatusEnum: string
 {
-    case System = 'system';
-    case User = 'user';
+    case AVAILABLE = 'Available';
+    case UNAVAILABLE = 'Unavailable';
 }

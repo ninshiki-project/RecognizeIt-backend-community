@@ -13,7 +13,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
+use App\Enum\RedeemStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetRedeemRequest;
 use App\Http\Resources\RedeemResource;

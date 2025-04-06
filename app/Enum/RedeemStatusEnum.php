@@ -11,7 +11,7 @@
  *  Written By: Marjose123
  */
 
-namespace App\Http\Controllers\Api\Enum;
+namespace App\Enum;
 
 use Filament\Support\Contracts\HasIcon;
 

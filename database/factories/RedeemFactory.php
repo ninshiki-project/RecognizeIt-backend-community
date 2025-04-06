@@ -13,7 +13,7 @@
 
 namespace Database\Factories;
 
-use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
+use App\Enum\RedeemStatusEnum;
 use App\Models\Redeem;
 use App\Models\Shop;
 use App\Models\User;

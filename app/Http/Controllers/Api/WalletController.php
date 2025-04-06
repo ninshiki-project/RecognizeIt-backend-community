@@ -13,7 +13,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Enum\WalletsEnum;
+use App\Enum\WalletsEnum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 
@@ -43,7 +43,7 @@ class WalletController extends Controller
              *
              * @var int
              */
-            'balance' => $wallet->balanceInt,
+            'balance' => $wallet->balance_float,
         ]);
     }
 

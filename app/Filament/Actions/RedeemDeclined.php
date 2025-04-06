@@ -13,7 +13,7 @@
 
 namespace App\Filament\Actions;
 
-use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
+use App\Enum\RedeemStatusEnum;
 use App\Mail\RedeemDeclinedMail;
 use App\Models\Redeem;
 use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;

@@ -2,8 +2,8 @@
 
 namespace Tests\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
-use App\Http\Controllers\Api\Enum\WalletsEnum;
+use App\Enum\RedeemStatusEnum;
+use App\Enum\WalletsEnum;
 use App\Models\Redeem;
 use App\Models\Shop;
 use App\Models\User;

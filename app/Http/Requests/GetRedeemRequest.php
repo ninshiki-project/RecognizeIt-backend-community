@@ -13,7 +13,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Controllers\Api\Enum\RedeemStatusEnum;
+use App\Enum\RedeemStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

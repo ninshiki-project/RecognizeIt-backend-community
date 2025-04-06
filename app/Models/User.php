@@ -14,10 +14,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Enum\UserEnum;
 use App\Observers\UserObserver;
+use Awobaz\Compoships\Compoships;
 use Bavix\Wallet\Interfaces\Customer;
+use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Traits\CanPay;
+use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Traits\HasWallets;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
@@ -36,9 +39,9 @@ use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy([UserObserver::class])]
-class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
+class User extends Authenticatable implements Customer, FilamentUser, HasAvatar, WalletFloat
 {
-    use AuthenticationLoggable, CanPay, HasApiTokens, HasFactory, HasRoles, HasWallets, Liker, Notifiable;
+    use AuthenticationLoggable, CanPay, Compoships, HasApiTokens, HasFactory, HasRoles, HasWalletFloat, HasWallets, Liker, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -102,6 +105,21 @@ class User extends Authenticatable implements Customer, FilamentUser, HasAvatar
     public function designations(): HasOne
     {
         return $this->hasOne(Designations::class, 'id', 'designation');
+    }
+
+    public function receivedGifts(): HasMany
+    {
+        return $this->hasMany(Gift::class, 'to', 'id');
+    }
+
+    public function sentGifts(): HasMany
+    {
+        return $this->hasMany(Gift::class, 'by', 'id');
+    }
+
+    public function gifts(): HasMany
+    {
+        return $this->hasMany(Gift::class, ['to', 'by'], ['id', 'id']);
     }
 
     /**

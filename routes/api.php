@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\DesignationsController;
+use App\Http\Controllers\Api\GiftController;
 use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\PostsController;
 use App\Http\Controllers\Api\ProductController;
@@ -117,6 +118,15 @@ Route::middleware([
                 Route::get('/maintenance', [ApplicationController::class, 'isMaintenance'])
                     ->withoutMiddleware(['auth:sanctum']);
             });
+
+        // Gift
+        Route::prefix('gifts')->group(function () {
+            Route::get('/', [GiftController::class, 'index']);
+            Route::post('/send', [GiftController::class, 'store']);
+            // feature
+            Route::post('/enable', [GiftController::class, 'enable']);
+            Route::get('/meta', [GiftController::class, 'meta']);
+        });
 
     });
 });

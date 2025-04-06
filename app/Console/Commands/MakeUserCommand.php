@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\Api\Enum\UserEnum;
+use App\Enum\UserEnum;
 use App\Models\Departments;
 use App\Models\Designations;
 use App\Models\Role;

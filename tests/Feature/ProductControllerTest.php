@@ -2,7 +2,7 @@
 
 namespace Tests\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\Enum\ProductStatusEnum;
+use App\Enum\ProductStatusEnum;
 use App\Models\Products;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
