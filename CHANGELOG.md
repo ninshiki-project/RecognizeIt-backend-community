@@ -4,6 +4,32 @@
 All notable changes to this project will be documented in this file.
 
 <!--- END HEADER -->
+## 0.4.0 - 2025-04-06
+
+### What's Changed
+
+* 🛠️ Add post read update delete functionality to the existing API by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/48
+* Refactor roles and permissions by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/49
+* chore(deps): bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/50
+* chore(deps): bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/51
+* Feature support mention user and hashtag by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/52
+* Improvement on general settings by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/53
+* ✨ feat(API): Add application maintenance endpoint by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/54
+* Documentation by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/55
+* Documentation by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/56
+* Documentation by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/58
+* 57 fix designation column in user module by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/59
+* Documentation by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/60
+* ✨ feat(backup): Add system backup functionality by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/61
+* user password field is showing in non admin role by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/63
+* Feature new device login notification by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/64
+* 📝 docs(Production): Add Nginx configuration examples for Laravel Reverb. by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/66
+* Documentation by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/67
+* 📝 Add NGINX and Apache configuration examples  by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/68
+* Gifting Feature by @MarJose123 in https://github.com/ninshiki-project/Ninshiki-backend-community/pull/69
+
+**Full Changelog**: https://github.com/ninshiki-project/Ninshiki-backend-community/compare/0.2.1...0.4.0
+
 ## 0.3.0 - 2025-01-21
 
 ### What's Changed
