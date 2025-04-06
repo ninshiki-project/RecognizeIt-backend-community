@@ -28,7 +28,7 @@ Create an account in [Cloudinary](https://cloudinary.com/) for Image CDN.
 ## Installation
 1. Clone the repository
 ```Bash
-git clone git@github.com:MarJose123/Ninshiki-backend.git
+git clone git@github.com:ninshiki-project/RecognizeIt-backend-community.git
 ```
 2. Copy the `.env.example` to `.env`
 3. Update the Laravel Reverb Key by providing a unique key and App Key.

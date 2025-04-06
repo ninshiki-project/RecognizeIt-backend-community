@@ -2,12 +2,18 @@
 
 ##### Dashboard Page
 
-![Ninshiki-Dashboard_2.png](Ninshiki-Dashboard_2.png)
+![](RecognizeIt-Dashboard.png)
+
+![](RecognizeIt-System-Dashboard.png)
 
 ##### Shop Page
 
-![Ninshiki-Shops_2.png](Ninshiki-Shops_2.png)
+![](RecognizeIt-Adding-Product-Shop.png)
+
+![](RecognizeIt-Adding-Product.png)
+
+![](RecognizeIt-Product.png)
 
 ##### User Page
 
-![Ninshiki-Users1_2.png](Ninshiki-Users1_2.png)
+![](RecognizeIt-User.png)
