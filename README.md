@@ -40,6 +40,12 @@ _Coming Soon_
 ![](.github/art/RecognizeIt-Product.png)
 ![](.github/art/RecognizeIt-Adding-Product-Shop.png)
 
+---
+
+## Build Documentation Locally with Docker
+Follow this [documentation link](https://www.jetbrains.com/help/writerside/build-with-docker.html#builder-image-with-the-generated-website)
+
+
 
 ## License
 
