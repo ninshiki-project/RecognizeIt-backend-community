@@ -21,13 +21,14 @@
     <toc-element topic="Features.md"/>
     <toc-element topic="Feature-Status.md"/>
     <toc-element topic="Screenshots.md"/>
-    <toc-element topic="Installation.md">
+    <toc-element toc-title="Installation" id="installation-guide">
         <toc-element topic="Installation-for-Development-Local.md"/>
-        <toc-element topic="Production.md">
+        <toc-element toc-title="Production Installation" id="installation-guide-production">
+            <toc-element topic="Production.md" />
             <toc-element topic="Deployment-Cron_Jobs_and_Supervisor.md"/>
         </toc-element>
     </toc-element>
-    <toc-element topic="Websockets.md">
+    <toc-element toc-title="Websockets" id="websocket-guide">
         <toc-element topic="Session-Health-Check.md"/>
         <toc-element topic="Peer-Recognition.md"/>
         <toc-element topic="Logout-Other-Devices.md"/>
@@ -35,7 +36,7 @@
     <toc-element topic="Extensions.md"/>
     <toc-element topic="Admin-Configuration.md">
     </toc-element>
-    <toc-element topic="Extras.md">
+    <toc-element toc-title="Extras">
         <toc-element topic="Proposal-Template.md"/>
     </toc-element>
 </instance-profile>
