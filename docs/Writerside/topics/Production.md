@@ -157,36 +157,39 @@ Once the Certbot run successfully, restart your nginx services `sudo systemctl r
 ## Laravel Reverb (Real-time Notification/Broadcast)
 
 ### NGINX
-```diff
+```nginx
 server {
-    
-+  # The Websocket Client/Laravel Echo would connect and listen to this
-+  location /app {
-+       proxy_http_version 1.1;
-+       proxy_set_header Host $http_host;
-+       proxy_set_header Scheme $scheme;
-+       proxy_set_header SERVER_PORT $server_port;
-+       proxy_set_header REMOTE_ADDR $remote_addr;
-+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-+       proxy_set_header Upgrade $http_upgrade;
-+       proxy_set_header Connection "Upgrade";
+....
 
-+       proxy_pass http://0.0.0.0:8080;
-+   }
- 
-   # The Laravel Backend would broadcast to this
-+   location /apps {
-+       proxy_http_version 1.1;
-+       proxy_set_header Host $http_host;
-+       proxy_set_header Scheme $scheme;
-+       proxy_set_header SERVER_PORT $server_port;
-+       proxy_set_header REMOTE_ADDR $remote_addr;
-+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-+       proxy_set_header Upgrade $http_upgrade;
-+       proxy_set_header Connection "Upgrade";
-   
-+        proxy_pass http://0.0.0.0:8080;
-+    }
+# Laravel Reverb
+# The Websocket Client/Laravel Echo would connect and listen to this
+
+location ~ /app/(?<reverbkey>.*) { # variable reverbkey
+  proxy_pass http://0.0.0.0:8080/app/$reverbkey;
+  proxy_http_version 1.1;
+  proxy_set_header Host $http_host;
+  proxy_set_header Scheme $scheme;
+  proxy_set_header SERVER_PORT $server_port;
+  proxy_set_header REMOTE_ADDR $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+  proxy_read_timeout 120;
+  proxy_send_timeout 120;
+}
+
+# The Laravel Backend would broadcast to this
+location ~ ^/apps/(?<reverbid>[^/]+)/events$ { # variable reverbid
+  proxy_pass http://0.0.0.0:8080/apps/$reverbid/events;
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_read_timeout 120;
+  proxy_send_timeout 120;
+}
+
+    
 }
 ```
 
@@ -241,7 +244,7 @@ Let's create a `ninshiki-worker-websocket.conf` file that starts and monitors `r
 ```bash
 [program:ninshiki-worker-websocket]
 process_name=%(program_name)s_%(process_num)02d
-command=php /var/www/backend-ninshiki.com/artisan reverb:start --host=127.0.0.1 --port=8080 --no-interaction
+command=php /var/www/backend-ninshiki.com/artisan reverb:start --host=0.0.0.0 --port=8080 --no-interaction
 autostart=true
 autorestart=true
 stopasgroup=true
