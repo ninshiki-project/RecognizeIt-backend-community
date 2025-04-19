@@ -149,6 +149,8 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->color(Color::Orange),
                 Tables\Actions\EditAction::make()
                     ->modalFooterActionsAlignment(Alignment::Right)
                     ->hidden(fn (User $user): bool => $user->id === auth()->id()),
