@@ -22,6 +22,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use MarJose123\NinshikiEvent\Events\Session\LogoutOtherBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -64,6 +65,11 @@ class SessionController extends Controller
      */
     public function logoutOtherDevices(LogOutOtherBrowserRequest $request): void
     {
+        if ($request->user()->hasPermissionTo('access panel', 'web') && ! $request->has('password')) {
+            throw ValidationException::withMessages([
+                'password' => ['password is missing in the payload.'],
+            ]);
+        }
 
         $this->logoutOtherDevicesSession($request);
 

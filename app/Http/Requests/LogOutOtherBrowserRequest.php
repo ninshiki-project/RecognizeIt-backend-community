@@ -20,8 +20,11 @@ class LogOutOtherBrowserRequest extends FormRequest
     public function rules(): array
     {
         return [
+            /**
+             * Only required to be passed on the request if the user has a permission "access panel"
+             */
             'password' => [
-                'required',
+                'nullable',
                 'current_password',
             ],
         ];
