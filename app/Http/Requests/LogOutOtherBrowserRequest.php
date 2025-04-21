@@ -14,6 +14,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LogOutOtherBrowserRequest extends FormRequest
 {
@@ -24,6 +25,7 @@ class LogOutOtherBrowserRequest extends FormRequest
              * Only required to be passed on the request if the user has a permission "access panel"
              */
             'password' => [
+                Rule::requiredIf(fn () => auth()->user()->can('access panel')),
                 'nullable',
                 'current_password',
             ],
