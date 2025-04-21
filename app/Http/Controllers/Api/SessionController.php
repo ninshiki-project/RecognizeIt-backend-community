@@ -67,7 +67,7 @@ class SessionController extends Controller
     {
         if ($request->user()->hasPermissionTo('access panel', 'web') && ! $request->has('password')) {
             throw ValidationException::withMessages([
-                'password' => ['password is missing in the payload.'],
+                'password' => ['password is required.'],
             ]);
         }
 
