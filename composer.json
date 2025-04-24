@@ -108,7 +108,7 @@
         ],
         "reverb": [
             "Composer\\Config::disableProcessTimeout",
-            "@php artisan reverb:start --hostname=ninshiki-backend.test --port=8080"
+            "@php artisan reverb:start --debug"
         ],
         "mailpit": [
             "Composer\\Config::disableProcessTimeout",

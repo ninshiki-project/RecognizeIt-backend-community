@@ -165,7 +165,7 @@ server {
 # The Websocket Client/Laravel Echo would connect and listen to this
 
 location ~ /app/(?<reverbkey>.*) { # variable reverbkey
-  proxy_pass http://0.0.0.0:8080/app/$reverbkey;
+  proxy_pass http://127.0.0.1:8080/app/$reverbkey;
   proxy_http_version 1.1;
   proxy_set_header Host $http_host;
   proxy_set_header Scheme $scheme;
@@ -180,7 +180,7 @@ location ~ /app/(?<reverbkey>.*) { # variable reverbkey
 
 # The Laravel Backend would broadcast to this
 location ~ ^/apps/(?<reverbid>[^/]+)/events$ { # variable reverbid
-  proxy_pass http://0.0.0.0:8080/apps/$reverbid/events;
+  proxy_pass http://127.0.0.1:8080/apps/$reverbid/events;
   proxy_set_header Host $host;
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -212,12 +212,11 @@ Your `.env` file for the reverb should look like this. Make sure your `REVERB_SE
 Reference: [#117](https://github.com/laravel/reverb/issues/117#issuecomment-2022571567)
 ```bash
 REVERB_SERVER_HOST=127.0.0.1 # dont change this
-REVERB_SERVER_PORT=8080 # dont change this
 
 REVERB_APP_ID=xxxx
 REVERB_APP_KEY=xxxxx
 REVERB_APP_SECRET=xxxxx
-REVERB_HOST=ninshiki.example.com
+REVERB_HOST=ninshiki.example.com #App URL without 'http(s)'
 REVERB_PORT=443 #or 80 if you are not in SSL
 REVERB_SCHEME=https #or 'http' if you are not in SSL
 ```
@@ -244,7 +243,7 @@ Let's create a `ninshiki-worker-websocket.conf` file that starts and monitors `r
 ```bash
 [program:ninshiki-worker-websocket]
 process_name=%(program_name)s_%(process_num)02d
-command=php /var/www/backend-ninshiki.com/artisan reverb:start --host=0.0.0.0 --port=8080 --no-interaction
+command=php /var/www/backend-ninshiki.com/artisan reverb:start --no-interaction
 autostart=true
 autorestart=true
 stopasgroup=true
