@@ -325,6 +325,8 @@ class PostsController extends Controller
 
             /**
              * @status 201
+             *
+             * @body array{success: boolean, message: string, post: PostResource }
              */
             return response()->json([
                 'success' => true,
@@ -332,6 +334,11 @@ class PostsController extends Controller
                 'post' => new PostResource($post),
             ], Response::HTTP_CREATED);
         } else {
+            /**
+             * @status 400
+             *
+             * @body array{success: boolean, message: string }
+             */
             return response()->json([
                 'success' => false,
                 'message' => 'Something went wrong',
