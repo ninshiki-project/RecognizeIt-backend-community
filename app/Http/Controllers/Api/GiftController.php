@@ -102,8 +102,8 @@ class GiftController extends Controller
             ]);
         }
 
-        // Temporary disable the shop gifting
-        if ($request->type === GiftEnum::SHOP) {
+        // Temporarily disable the shop gifting
+        if ($request->type === GiftEnum::SHOP->value) {
             throw ValidationException::withMessages([
                 'type' => 'Gifting shop item is temporarily disabled.',
             ]);
