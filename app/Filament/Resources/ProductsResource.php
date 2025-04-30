@@ -170,10 +170,12 @@ class ProductsResource extends Resource
                     ->before(function (Products $record) {
                         self::$oldCloudinaryPublicId = $record->cloudinary_id;
                     })
-                    ->after(function () {
+                    ->after(function (Products $record) {
                         // delete cloudinary id
-                        $cloudinary = new CloudinaryEngine;
-                        $cloudinary->destroy(self::$oldCloudinaryPublicId);
+                        if ($record->cloudinary_id) {
+                            $cloudinary = new CloudinaryEngine;
+                            $cloudinary->destroy(self::$oldCloudinaryPublicId);
+                        }
                     })
                     ->modalAlignment(Alignment::Center)
                     ->modalWidth(MaxWidth::Medium)
