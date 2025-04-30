@@ -4,6 +4,14 @@
 All notable changes to this project will be documented in this file.
 
 <!--- END HEADER -->
+## 0.4.1 - 2025-04-26
+
+### What's Changed
+
+* Rebranding Project by @MarJose123 in https://github.com/ninshiki-project/RecognizeIt-backend-community/pull/70
+
+**Full Changelog**: https://github.com/ninshiki-project/RecognizeIt-backend-community/compare/0.4.0...0.4.1
+
 ## 0.4.0 - 2025-04-06
 
 ### What's Changed
