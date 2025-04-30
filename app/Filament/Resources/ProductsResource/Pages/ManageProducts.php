@@ -18,12 +18,17 @@ class ManageProducts extends ManageRecords
             Actions\CreateAction::make()
                 ->mutateFormDataUsing(function (array $data): array {
                     $resource = static::getResource();
+                    if ($data['image_using'] === 'link') {
+                        $data['image'] = $data['image_link'];
+                    }
+                    unset($data['image_using']);
+                    unset($data['image_link']);
                     $data['cloudinary_id'] = $resource::$cloudinaryPublicId;
 
                     return $data;
                 })
                 ->modalAlignment(Alignment::Center)
-                ->modalWidth(MaxWidth::FitContent)
+                ->modalWidth(MaxWidth::Medium)
                 ->modalFooterActionsAlignment(Alignment::Right)
                 ->createAnother(false),
         ];

@@ -38,8 +38,24 @@ class ProductsResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(2)
+            ->columns(1)
             ->schema([
+                Forms\Components\Select::make('image_using')
+                    ->label('Upload Image using')
+                    ->native(false)
+                    ->reactive()
+                    ->nullable(false)
+                    ->selectablePlaceholder(false)
+                    ->options([
+                        'link' => 'Link',
+                        'image' => 'Image',
+                    ])
+                    ->default('image'),
+                Forms\Components\TextInput::make('image_link')
+                    ->rules(['url:http,https'])
+                    ->label('Image Link')
+                    ->hidden(fn (Forms\Get $get) => filled($get('image_using')) && $get('image_using') === 'image')
+                    ->required(fn (Forms\Get $get) => filled($get('image_using')) && $get('image_using') === 'link'),
                 Forms\Components\FileUpload::make('image')
                     ->image()
                     ->disk('cloudinary')
@@ -81,7 +97,8 @@ class ProductsResource extends Resource
                     }))
                     ->reactive()
                     ->columnSpanFull()
-                    ->required(),
+                    ->hidden(fn (Forms\Get $get) => filled($get('image_using')) && $get('image_using') === 'link')
+                    ->required(fn (Forms\Get $get) => filled($get('image_using')) && $get('image_using') === 'image'),
                 Forms\Components\TextInput::make('name')
                     ->required(),
                 Forms\Components\TextInput::make('price')
@@ -140,6 +157,16 @@ class ProductsResource extends Resource
 
                         return $data;
                     })
+                    ->mutateRecordDataUsing(function (array $data): array {
+                        if ($data['cloudinary_id'] === null) {
+                            $data['image_using'] = 'link';
+                            $data['image_link'] = $data['image'];
+                            unset($data['image']);
+                        }
+                        $data['user_id'] = auth()->id();
+
+                        return $data;
+                    })
                     ->before(function (Products $record) {
                         self::$oldCloudinaryPublicId = $record->cloudinary_id;
                     })
@@ -149,7 +176,7 @@ class ProductsResource extends Resource
                         $cloudinary->destroy(self::$oldCloudinaryPublicId);
                     })
                     ->modalAlignment(Alignment::Center)
-                    ->modalWidth(MaxWidth::FitContent)
+                    ->modalWidth(MaxWidth::Medium)
                     ->modalFooterActionsAlignment(Alignment::Right),
                 Tables\Actions\DeleteAction::make()
                     ->action(function (Products $record, Tables\Actions\DeleteAction $action) {
