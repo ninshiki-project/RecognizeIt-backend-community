@@ -40,65 +40,72 @@ class ProductsResource extends Resource
         return $form
             ->columns(1)
             ->schema([
-                Forms\Components\Select::make('image_using')
-                    ->label('Upload Image using')
-                    ->native(false)
-                    ->reactive()
-                    ->nullable(false)
-                    ->selectablePlaceholder(false)
-                    ->options([
-                        'link' => 'Link',
-                        'image' => 'Image',
+                Forms\Components\Tabs::make('image_using')
+                    ->label('Product Image')
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('File Upload')
+                            ->icon('heroicon-o-arrow-up-tray')
+                            ->schema([
+                                Forms\Components\FileUpload::make('image')
+                                    ->image()
+                                    ->disk('cloudinary')
+                                    ->directory('products')
+                                    ->visibility('private')
+                                    ->maxSize(10240) // 10MB
+                                    ->afterStateHydrated(static function (BaseFileUpload $component, string|array|null $state) {
+                                        if (blank($state)) {
+                                            $component->state([]);
+
+                                            return;
+                                        }
+                                        $component->state([((string) Str::uuid()) => $state]);
+                                    })
+                                    ->afterStateUpdated(static function (BaseFileUpload $component, $state) {
+                                        $component->state([(string) Str::uuid() => $state]);
+                                    })
+                                    ->getUploadedFileUsing(static function (BaseFileUpload $component, string $file): array {
+                                        return [
+                                            'name' => basename($file),
+                                            'size' => 0,
+                                            'type' => null,
+                                            'url' => $file,
+                                        ];
+                                    })
+                                    ->saveUploadedFileUsing((static function (BaseFileUpload $component, TemporaryUploadedFile $file, Forms\Set $set): ?string {
+                                        try {
+                                            if (! $file->exists()) {
+                                                return null;
+                                            }
+                                        } catch (UnableToCheckFileExistence $exception) {
+                                            return null;
+                                        }
+
+                                        $uploadedFile = $file->storeOnCloudinaryAs($component->getDirectory(), $component->getUploadedFileNameForStorage($file));
+                                        self::$cloudinaryPublicId = $uploadedFile->getPublicId();
+
+                                        return $uploadedFile->getSecurePath();
+                                    }))
+                                    ->reactive()
+                                    ->columnSpanFull(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('URL Upload')
+                            ->icon('heroicon-o-globe-alt')
+                            ->schema([
+                                Forms\Components\TextInput::make('image_link')
+                                    ->rules(['url:http,https'])
+                                    ->label('Image Url')
+                                    ->helperText('Enter a valid image URL'),
+                            ]),
                     ])
-                    ->default('image'),
-                Forms\Components\TextInput::make('image_link')
-                    ->rules(['url:http,https'])
-                    ->label('Image Link')
-                    ->hidden(fn (Forms\Get $get) => filled($get('image_using')) && $get('image_using') === 'image')
-                    ->required(fn (Forms\Get $get) => filled($get('image_using')) && $get('image_using') === 'link'),
-                Forms\Components\FileUpload::make('image')
-                    ->image()
-                    ->disk('cloudinary')
-                    ->directory('products')
-                    ->visibility('private')
-                    ->maxSize(10240) // 10MB
-                    ->afterStateHydrated(static function (BaseFileUpload $component, string|array|null $state) {
-                        if (blank($state)) {
-                            $component->state([]);
-
-                            return;
-                        }
-                        $component->state([((string) Str::uuid()) => $state]);
-                    })
-                    ->afterStateUpdated(static function (BaseFileUpload $component, $state) {
-                        $component->state([(string) Str::uuid() => $state]);
-                    })
-                    ->getUploadedFileUsing(static function (BaseFileUpload $component, string $file): array {
-                        return [
-                            'name' => basename($file),
-                            'size' => 0,
-                            'type' => null,
-                            'url' => $file,
-                        ];
-                    })
-                    ->saveUploadedFileUsing((static function (BaseFileUpload $component, TemporaryUploadedFile $file, Forms\Set $set): ?string {
-                        try {
-                            if (! $file->exists()) {
-                                return null;
-                            }
-                        } catch (UnableToCheckFileExistence $exception) {
-                            return null;
+                    ->activeTab(function ($record, $operation) {
+                        if ($operation === 'create') {
+                            return 1;
                         }
 
-                        $uploadedFile = $file->storeOnCloudinaryAs($component->getDirectory(), $component->getUploadedFileNameForStorage($file));
-                        self::$cloudinaryPublicId = $uploadedFile->getPublicId();
-
-                        return $uploadedFile->getSecurePath();
-                    }))
+                        return $record->cloudinary_id ? 1 : 2;
+                    })
                     ->reactive()
-                    ->columnSpanFull()
-                    ->hidden(fn (Forms\Get $get) => filled($get('image_using')) && $get('image_using') === 'link')
-                    ->required(fn (Forms\Get $get) => filled($get('image_using')) && $get('image_using') === 'image'),
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('name')
                     ->required(),
                 Forms\Components\TextInput::make('price')
