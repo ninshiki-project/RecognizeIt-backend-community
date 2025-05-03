@@ -159,14 +159,16 @@ class ProductsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->mutateFormDataUsing(function (array $data): array {
+                    ->mutateFormDataUsing(function (array $data, Products $products): array {
                         $data['cloudinary_id'] = self::$cloudinaryPublicId;
+                        if ($products->cloudinary_id === null) {
+                            $data['image'] = $data['image_link'];
+                        }
 
                         return $data;
                     })
                     ->mutateRecordDataUsing(function (array $data): array {
                         if ($data['cloudinary_id'] === null) {
-                            $data['image_using'] = 'link';
                             $data['image_link'] = $data['image'];
                             unset($data['image']);
                         }
