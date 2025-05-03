@@ -17,8 +17,10 @@ use App\Enum\RedeemStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetRedeemRequest;
 use App\Http\Resources\RedeemResource;
+use App\Models\Products;
 use App\Models\Redeem;
 use App\Models\Shop;
+use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -48,6 +50,8 @@ class RedeemController extends Controller
      *
      * @param  Request  $request
      * @return RedeemResource|JsonResponse
+     *
+     * @throws ExceptionInterface
      */
     public function store(Request $request)
     {
@@ -95,6 +99,16 @@ class RedeemController extends Controller
          * Dispatch event
          */
         UserRedeemFromShop::dispatch($redeem, $request->user(), $shop);
+
+        /**
+         * Delete shop record if the Product is not anymore available
+         *
+         * @var Products $product
+         */
+        if (! Products::find($product->id)->isAvailable()) {
+            /** @var Shop $shop */
+            $shop->delete();
+        }
 
         /**
          * @status 201

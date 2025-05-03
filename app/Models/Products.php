@@ -56,6 +56,10 @@ class Products extends Model implements ProductInterface
                 $product->status = ProductStatusEnum::UNAVAILABLE;
                 $product->save();
             }
+            if ($product->stock > 0 && $product->status === ProductStatusEnum::UNAVAILABLE) {
+                $product->status = ProductStatusEnum::AVAILABLE;
+                $product->save();
+            }
         });
     }
 
