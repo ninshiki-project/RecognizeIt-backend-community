@@ -30,6 +30,7 @@ class ShopResource extends JsonResource
             'product' => ProductsResource::make($this->product),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'favorite' => $this->hasFavoriter(auth()->user()),
         ];
     }
 }

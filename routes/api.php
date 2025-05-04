@@ -92,6 +92,7 @@ Route::middleware([
         Route::apiResource('products', ProductController::class);
 
         // Shop
+        Route::post('shop/wishlist', [ShopController::class, 'addShopToWishlist']);
         Route::apiResource('shop', ShopController::class)->only(['index', 'store', 'destroy']);
 
         // Redeem
