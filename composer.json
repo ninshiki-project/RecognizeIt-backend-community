@@ -36,6 +36,7 @@
         "ninshiki-project/general-settings": "^1.0",
         "ninshiki-project/ninshiki-event": "^1.0",
         "oriondevelops/filament-greeter": "^0.2.0",
+        "overtrue/laravel-favorite": "^5.3",
         "overtrue/laravel-like": "^5.3",
         "rappasoft/laravel-authentication-log": "*",
         "resend/resend-php": "^0.12.0",

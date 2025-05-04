@@ -16,6 +16,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ShopResource;
 use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -36,8 +37,40 @@ class ShopController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return Cache::flexible(static::$cacheKey, [5, 10], function () {
-            return ShopResource::collection(Shop::orderByDesc('created_at')->get());
+            return ShopResource::collection(Shop::with('favorites')->orderByDesc('created_at')->get());
         });
+    }
+
+    /**
+     * Add Shop to User Wishlist
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function addShopToWishlist(Request $request): JsonResponse
+    {
+        $request->validate([
+            'shop' => [
+                'required',
+                'string',
+                'exists:shops,id',
+            ],
+            // If the user is not provided, the user session will be used instead.
+            'user' => ['nullable', 'string', 'exists:users,id'],
+        ]);
+        if (! $request->has('user')) {
+            $request->merge(['user' => auth()->user()->id]);
+        }
+
+        $user = User::find($request->user);
+        /** @var User $user */
+        $user->toggleFavorite(Shop::find($request->shop));
+
+        return response()->json([
+            'message' => 'Shop added to wishlist',
+            'success' => true,
+        ]);
+
     }
 
     /**

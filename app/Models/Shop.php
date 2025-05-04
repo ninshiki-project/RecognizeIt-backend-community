@@ -18,10 +18,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Overtrue\LaravelFavorite\Traits\Favoriteable;
 
 class Shop extends Model
 {
-    use HasFactory, HasUuids;
+    use Favoriteable, HasFactory, HasUuids;
 
     protected $fillable = [
         'product_id',
@@ -39,5 +40,13 @@ class Shop extends Model
     public function redeems(): HasMany
     {
         return $this->hasMany(Redeem::class, 'shop_id', 'id');
+    }
+
+    protected static function booted(): void
+    {
+        static::deleted(function (Shop $shop) {
+            // delete the shop record in the user favorite table
+            $shop->favorites()->each(fn ($favorite) => $favorite->delete());
+        });
     }
 }

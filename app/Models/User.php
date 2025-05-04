@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Overtrue\LaravelFavorite\Traits\Favoriter;
 use Overtrue\LaravelLike\Traits\Liker;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Permission\Traits\HasRoles;
@@ -41,7 +42,7 @@ use Spatie\Permission\Traits\HasRoles;
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements Customer, FilamentUser, HasAvatar, WalletFloat
 {
-    use AuthenticationLoggable, CanPay, Compoships, HasApiTokens, HasFactory, HasRoles, HasWalletFloat, HasWallets, Liker, Notifiable;
+    use AuthenticationLoggable, CanPay, Compoships, Favoriter, HasApiTokens, HasFactory, HasRoles, HasWalletFloat, HasWallets, Liker, Notifiable;
 
     /**
      * The attributes that are mass assignable.
