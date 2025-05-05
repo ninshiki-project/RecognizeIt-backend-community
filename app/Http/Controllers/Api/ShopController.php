@@ -42,12 +42,12 @@ class ShopController extends Controller
     }
 
     /**
-     * Add Shop to User Wishlist
+     * Add/Remove Shop to User Wishlist
      *
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function addShopToWishlist(Request $request): JsonResponse
+    public function toggleShopWishlist(Request $request): JsonResponse
     {
         $request->validate([
             'shop' => [
