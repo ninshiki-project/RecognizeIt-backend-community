@@ -84,7 +84,7 @@ it('can display all the redeem item by status', function () {
 });
 it('can update the status', function () {
     $redeem = Redeem::factory()->create([
-        'status' => RedeemStatusEnum::WAITING_APPROVAL,
+        'status' => RedeemStatusEnum::AWAITING_APPROVAL,
     ]);
 
     $user = User::factory()->create();
