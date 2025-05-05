@@ -73,9 +73,6 @@ class RedeemController extends Controller
             ], HttpResponse::HTTP_BAD_REQUEST);
         }
 
-        $product->decrement('stock', 1);
-        $product->save();
-
         // pay the item using the ninshiki-wallet
         /**
          * @status 402
@@ -94,6 +91,9 @@ class RedeemController extends Controller
             'status' => RedeemStatusEnum::WAITING_APPROVAL->value,
             'product_id' => $shop->product->id,
         ]);
+
+        $product->decrement('stock', 1);
+        $product->save();
 
         /**
          * Dispatch event
