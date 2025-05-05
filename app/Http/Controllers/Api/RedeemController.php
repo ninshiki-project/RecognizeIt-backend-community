@@ -40,7 +40,7 @@ class RedeemController extends Controller
      */
     public function index(GetRedeemRequest $request)
     {
-        $redeem = Redeem::query();
+        $redeem = Redeem::query()->orderByDesc('created_at');
 
         return RedeemResource::collection($redeem->user($request->user)->status($request->status)->fastPaginate());
     }
