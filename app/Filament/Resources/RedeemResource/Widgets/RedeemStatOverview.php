@@ -17,7 +17,7 @@ class RedeemStatOverview extends BaseWidget
                 ->description('Total Redeemed Items')
                 ->chart([40, 10, 35, 12, 25, 4, 19])
                 ->color(Color::Sky),
-            Stat::make('Awaiting Approval Redeem', Redeem::where('status', RedeemStatusEnum::WAITING_APPROVAL)->whereDate('created_at', today())->count())
+            Stat::make('Awaiting Approval Redeem', Redeem::where('status', RedeemStatusEnum::AWAITING_APPROVAL)->whereDate('created_at', today())->count())
                 ->description('Total Awaiting Approval Redeemed Items')
                 ->chart([40, 10, 35, 12, 25, 4, 19])
                 ->color(Color::Purple),

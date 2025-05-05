@@ -88,7 +88,7 @@ class RedeemController extends Controller
         $redeem = Redeem::create([
             'shop_id' => $shop->id,
             'user_id' => $request->user()->id,
-            'status' => RedeemStatusEnum::WAITING_APPROVAL->value,
+            'status' => RedeemStatusEnum::AWAITING_APPROVAL->value,
             'product_id' => $shop->product->id,
         ]);
 
@@ -138,7 +138,7 @@ class RedeemController extends Controller
     public function cancel(string $id)
     {
         $redeem = Redeem::findOrFail($id);
-        if ($redeem->status != RedeemStatusEnum::WAITING_APPROVAL) {
+        if ($redeem->status != RedeemStatusEnum::AWAITING_APPROVAL) {
             return response()->json([
                 'message' => 'Unable to canceled redeem due to it is already in process.',
                 'success' => false,

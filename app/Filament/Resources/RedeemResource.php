@@ -97,7 +97,7 @@ class RedeemResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('Approve')
-                    ->visible(fn (Redeem $redeem) => $redeem->status === RedeemStatusEnum::WAITING_APPROVAL)
+                    ->visible(fn (Redeem $redeem) => $redeem->status === RedeemStatusEnum::AWAITING_APPROVAL)
                     ->label('Approve')
                     ->hiddenLabel()
                     ->size(ActionSize::Medium)
@@ -139,7 +139,7 @@ class RedeemResource extends Resource
                     })
                     ->modalIcon(RedeemStatusEnum::REDEEMED->getIcon()),
                 Tables\Actions\Action::make('decline')
-                    ->visible(fn (Redeem $redeem) => $redeem->status === RedeemStatusEnum::WAITING_APPROVAL)
+                    ->visible(fn (Redeem $redeem) => $redeem->status === RedeemStatusEnum::AWAITING_APPROVAL)
                     ->label('Decline')
                     ->hiddenLabel()
                     ->color('danger')

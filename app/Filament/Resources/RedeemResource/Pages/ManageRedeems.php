@@ -31,15 +31,15 @@ class ManageRedeems extends ManageRecords
             'all' => Components\Tab::make()
                 ->label('All Redeems')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '!=', RedeemStatusEnum::CANCELED)->orderByDesc('created_at')),
-            RedeemStatusEnum::WAITING_APPROVAL->value => Components\Tab::make()
+            RedeemStatusEnum::AWAITING_APPROVAL->value => Components\Tab::make()
                 ->label('Awaiting Approval')
-                ->icon(RedeemStatusEnum::WAITING_APPROVAL->getIcon())
+                ->icon(RedeemStatusEnum::AWAITING_APPROVAL->getIcon())
                 ->badge(function (): ?int {
-                    $count = Redeem::query()->where('status', '=', RedeemStatusEnum::WAITING_APPROVAL)->count();
+                    $count = Redeem::query()->where('status', '=', RedeemStatusEnum::AWAITING_APPROVAL)->count();
 
                     return $count > 0 ? $count : null;
                 })
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '=', RedeemStatusEnum::WAITING_APPROVAL)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', '=', RedeemStatusEnum::AWAITING_APPROVAL)),
             RedeemStatusEnum::APPROVED->value => Components\Tab::make()
                 ->label('Approved')
                 ->icon(RedeemStatusEnum::APPROVED->getIcon())
