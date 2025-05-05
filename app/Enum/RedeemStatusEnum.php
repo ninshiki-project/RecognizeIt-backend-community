@@ -21,7 +21,7 @@ enum RedeemStatusEnum: string implements HasIcon
     case APPROVED = 'Approved';
     case DECLINED = 'Declined';
     case PROCESSING = 'Processing';
-    case WAITING_APPROVAL = 'Waiting-Approval';
+    case AWAITING_APPROVAL = 'Awaiting Approval';
     case CANCELED = 'Canceled';
 
     public function getIcon(): ?string
@@ -31,7 +31,7 @@ enum RedeemStatusEnum: string implements HasIcon
             self::APPROVED => 'heroicon-o-hand-thumb-up',
             self::DECLINED => 'heroicon-o-hand-thumb-down',
             self::PROCESSING => 'heroicon-o-truck',
-            self::WAITING_APPROVAL => 'heroicon-o-cube',
+            self::AWAITING_APPROVAL => 'heroicon-o-cube',
             self::CANCELED => 'heroicon-o-cube-transparent',
         };
     }

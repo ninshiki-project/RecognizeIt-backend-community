@@ -24,14 +24,7 @@ return new class extends Migration
             $table->foreignUuid('shop_id');
             $table->foreignUuid('product_id');
             $table->foreignId('user_id');
-            $table->enum('status', [
-                'Redeemed',
-                'Approved',
-                'Declined',
-                'Processing',
-                'Waiting-Approval',
-                'Canceled',
-            ]);
+            $table->string('status');
             $table->timestamps();
         });
     }
