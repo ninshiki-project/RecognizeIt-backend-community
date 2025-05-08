@@ -71,12 +71,12 @@ class GiftController extends Controller
         ]);
         $cacheKey = sprintf('gift.list.pp-%s.p-%d', $request->page, $request->per_page);
 
-        return Cache::flexible($cacheKey, [5, 15], function () {
+        return Cache::flexible($cacheKey, [5, 15], function () use ($request) {
             return GiftResource::collection(
                 Gift::orderByDesc('created_at')
                     ->paginate(
-                        perPage: $request?->per_page ?? 200,
-                        page: $request?->page ?? 1)
+                        perPage: $request->per_page ?? 200,
+                        page: $request->page ?? 1)
             );
         });
     }

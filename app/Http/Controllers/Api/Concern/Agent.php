@@ -119,9 +119,10 @@ class Agent extends MobileDetect
     /**
      * Match a detection rule and return the matched key.
      *
+     * @param  array  $rules
      * @return string|null
      */
-    protected function findDetectionRulesAgainstUserAgent(array $rules)
+    protected function findDetectionRulesAgainstUserAgent(array $rules): ?string
     {
         $userAgent = $this->getUserAgent();
 
@@ -134,6 +135,8 @@ class Agent extends MobileDetect
                 return $key ?: reset($this->matchesArray);
             }
         }
+
+        return null;
 
     }
 

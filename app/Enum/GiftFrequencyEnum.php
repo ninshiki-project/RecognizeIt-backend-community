@@ -21,7 +21,7 @@ enum GiftFrequencyEnum: string implements HasLabel
     case YEARLY = 'Yearly';
     case WEEKLY = 'Weekly';
 
-    public function getLabel(): ?string
+    public function getLabel(): string
     {
         return match ($this) {
             self::MONTHLY => 'Monthly',

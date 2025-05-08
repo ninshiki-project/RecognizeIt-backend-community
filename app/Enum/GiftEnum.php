@@ -20,7 +20,7 @@ enum GiftEnum: string implements HasLabel
     case COINS = 'coins';
     case SHOP = 'shop';
 
-    public function getLabel(): ?string
+    public function getLabel(): string
     {
         return match ($this) {
             self::SHOP => 'Shop',
