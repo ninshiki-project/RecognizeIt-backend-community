@@ -17,7 +17,7 @@ class ResetSpendWalletCommand extends Command
         User::all()->each(function (User $user) {
             $wallet = Wallet::where('holder_id', $user->id)
                 ->where('slug', 'spend-wallet')->first();
-            $wallet->balance = $user->designations?->postingLimits?->limit ?? 30;
+            $wallet->balance = $user->designations->postingLimits->limit ?? 30;
             $wallet->save();
         });
 

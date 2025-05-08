@@ -57,7 +57,7 @@ class UserResource extends Resource
                     ->hidden(function (Forms\Get $get, $operation): bool {
                         if (! is_null($get('roles')) && $operation === 'create') {
                             $role = Role::findById($get('roles'), 'web');
-                            /** @var $role Role */
+                            /** @var Role $role */
                             if ($role->hasPermissionTo('access panel', 'web')) {
                                 return false;
                             }

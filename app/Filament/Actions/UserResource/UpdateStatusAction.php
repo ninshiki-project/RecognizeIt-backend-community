@@ -40,12 +40,10 @@ class UpdateStatusAction
                 ->native(false)
                 ->preload()
                 ->disableOptionWhen(function (string $value, User $user): bool {
-                    if ($user->status !== UserEnum::Invited) {
-                        return $value === UserEnum::Invited->value;
-                    }
-                    if ($user->status === UserEnum::Invited) {
-                        return $value === UserEnum::Active->value;
-                    }
+                    return match ($user->status) {
+                        UserEnum::Invited => $value === UserEnum::Active->value,
+                        default => $value === UserEnum::Invited->value,
+                    };
                 })
                 ->options(UserEnum::class),
         ])

@@ -24,7 +24,7 @@ enum RedeemStatusEnum: string implements HasIcon
     case AWAITING_APPROVAL = 'Awaiting Approval';
     case CANCELED = 'Canceled';
 
-    public function getIcon(): ?string
+    public function getIcon(): string
     {
         return match ($this) {
             self::REDEEMED => 'heroicon-o-receipt-percent',

@@ -43,7 +43,7 @@ enum RedeemDeclineReasonEnum: string implements HasLabel
 
     }
 
-    public function getLabel(): ?string
+    public function getLabel(): string
     {
         return match ($this) {
             self::ITEM_TEMPORARILY_UNAVAILABLE => self::ITEM_TEMPORARILY_UNAVAILABLE->value,

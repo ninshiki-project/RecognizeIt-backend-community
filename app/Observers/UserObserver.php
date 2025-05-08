@@ -50,7 +50,7 @@ class UserObserver
             ],
         ]);
 
-        $spendWallet->deposit($user->designations?->postingLimits?->limit ?? 30, [
+        $spendWallet->deposit($user->designations->postingLimits->limit ?? 30, [
             'title' => 'Spend Wallet',
             'description' => 'Added funds to your account.',
         ]);

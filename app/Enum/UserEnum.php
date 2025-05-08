@@ -24,7 +24,7 @@ enum UserEnum: string implements HasColor, HasIcon, HasLabel
     case Active = 'active';
     case Deactivate = 'deactivated';
 
-    public function getColor(): string|array|null
+    public function getColor(): array
     {
         return match ($this) {
             self::Invited => Color::Orange,
@@ -33,7 +33,7 @@ enum UserEnum: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): ?string
+    public function getIcon(): string
     {
         return match ($this) {
             self::Invited => 'heroicon-o-envelope',
@@ -42,7 +42,7 @@ enum UserEnum: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getLabel(): ?string
+    public function getLabel(): string
     {
         return match ($this) {
             self::Invited => 'Invited',
