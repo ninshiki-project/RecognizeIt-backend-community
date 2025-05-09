@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NotificationResource;
 use App\Models\User;
+use Dedoc\Scramble\Attributes\Example;
 use Dedoc\Scramble\Attributes\PathParameter;
 use Dedoc\Scramble\Attributes\QueryParameter;
 use Illuminate\Http\JsonResponse;
@@ -22,8 +23,8 @@ class NotificationsController extends Controller
      * @return AnonymousResourceCollection<LengthAwarePaginator<NotificationResource>>
      */
     #[QueryParameter('user', description: 'User ID. If not part of request the authenticated user will be used.', type: 'int', default: null)]
-    #[QueryParameter('unread', description: 'Get all unread notification.', type: 'bool', default: false)]
-    #[QueryParameter('read', description: 'Get all read notification.', type: 'bool', default: false)]
+    #[QueryParameter('unread', description: 'Get all unread notification.', type: 'int', default: 0, example: 1)]
+    #[QueryParameter('read', description: 'Get all read notification.', type: 'int', default: 0, example: 0)]
     public function index(Request $request)
     {
         $request->validate([
