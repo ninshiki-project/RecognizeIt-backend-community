@@ -65,6 +65,6 @@ class RecognizedNotification extends Notification
      */
     public function databaseType(object $notifiable): string
     {
-        return 'post-recognized-by';
+        return 'post-recognized';
     }
 }

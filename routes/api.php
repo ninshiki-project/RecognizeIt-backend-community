@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Controllers\Api\DepartmentsController;
 use App\Http\Controllers\Api\DesignationsController;
 use App\Http\Controllers\Api\GiftController;
+use App\Http\Controllers\Api\NotificationsController;
 use App\Http\Controllers\Api\PermissionsController;
 use App\Http\Controllers\Api\PostsController;
 use App\Http\Controllers\Api\ProductController;
@@ -127,6 +128,12 @@ Route::middleware([
             // feature
             Route::post('/enable', [GiftController::class, 'enable']);
             Route::get('/meta', [GiftController::class, 'meta']);
+        });
+
+        // Notification
+        Route::prefix('notifications')->group(function () {
+            Route::get('/', [NotificationsController::class, 'index']);
+            Route::patch('/{id}/read', [NotificationsController::class, 'markAsRead']);
         });
 
     });
