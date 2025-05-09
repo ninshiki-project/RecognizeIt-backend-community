@@ -31,9 +31,8 @@ class ProfileResource extends JsonResource
             'job_title' => $this->designation,
             'role' => $this->roles->flatten()->pluck('name')->toArray(),
             'email_verified_at' => $this->email_verified_at,
-            'notifications' => [
+            'notifications_count' => [
                 'unread' => $this->unreadNotifications->count(),
-                'total' => $this->notifications->count(),
             ],
             'providers' => $this->mergeWhen($this->provider, $this->providers),
         ];
