@@ -72,6 +72,15 @@ class MentionNotification extends Notification implements ShouldQueue
     }
 
     /**
+     * @param  object  $notifiable
+     * @return string
+     */
+    public function databaseType(object $notifiable): string
+    {
+        return 'post-mentioned';
+    }
+
+    /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
