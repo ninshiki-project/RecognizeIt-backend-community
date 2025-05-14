@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NotificationResource;
 use App\Models\User;
-use Dedoc\Scramble\Attributes\Example;
 use Dedoc\Scramble\Attributes\PathParameter;
 use Dedoc\Scramble\Attributes\QueryParameter;
 use Illuminate\Http\JsonResponse;
@@ -56,12 +55,12 @@ class NotificationsController extends Controller
      * Mark the notification as read
      *
      * @param  Request  $request
-     * @param  int  $id
+     * @param  string  $id
      * @return JsonResponse
      */
     #[QueryParameter('user', description: 'User ID. If not part of request the authenticated user will be used.', type: 'int', default: null)]
-    #[PathParameter('id', description: 'Notification ID', required: true, type: 'int', example: 1)]
-    public function markAsRead(Request $request, int $id)
+    #[PathParameter('id', description: 'Notification ID', required: true, type: 'string', example: 'uuid-string')]
+    public function markAsRead(Request $request, string $id)
     {
         $request->mergeIfMissing([
             'user' => auth()->user()->id,
