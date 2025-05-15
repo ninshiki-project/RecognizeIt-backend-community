@@ -192,6 +192,28 @@ location ~ ^/apps/(?<reverbid>[^/]+)/events$ { # variable reverbid
     
 }
 ```
+Alternatively, you can use [this](https://laracasts.com/discuss/channels/reverb/pusher-error-authentication-signature-invalid?page=1&replyId=958032)
+```nginx
+    # Laravel Reverb
+    ## The Websocket Client/Laravel Echo would connect to /app
+    ## The Laravel Backend would broadcast to /apps
+    location ~ ^/apps? {
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header Scheme $scheme;
+        proxy_set_header SERVER_PORT $server_port;
+        proxy_set_header REMOTE_ADDR $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+
+        proxy_pass http://127.0.0.1:8080;
+    }
+
+```
+
 
 ### Apache
 ```diff
@@ -211,7 +233,7 @@ Your `.env` file for the reverb should look like this. Make sure your `REVERB_SE
 
 Reference: [#117](https://github.com/laravel/reverb/issues/117#issuecomment-2022571567)
 ```bash
-REVERB_SERVER_HOST=127.0.0.1 # dont change this
+REVERB_SERVER_HOST=127.0.0.1 # dont change this if the frontend and backend are in the same domain
 
 REVERB_APP_ID=xxxx
 REVERB_APP_KEY=xxxxx
