@@ -17,4 +17,9 @@
         <accepts>page.html</accepts>
     </rule>
     -->
+    <rule id="18e5de6c">
+        <description>
+            <![CDATA[Created after removal of "Deployment - Cron Jobs & Supervisor" from Ninshiki Backend Documentation]]></description>
+        <accepts>Deployment-Cron_Jobs_and_Supervisor.html</accepts>
+    </rule>
 </rules>

@@ -25,7 +25,6 @@
         <toc-element topic="Installation-for-Development-Local.md"/>
         <toc-element toc-title="Production Installation" id="installation-guide-production">
             <toc-element topic="Production.md" />
-            <toc-element topic="Deployment-Cron_Jobs_and_Supervisor.md"/>
         </toc-element>
     </toc-element>
     <toc-element toc-title="Websockets" id="websocket-guide">
