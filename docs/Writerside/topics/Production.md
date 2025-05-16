@@ -157,42 +157,7 @@ Once the Certbot run successfully, restart your nginx services `sudo systemctl r
 ## Laravel Reverb (Real-time Notification/Broadcast)
 
 ### NGINX
-```nginx
-server {
-....
-
-# Laravel Reverb
-# The Websocket Client/Laravel Echo would connect and listen to this
-
-location ~ /app/(?<reverbkey>.*) { # variable reverbkey
-  proxy_pass http://127.0.0.1:8080/app/$reverbkey;
-  proxy_http_version 1.1;
-  proxy_set_header Host $http_host;
-  proxy_set_header Scheme $scheme;
-  proxy_set_header SERVER_PORT $server_port;
-  proxy_set_header REMOTE_ADDR $remote_addr;
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header Upgrade $http_upgrade;
-  proxy_set_header Connection "Upgrade";
-  proxy_read_timeout 120;
-  proxy_send_timeout 120;
-}
-
-# The Laravel Backend would broadcast to this
-location ~ ^/apps/(?<reverbid>[^/]+)/events$ { # variable reverbid
-  proxy_pass http://127.0.0.1:8080/apps/$reverbid/events;
-  proxy_set_header Host $host;
-  proxy_set_header X-Real-IP $remote_addr;
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Proto $scheme;
-  proxy_read_timeout 120;
-  proxy_send_timeout 120;
-}
-
-    
-}
-```
-Alternatively, you can use [this](https://laracasts.com/discuss/channels/reverb/pusher-error-authentication-signature-invalid?page=1&replyId=958032)
+[SOLUTION - Laracast](https://laracasts.com/discuss/channels/reverb/pusher-error-authentication-signature-invalid?page=1&replyId=958032)
 ```nginx
     # Laravel Reverb
     ## The Websocket Client/Laravel Echo would connect to /app
@@ -257,12 +222,13 @@ Once the configuration file has been created, you may update the Supervisor conf
 ```bash
 sudo supervisorctl reread
 sudo supervisorctl update
- 
+sudo supervisorctl start "ninshiki-worker:*" #To start running the all the program within the group
 ```
 
 ###### Websocket
 Let's create a `ninshiki-worker-websocket.conf` file that starts and monitors `reverb:start` processes:
 ```bash
+[group:ninshiki-worker]
 [program:ninshiki-worker-websocket]
 process_name=%(program_name)s_%(process_num)02d
 command=php /var/www/backend-ninshiki.com/artisan reverb:start --no-interaction
@@ -273,7 +239,6 @@ killasgroup=true
 user=www-data
 numprocs=1
 redirect_stderr=true
-stopwaitsecs=3600
 ```
 
 
@@ -282,6 +247,7 @@ stopwaitsecs=3600
 Let's create a `ninshiki-worker-queue.conf` file that starts and monitors `queue:work` processes:
 
 ```bash
+[group:ninshiki-worker]
 [program:ninshiki-worker-queue]
 process_name=%(program_name)s_%(process_num)02d
 command=php /var/www/backend-ninshiki.com/artisan queue:work --sleep=3 --tries=3 --max-time=3600
@@ -300,6 +266,7 @@ stopwaitsecs=3600
 Let's create a `ninshiki-worker-pulse.conf` file that starts and monitors `pulse:check` processes:
 
 ```bash
+[group:ninshiki-worker]
 [program:ninshiki-worker-pulse]
 process_name=%(program_name)s_%(process_num)02d
 command=php /var/www/backend-ninshiki.com/artisan pulse:check
@@ -312,6 +279,7 @@ numprocs=1
 redirect_stderr=true
 ```
 
+For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
 
 ## Cron Job
 
