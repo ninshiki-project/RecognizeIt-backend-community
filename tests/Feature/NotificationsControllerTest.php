@@ -225,6 +225,18 @@ it('can mark a notification as read', function () {
             'success' => true,
             'message' => 'Notification marked as read',
         ]);
+
+    // Assert that the notification has been marked as read in the database
+    /** @phpstan-ignore-next-line */
+    $this->assertDatabaseHas('notifications', [
+        'id' => $notification->id,
+        'notifiable_id' => $user->id,
+        'notifiable_type' => get_class($user),
+    ]);
+
+    // Check that the read_at field is not null
+    $updatedNotification = DatabaseNotification::find($notification->id);
+    $this->assertNotNull($updatedNotification->read_at);
 });
 
 it('returns 404 when trying to mark a non-existent notification as read', function () {
@@ -241,4 +253,50 @@ it('returns 404 when trying to mark a non-existent notification as read', functi
             'success' => false,
             'message' => 'Notification record not found',
         ]);
+});
+
+it('can mark all notifications as read', function () {
+    // Fake notifications to prevent actual sending
+    Notification::fake();
+
+    // Create a user
+    $user = User::factory()->create();
+
+    // Create multiple unread notifications
+    $unreadCount = 5;
+    for ($i = 0; $i < $unreadCount; $i++) {
+        $notification = new DatabaseNotification([
+            'id' => Str::uuid()->toString(),
+            'type' => 'App\\Notifications\\MentionNotification',
+            'notifiable_type' => get_class($user),
+            'notifiable_id' => $user->id,
+            'data' => [
+                'message' => 'Unread notification '.($i + 1),
+                'postId' => $i + 1,
+                'type' => 'mention',
+            ],
+            'read_at' => null,
+        ]);
+
+        $notification->save();
+    }
+
+    // Test marking all notifications as read
+    \Pest\Laravel\actingAs($user)
+        ->patchJson('/api/v1/notifications/read')
+        ->assertStatus(200)
+        ->assertJson([
+            'success' => true,
+            'message' => 'Notification marked as read',
+        ]);
+
+    // Assert that all notifications have been marked as read in the database
+    /** @phpstan-ignore-next-line */
+    $this->assertDatabaseCount('notifications', $unreadCount);
+    /** @phpstan-ignore-next-line */
+    $this->assertDatabaseMissing('notifications', [
+        'notifiable_id' => $user->id,
+        'notifiable_type' => get_class($user),
+        'read_at' => null,
+    ]);
 });

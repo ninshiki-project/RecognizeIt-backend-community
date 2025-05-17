@@ -86,4 +86,30 @@ class NotificationsController extends Controller
             'message' => 'Notification marked as read',
         ]);
     }
+
+    /**
+     * Mark all notifications as read
+     *
+     * This will mark all notifications as read for the authenticated user.
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    #[QueryParameter('user', description: 'User ID. If not part of request the authenticated user will be used.', type: 'int', default: null)]
+    public function markAllAsRead(Request $request)
+    {
+        $request->mergeIfMissing([
+            'user' => auth()->user()->id,
+        ]);
+        $user = User::find($request->user)->load('notifications');
+
+        /** @var User $user */
+        $user->unreadNotifications()->update(['read_at' => now()]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification marked as read',
+        ]);
+
+    }
 }

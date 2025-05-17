@@ -134,6 +134,7 @@ Route::middleware([
         Route::prefix('notifications')->group(function () {
             Route::get('/', [NotificationsController::class, 'index']);
             Route::patch('/{id}/read', [NotificationsController::class, 'markAsRead']);
+            Route::patch('/read', [NotificationsController::class, 'markAllAsRead']);
         });
 
     });

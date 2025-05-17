@@ -1,6 +1,8 @@
 includes:
         - vendor/larastan/larastan/extension.neon
 parameters:
+    excludePaths:
+        - tests
     paths:
         - app
     level: 7
