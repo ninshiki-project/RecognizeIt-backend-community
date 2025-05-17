@@ -4,6 +4,18 @@
 All notable changes to this project will be documented in this file.
 
 <!--- END HEADER -->
+## 1.0.0 - 2025-05-17
+
+### What's Changed
+
+* Allow image URL for product image instead of upload by @MarJose123 in https://github.com/ninshiki-project/RecognizeIt-backend-community/pull/71
+* Feature - Shop Wishlist by @MarJose123 in https://github.com/ninshiki-project/RecognizeIt-backend-community/pull/72
+* Laravel 12 upgrade by @MarJose123 in https://github.com/ninshiki-project/RecognizeIt-backend-community/pull/74
+* Notification endpoint by @MarJose123 in https://github.com/ninshiki-project/RecognizeIt-backend-community/pull/75
+* build(deps): bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot in https://github.com/ninshiki-project/RecognizeIt-backend-community/pull/76
+
+**Full Changelog**: https://github.com/ninshiki-project/RecognizeIt-backend-community/compare/0.4.1...1.0.0
+
 ## 0.4.1 - 2025-04-26
 
 ### What's Changed
