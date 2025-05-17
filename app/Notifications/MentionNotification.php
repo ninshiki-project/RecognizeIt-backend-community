@@ -79,15 +79,4 @@ class MentionNotification extends Notification implements ShouldQueue
     {
         return 'post-mentioned';
     }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable): array
-    {
-        return [];
-    }
 }
