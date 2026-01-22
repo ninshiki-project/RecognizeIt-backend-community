@@ -24,7 +24,7 @@ jobs:
     if:  github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'documentation' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -78,7 +78,7 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Package and upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dir
 
