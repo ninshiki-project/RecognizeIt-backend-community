@@ -24,7 +24,7 @@ jobs:
     if:  github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'documentation' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
